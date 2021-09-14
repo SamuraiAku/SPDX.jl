@@ -3,6 +3,10 @@ uuid = "47358f48-d834-4249-91f5-f6185eb3d540"
 authors = ["Simon Avery <savery@ieee.org> and contributors"]
 version = "0.1.0"
 
+[deps]
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+
 [compat]
 julia = "1.6"
 
