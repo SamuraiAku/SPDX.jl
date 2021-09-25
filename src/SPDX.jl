@@ -18,13 +18,33 @@ struct SpdxPackageV2 <: AbstractSpdxData
     MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{AbstractSpdx}}}
 end
 function SpdxPackageV2(SPDXID::AbstractString)
-    # Initialize the object fields
-    ObjSymbols= OrderedSet{Symbol}([:a, 
-                                    :b, 
-                                    :c])
-    MutableFields= OrderedDict{Symbol, Any}(ObjSymbols .=> missing)
-    # TODO: For any vector types, replace missing with an empty Vector
-    MutableFields[:b]= Vector{String}()
+    # Initialize the object fields.  Maybe this should be a column from a DataFrame Table later. 
+    # So that I can track the subtle name translations between different fileformats
+    # If object Symbols becomes a DataFrame column, then the default values could become one too!
+    # MutableFields= OrderedDict{Symbol, Any}(ObjSymbols .=> ObjDefaults)
+    MutableFields= OrderedDict{Symbol, Any}([                 :Name   => missing, 
+                                                           :Version   => missing, 
+                                                          :FileName   => missing,
+                                                          :Supplier   => missing,
+                                                        :Originator   => missing,
+                                                  :DownloadLocation   => missing,
+                                                     :FilesAnalyzed   => missing,
+                                                  :VerificationCode   => missing,
+                                                         :Checksums   => Vector{String}(),
+                                                          :HomePage   => missing,
+                                                        :SourceInfo   => missing,
+                                                  :LicenseConcluded   => missing,
+                                              :LicenseInfoFromFiles   => Vector{AbstractSpdx}(),
+                                                   :LicenseDeclared   => missing,
+                                                   :LicenseComments   => missing,
+                                                         :Copyright   => missing,
+                                                           :Summary   => missing,
+                                               :DetailedDescription   => missing,
+                                                           :Comment   => missing,
+                                                :ExternalReferences   => Vector{AbstractSpdx}(),
+                                          :ExternalReferenceComment   => missing,
+                                                      :Attributions   => Vector{String}() ])
+
     return SpdxPackageV2(SPDXID, MutableFields)
 end
 
