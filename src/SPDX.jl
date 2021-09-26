@@ -4,7 +4,7 @@ module SPDX
 #using JSON
 using DataStructures
 
-export AbstractSpdx, AbstractSpdxData, SpdxPackageV2, SpdxSimpleLicenseExpressionV2
+export AbstractSpdx, AbstractSpdxData, SpdxPackageV2, SpdxSimpleLicenseExpressionV2, PackageExternalReferenceV2
 
 # Type definitions
 abstract type AbstractSpdx end
@@ -59,7 +59,11 @@ SpdxSimpleLicenseExpressionV2(LicenseId::String)= SpdxSimpleLicenseExpressionV2(
 # TODO : Support user defined licenses
 # TODO : Support compound expressions
 
-
+struct PackageExternalReferenceV2 <: AbstractSpdxExternalReference
+    Category::String
+    RefType::String
+    Locator::String
+end
 
 function Base.getproperty(obj::AbstractSpdxData, sym::Symbol)
     MutableFields= getfield(obj, :MutableFields)
