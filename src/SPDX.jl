@@ -104,6 +104,7 @@ function Base.getproperty(obj::AbstractSpdxData, sym::Symbol)
 end
 
 function Base.setproperty!(obj::AbstractSpdxData, sym::Symbol, newval)
+    ImmutableFields= filter(sym -> sym != :MutableFields, fieldnames(typeof(obj)))
     MutableFields= getfield(obj, :MutableFields)
     if(sym in keys(MutableFields))
         if(isa(MutableFields[sym], Vector))
@@ -111,6 +112,8 @@ function Base.setproperty!(obj::AbstractSpdxData, sym::Symbol, newval)
         else
             MutableFields[sym]= newval
         end
+    elseif !(sym in ImmutableFields)
+        error("type " * string(typeof(obj)) * " has no field " * string(sym))
     else
         setfield!(obj, sym, newval)
     end
