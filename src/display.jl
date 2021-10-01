@@ -34,3 +34,8 @@ end
 function _show(io::IO, obj::PackageExternalReferenceV2)
     print(io, obj.Category * " " * obj.RefType * " " * obj.Locator)
 end
+
+################
+function _show(io::IO, obj::SpdxCreatorV2)
+    print(io, obj.CreatorType * ":  " * obj.Name * "  (" * obj.Email * ")")
+end
