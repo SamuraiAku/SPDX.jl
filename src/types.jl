@@ -22,6 +22,13 @@ struct PackageExternalReferenceV2 <: AbstractSpdx
 end
 
 ######################################
+struct DocumentExternalReferenceV2 <: AbstractSpdx
+    SPDXID::String
+    Namespace::String
+    Checksum::String
+end
+
+######################################
 struct SpdxCreatorV2 <: AbstractSpdx
     CreatorType::String
     Name::String
@@ -60,8 +67,10 @@ function SpdxDocumentV2()
                                                      :Creator  => Vector{AbstractSpdx}(),
                                                      :Created  => missing,
                                               :CreatorComment  => missing,
-                                             :DocumentComment  => missing
-    ])
+                                             :DocumentComment  => missing,
+                                                    :Packages  => Vector{AbstractSpdx}(),
+                                               :Relationships  => Vector{AbstractSpdx}(),
+                                            ])
     return SpdxDocumentV2("SPDX-2.2", SpdxSimpleLicenseExpressionV2("CC0-1.0"), "SPDXRef-DOCUMENT", MutableFields)
 end
 
