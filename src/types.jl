@@ -111,3 +111,11 @@ function SpdxPackageV2(SPDXID::AbstractString)
     return SpdxPackageV2(SPDXID, MutableFields)
 end
 
+#############################################
+struct SpdxRelationshipV2 <: AbstractSpdx
+    SPDXID::String
+    RelationshipType::String
+    RelatedSPDXID::String
+end
+# TODO : Validate the RelationshipType
+# TODO : Check if the IDs are present when added to a Document
