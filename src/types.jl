@@ -56,20 +56,20 @@ struct SpdxDocumentV2 <: AbstractSpdxData
     Version::String
     DataLicense::SpdxSimpleLicenseExpressionV2
     SPDXID::String
-    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{AbstractSpdx}}}
+    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{<:AbstractSpdx}}}
 end
 
 function SpdxDocumentV2()
     MutableFields= OrderedDict{Symbol, Any}([           :Name  => missing,
                                                    :Namespace  => missing,
-                                          :ExternalReferences  => Vector{AbstractSpdx}(),
+                                          :ExternalReferences  => Vector{DocumentExternalReferenceV2}(),
                                           :LicenseListVersion  => missing,
-                                                     :Creator  => Vector{AbstractSpdx}(),
+                                                     :Creator  => Vector{SpdxCreatorV2}(),
                                                      :Created  => missing,
                                               :CreatorComment  => missing,
                                              :DocumentComment  => missing,
-                                                    :Packages  => Vector{AbstractSpdx}(),
-                                               :Relationships  => Vector{AbstractSpdx}(),
+                                                    :Packages  => Vector{SpdxPackageV2}(),
+                                               :Relationships  => Vector{SpdxRelationshipV2}(),
                                             ])
     return SpdxDocumentV2("SPDX-2.2", SpdxSimpleLicenseExpressionV2("CC0-1.0"), "SPDXRef-DOCUMENT", MutableFields)
 end
@@ -77,7 +77,7 @@ end
 #############################################
 struct SpdxPackageV2 <: AbstractSpdxData
     SPDXID::String
-    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{AbstractSpdx}}}
+    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{<:AbstractSpdx}}}
 end
 
 function SpdxPackageV2(SPDXID::AbstractString)
@@ -104,7 +104,7 @@ function SpdxPackageV2(SPDXID::AbstractString)
                                                            :Summary   => missing,
                                                :DetailedDescription   => missing,
                                                            :Comment   => missing,
-                                                :ExternalReferences   => Vector{AbstractSpdx}(),
+                                                :ExternalReferences   => Vector{PackageExternalReferenceV2}(),
                                           :ExternalReferenceComment   => missing,
                                                       :Attributions   => Vector{String}() ])
 
