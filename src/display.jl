@@ -11,7 +11,7 @@ function _show(io::IO, obj::AbstractSpdx)
     if hasfield(typeof(obj), :MutableFields)
         MutableFields= obj.MutableFields
         for key in keys(skipmissing(MutableFields))
-            if isa(MutableFields[key], Vector) && length(MutableFields[key]) == 0
+            if isa(MutableFields[key], Vector) && isempty(MutableFields[key])
                 continue
             else
                 println(io, String(key) * ":\t\t" * string(MutableFields[key]))
