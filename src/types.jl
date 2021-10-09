@@ -81,32 +81,9 @@ struct SpdxPackageV2 <: AbstractSpdxData
 end
 
 function SpdxPackageV2(SPDXID::AbstractString)
-    # Initialize the object fields.  Maybe this should be a column from a DataFrame Table later. 
-    # So that I can track the subtle name translations between different fileformats
-    # If object Symbols becomes a DataFrame column, then the default values could become one too!
-    # MutableFields= OrderedDict{Symbol, Any}(ObjSymbols .=> ObjDefaults)
-    MutableFields= OrderedDict{Symbol, Any}([                 :Name   => missing, 
-                                                           :Version   => missing, 
-                                                          :FileName   => missing,
-                                                          :Supplier   => missing,
-                                                        :Originator   => missing,
-                                                  :DownloadLocation   => missing,
-                                                     :FilesAnalyzed   => missing,
-                                                  :VerificationCode   => missing,
-                                                         :Checksums   => Vector{String}(),
-                                                          :HomePage   => missing,
-                                                        :SourceInfo   => missing,
-                                                  :LicenseConcluded   => missing,
-                                              :LicenseInfoFromFiles   => Vector{AbstractSpdx}(),
-                                                   :LicenseDeclared   => missing,
-                                                   :LicenseComments   => missing,
-                                                         :Copyright   => missing,
-                                                           :Summary   => missing,
-                                               :DetailedDescription   => missing,
-                                                           :Comment   => missing,
-                                                :ExternalReferences   => Vector{PackageExternalReferenceV2}(),
-                                          :ExternalReferenceComment   => missing,
-                                                      :Attributions   => Vector{String}() ])
+    global SpdxPackageV2_NameTable
+    MutableIndicies= map(row -> row.Mutable == true, SpdxPackageV2_NameTable)
+    MutableFields= OrderedDict{Symbol, Any}(SpdxPackageV2_NameTable[MutableIndicies].Symbol .=> deepcopy(SpdxPackageV2_NameTable[MutableIndicies].Default) )
 
     return SpdxPackageV2(SPDXID, MutableFields)
 end
