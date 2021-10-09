@@ -60,17 +60,9 @@ struct SpdxDocumentV2 <: AbstractSpdxData
 end
 
 function SpdxDocumentV2()
-    MutableFields= OrderedDict{Symbol, Any}([           :Name  => missing,
-                                                   :Namespace  => missing,
-                                          :ExternalReferences  => Vector{DocumentExternalReferenceV2}(),
-                                          :LicenseListVersion  => missing,
-                                                     :Creator  => Vector{SpdxCreatorV2}(),
-                                                     :Created  => missing,
-                                              :CreatorComment  => missing,
-                                             :DocumentComment  => missing,
-                                                    :Packages  => Vector{SpdxPackageV2}(),
-                                               :Relationships  => Vector{SpdxRelationshipV2}(),
-                                            ])
+    global SpdxDocumentV2_NameTable
+    MutableIndicies= map(row -> row.Mutable == true, SpdxDocumentV2_NameTable)
+    MutableFields= OrderedDict{Symbol, Any}(SpdxDocumentV2_NameTable[MutableIndicies].Symbol .=> deepcopy(SpdxDocumentV2_NameTable[MutableIndicies].Default))
     return SpdxDocumentV2("SPDX-2.2", SpdxSimpleLicenseExpressionV2("CC0-1.0"), "SPDXRef-DOCUMENT", MutableFields)
 end
 
@@ -84,7 +76,6 @@ function SpdxPackageV2(SPDXID::AbstractString)
     global SpdxPackageV2_NameTable
     MutableIndicies= map(row -> row.Mutable == true, SpdxPackageV2_NameTable)
     MutableFields= OrderedDict{Symbol, Any}(SpdxPackageV2_NameTable[MutableIndicies].Symbol .=> deepcopy(SpdxPackageV2_NameTable[MutableIndicies].Default) )
-
     return SpdxPackageV2(SPDXID, MutableFields)
 end
 
