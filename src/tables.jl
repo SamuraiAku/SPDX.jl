@@ -6,8 +6,15 @@ const SpdxPackageV2_NameTable= Table(
 )
 
 const SpdxDocumentV2_NameTable= Table(
-     Symbol= [ :Version,       :DataLicense,    :SPDXID,    :Name,     :Namespace,           :ExternalReferences,                    :LicenseListVersion,   :Creator,                 :Created,   :CreatorComment, :DocumentComment, :Packages,                 :Relationships],
-    Default= [  nothing,        nothing,         nothing,    missing,   missing,              Vector{DocumentExternalReferenceV2}(),  missing,               Vector{SpdxCreatorV2}(),  missing,    missing,         missing,          Vector{SpdxPackageV2}(),   Vector{SpdxRelationshipV2}()],
-    Mutable= [  false,          false,           false,      true,      true,                 true,                                   true,                  true,                     true,       true,            true,             true,                      true],
-   JSONname= [  "spdxVersion",  "dataLicense",   "SPDXID",   "name",    "documentNamespace",  "externalDocumentRefs",                 "licenseListVersion",  "creators",               "created",  "comment",       "comment",        "packages",                "relationships"]
+     Symbol= [ :Version,       :DataLicense,    :SPDXID,    :Name,     :Namespace,           :ExternalReferences,                     :CreationInfo,    :DocumentComment,   :Packages,                 :Relationships],
+    Default= [  nothing,        nothing,         nothing,    missing,   missing,              Vector{DocumentExternalReferenceV2}(),   missing,          missing,            Vector{SpdxPackageV2}(),   Vector{SpdxRelationshipV2}()],
+    Mutable= [  false,          false,           false,      true,      true,                 true,                                    true,             true,               true,                      true],
+   JSONname= [  "spdxVersion",  "dataLicense",   "SPDXID",   "name",    "documentNamespace",  "externalDocumentRefs",                  "creationInfo",   "comment",          "packages",                "relationships"]
+)
+
+const SpdxCreationInfoV2_NameTable= Table(
+     Symbol= [ :LicenseListVersion,   :Creator,                 :Created,   :CreatorComment],
+    Default= [  missing,               Vector{SpdxCreatorV2}(),  missing,    missing],
+    Mutable= [  true,                  true,                     true,       true], 
+   JSONname= [ "licenseListVersion",   "creators",               "created",  "comment"]
 )

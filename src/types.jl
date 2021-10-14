@@ -40,7 +40,7 @@ struct SpdxCreatorV2 <: AbstractSpdx
 
         ## Input Validation
         CreatorType in ["Person", "Organization", "Tool"] || error("Invalid CreatorType")
-        (CreatorType == "Tool" && length(Email) > 0) && error("Tools do not have an email per SPDX spec")
+        (CreatorType == "Tool" && !isempty(Email)) && error("Tools do not have an email per SPDX spec")
 
         new(CreatorType, Name, Email)
     end
@@ -50,6 +50,17 @@ function SpdxCreatorV2(CreatorType::String, Name::String; validate= true)
     SpdxCreatorV2(CreatorType, Name, "", validate= validate)
 end
 
+#############################################
+struct SpdxCreationInfoV2 <: AbstractSpdxData
+    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{<:AbstractSpdx}}}
+end
+
+function SpdxCreationInfoV2()
+    global SpdxCreationInfoV2_NameTable
+    MutableIndicies= map(row -> row.Mutable == true, SpdxCreationInfoV2_NameTable)
+    MutableFields= OrderedDict{Symbol, Any}(SpdxCreationInfoV2_NameTable[MutableIndicies].Symbol .=> deepcopy(SpdxCreationInfoV2_NameTable[MutableIndicies].Default))
+    return SpdxCreationInfoV2(MutableFields)
+end
 
 #############################################
 struct SpdxDocumentV2 <: AbstractSpdxData
