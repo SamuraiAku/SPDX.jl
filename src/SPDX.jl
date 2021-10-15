@@ -12,6 +12,7 @@ include("./types.jl")
 include("./tables.jl")
 include("./accessors.jl")
 include("./display.jl")
+include("formatJSON.jl")
 
 # Write your package code here.
 
