@@ -18,3 +18,10 @@ const SpdxCreationInfoV2_NameTable= Table(
     Mutable= [  true,                  true,                     true,       true], 
    JSONname= [ "licenseListVersion",   "creators",               "created",  "comment"]
 )
+
+const SpdxRelationshipV2_NameTable= Table(
+     Symbol= [ :SPDXID,          :RelationshipType,    :RelatedSPDXID],
+    Default= [  missing,          missing,              missing],
+    Mutable= [  false,            false,                false], 
+   JSONname= [  "spdxElementId",  "relationshipType",   "relatedSpdxElement"]
+)

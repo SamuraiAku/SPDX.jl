@@ -91,10 +91,18 @@ function SpdxPackageV2(SPDXID::AbstractString)
 end
 
 #############################################
-struct SpdxRelationshipV2 <: AbstractSpdx
+struct SpdxRelationshipV2 <: AbstractSpdxData
     SPDXID::String
     RelationshipType::String
     RelatedSPDXID::String
+    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{<:AbstractSpdx}}}
+end
+
+function SpdxRelationshipV2(SPDXID::String, RelationshipType::String, RelatedSPDXID::String)
+    global SpdxPackageV2_NameTable
+    MutableIndicies= map(row -> row.Mutable == true, SpdxPackageV2_NameTable)
+    MutableFields= OrderedDict{Symbol, Any}(SpdxPackageV2_NameTable[MutableIndicies].Symbol .=> deepcopy(SpdxPackageV2_NameTable[MutableIndicies].Default) )
+    return SpdxRelationshipV2(SPDXID, RelationshipType, RelatedSPDXID, MutableFields)
 end
 # TODO : Validate the RelationshipType
 # TODO : Check if the IDs are present when added to a Document

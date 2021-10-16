@@ -1,4 +1,7 @@
 
+convert_to_JSON(dataElement::AbstractSpdx)= string(dataElement)  # Default
+convert_to_JSON(stringElement::String)= stringElement
+
 function convert_to_JSON(doc::AbstractSpdxData, NameTable::Table)
     jsonDoc= OrderedDict{String, Any}()
     for idx in range(1,length= length(NameTable))
@@ -22,6 +25,4 @@ end
 convert_to_JSON(doc::SpdxDocumentV2)= convert_to_JSON(doc, SpdxDocumentV2_NameTable)
 convert_to_JSON(pkg::SpdxPackageV2) = convert_to_JSON(pkg, SpdxPackageV2_NameTable)
 convert_to_JSON(info::SpdxCreationInfoV2)= convert_to_JSON(info, SpdxCreationInfoV2_NameTable)
-
-convert_to_JSON(dataElement::AbstractSpdx)= string(dataElement)
-convert_to_JSON(stringElement::String)= stringElement
+convert_to_JSON(relationship::SpdxRelationshipV2)= convert_to_JSON(relationship, SpdxRelationshipV2_NameTable)
