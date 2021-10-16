@@ -26,3 +26,11 @@ convert_to_JSON(doc::SpdxDocumentV2)= convert_to_JSON(doc, SpdxDocumentV2_NameTa
 convert_to_JSON(pkg::SpdxPackageV2) = convert_to_JSON(pkg, SpdxPackageV2_NameTable)
 convert_to_JSON(info::SpdxCreationInfoV2)= convert_to_JSON(info, SpdxCreationInfoV2_NameTable)
 convert_to_JSON(relationship::SpdxRelationshipV2)= convert_to_JSON(relationship, SpdxRelationshipV2_NameTable)
+
+#########################
+function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
+    jsonDoc= convert_to_JSON(doc)
+    open(fname, "w") do f
+        JSON.print(f, jsonDoc, 4)
+    end
+end
