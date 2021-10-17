@@ -65,14 +65,19 @@ function SpdxCreatorV2(CreatorType::String, Name::String; validate= true)
 end
 
 #############################################
+function init_MutableFields(NameTable::Table)
+    MutableIndicies= map(row -> row.Mutable == true, NameTable)
+    MutableFields= OrderedDict{Symbol, Any}(NameTable[MutableIndicies].Symbol .=> deepcopy(NameTable[MutableIndicies].Default))
+    return MutableFields
+end
+
+#############################################
 struct SpdxCreationInfoV2 <: AbstractSpdxData
     MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{<:AbstractSpdx}}}
 end
 
 function SpdxCreationInfoV2()
-    global SpdxCreationInfoV2_NameTable
-    MutableIndicies= map(row -> row.Mutable == true, SpdxCreationInfoV2_NameTable)
-    MutableFields= OrderedDict{Symbol, Any}(SpdxCreationInfoV2_NameTable[MutableIndicies].Symbol .=> deepcopy(SpdxCreationInfoV2_NameTable[MutableIndicies].Default))
+    MutableFields= init_MutableFields(SpdxCreationInfoV2_NameTable)
     return SpdxCreationInfoV2(MutableFields)
 end
 
@@ -85,9 +90,7 @@ struct SpdxDocumentV2 <: AbstractSpdxData
 end
 
 function SpdxDocumentV2()
-    global SpdxDocumentV2_NameTable
-    MutableIndicies= map(row -> row.Mutable == true, SpdxDocumentV2_NameTable)
-    MutableFields= OrderedDict{Symbol, Any}(SpdxDocumentV2_NameTable[MutableIndicies].Symbol .=> deepcopy(SpdxDocumentV2_NameTable[MutableIndicies].Default))
+    MutableFields= init_MutableFields(SpdxDocumentV2_NameTable)
     return SpdxDocumentV2("SPDX-2.2", SpdxSimpleLicenseExpressionV2("CC0-1.0"), "SPDXRef-DOCUMENT", MutableFields)
 end
 
@@ -98,9 +101,7 @@ struct SpdxPackageV2 <: AbstractSpdxData
 end
 
 function SpdxPackageV2(SPDXID::AbstractString)
-    global SpdxPackageV2_NameTable
-    MutableIndicies= map(row -> row.Mutable == true, SpdxPackageV2_NameTable)
-    MutableFields= OrderedDict{Symbol, Any}(SpdxPackageV2_NameTable[MutableIndicies].Symbol .=> deepcopy(SpdxPackageV2_NameTable[MutableIndicies].Default) )
+    MutableFields= init_MutableFields(SpdxPackageV2_NameTable)
     return SpdxPackageV2(SPDXID, MutableFields)
 end
 
@@ -113,9 +114,7 @@ struct SpdxRelationshipV2 <: AbstractSpdxData
 end
 
 function SpdxRelationshipV2(SPDXID::String, RelationshipType::String, RelatedSPDXID::String)
-    global SpdxPackageV2_NameTable
-    MutableIndicies= map(row -> row.Mutable == true, SpdxPackageV2_NameTable)
-    MutableFields= OrderedDict{Symbol, Any}(SpdxPackageV2_NameTable[MutableIndicies].Symbol .=> deepcopy(SpdxPackageV2_NameTable[MutableIndicies].Default) )
+    MutableFields= init_MutableFields(SpdxRelationshipV2_NameTable)
     return SpdxRelationshipV2(SPDXID, RelationshipType, RelatedSPDXID, MutableFields)
 end
 # TODO : Validate the RelationshipType
