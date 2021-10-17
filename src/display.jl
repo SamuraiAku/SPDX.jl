@@ -29,6 +29,11 @@ function _show(io::IO, obj::SpdxSimpleLicenseExpressionV2)
     end
 end
 
+################
+function _show(io::IO, obj::ChecksumV2) 
+    print(io, obj.Algorithm * ": " * obj.Value)
+end
+
 ###################
 function _show(io::IO, obj::PackageExternalReferenceV2)
     print(io, obj.Category * " " * obj.RefType * " " * obj.Locator)
