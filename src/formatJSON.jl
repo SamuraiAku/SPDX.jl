@@ -19,6 +19,8 @@ function convert_to_JSON(doc::AbstractSpdxData, NameTable::Table)
             jsonDoc[NameTable[idx].JSONname]= convert_to_JSON(fieldval)
         end
     end
+
+    compute_additional_JSON_fields!(jsonDoc, doc)
     return jsonDoc
 end
 
@@ -26,6 +28,22 @@ convert_to_JSON(doc::SpdxDocumentV2)= convert_to_JSON(doc, SpdxDocumentV2_NameTa
 convert_to_JSON(pkg::SpdxPackageV2) = convert_to_JSON(pkg, SpdxPackageV2_NameTable)
 convert_to_JSON(info::SpdxCreationInfoV2)= convert_to_JSON(info, SpdxCreationInfoV2_NameTable)
 convert_to_JSON(relationship::SpdxRelationshipV2)= convert_to_JSON(relationship, SpdxRelationshipV2_NameTable)
+
+#########################
+compute_additional_JSON_fields!(jsonDoc, doc)= nothing
+
+# These fields are derived from the document contents
+function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, doc::SpdxDocumentV2)
+    docDescribes= Vector{String}()
+    for element in doc.Relationships
+        if element.RelationshipType == "DESCRIBES" && element.SPDXID == "SPDXRef-DOCUMENT" 
+            push!(docDescribes, element.RelatedSPDXID)
+        elseif element.RelationshipType == "DESCRIBED_BY" && element.RelatedSPDXID == "SPDXRef-DOCUMENT"
+            push!(docDescribes, element.SPDXID)
+        end
+    end
+    jsonDoc["documentDescribes"]= docDescribes
+end
 
 #########################
 function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
