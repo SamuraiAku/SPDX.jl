@@ -30,17 +30,17 @@ function _show(io::IO, obj::SpdxSimpleLicenseExpressionV2)
 end
 
 ################
-function _show(io::IO, obj::ChecksumV2) 
+function _show(io::IO, obj::SpdxChecksumV2) 
     print(io, obj.Algorithm * ": " * obj.Value)
 end
 
 ###################
-function _show(io::IO, obj::PackageExternalReferenceV2)
+function _show(io::IO, obj::SpdxPackageExternalReferenceV2)
     print(io, obj.Category * " " * obj.RefType * " " * obj.Locator)
 end
 
 ###################
-function _show(io::IO, obj::DocumentExternalReferenceV2)
+function _show(io::IO, obj::SpdxDocumentExternalReferenceV2)
     print(io, obj.SPDXID * "  " * obj.Namespace * " " * obj.Checksum)
 end
 

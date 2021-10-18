@@ -15,18 +15,18 @@ SpdxSimpleLicenseExpressionV2(LicenseId::String)= SpdxSimpleLicenseExpressionV2(
 # TODO : Support compound expressions
 
 ######################################
-struct PackageExternalReferenceV2 <: AbstractSpdx
+struct SpdxPackageExternalReferenceV2 <: AbstractSpdx
     Category::String
     RefType::String
     Locator::String
 end
 
 ######################################
-struct ChecksumV2 <: AbstractSpdx
+struct SpdxChecksumV2 <: AbstractSpdx
     Algorithm::String
     Value::String
 
-    function ChecksumV2(Algorithm::String, Value::String)
+    function SpdxChecksumV2(Algorithm::String, Value::String)
         if Algorithm ∉ [ "SHA256", "SHA1", "SHA384", "MD2", "MD4", "SHA512", "MD6", "MD5", "SHA224" ]
             error("Checksum Algorithm is not recognized")
         end
@@ -36,10 +36,10 @@ struct ChecksumV2 <: AbstractSpdx
 end
 
 ######################################
-struct DocumentExternalReferenceV2 <: AbstractSpdx
+struct SpdxDocumentExternalReferenceV2 <: AbstractSpdx
     SPDXID::String
     Namespace::String
-    Checksum::ChecksumV2
+    Checksum::SpdxChecksumV2
 end
 
 ######################################
