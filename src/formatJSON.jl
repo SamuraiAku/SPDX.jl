@@ -47,8 +47,8 @@ end
 
 #########################
 function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
-    jsonDoc= convert_to_JSON(doc)
     open(fname, "w") do f
+        jsonDoc= convert_to_JSON(doc)
         JSON.print(f, jsonDoc, 4)
     end
 end
