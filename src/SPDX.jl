@@ -9,10 +9,10 @@ export AbstractSpdx, AbstractSpdxData, SpdxPackageV2, SpdxSimpleLicenseExpressio
 export SpdxDocumentV2, SpdxCreatorV2, SpdxDocumentExternalReferenceV2, SpdxRelationshipV2, SpdxCreationInfoV2, SpdxChecksumV2
 export printJSON
 
-include("./types.jl")
-include("./tables.jl")
-include("./accessors.jl")
-include("./display.jl")
+include("types.jl")
+include("tables.jl")
+include("accessors.jl")
+include("display.jl")
 include("formatJSON.jl")
 
 # Write your package code here.

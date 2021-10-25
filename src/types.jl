@@ -73,7 +73,7 @@ end
 
 #############################################
 struct SpdxCreationInfoV2 <: AbstractSpdxData
-    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{<:AbstractSpdx}}}
+    MutableFields::OrderedDict{Symbol, Any}
 end
 
 function SpdxCreationInfoV2()
@@ -86,7 +86,7 @@ struct SpdxDocumentV2 <: AbstractSpdxData
     Version::String
     DataLicense::SpdxSimpleLicenseExpressionV2
     SPDXID::String
-    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{<:AbstractSpdx}}}
+    MutableFields::OrderedDict{Symbol, Any}
 end
 
 function SpdxDocumentV2()
@@ -97,7 +97,7 @@ end
 #############################################
 struct SpdxPackageV2 <: AbstractSpdxData
     SPDXID::String
-    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{<:AbstractSpdx}}}
+    MutableFields::OrderedDict{Symbol, Any}
 end
 
 function SpdxPackageV2(SPDXID::AbstractString)
@@ -110,7 +110,7 @@ struct SpdxRelationshipV2 <: AbstractSpdxData
     SPDXID::String
     RelationshipType::String
     RelatedSPDXID::String
-    MutableFields::OrderedDict{Symbol, Union{Missing, String, Vector{String}, AbstractSpdx, Vector{<:AbstractSpdx}}}
+    MutableFields::OrderedDict{Symbol, Any}
 end
 
 function SpdxRelationshipV2(SPDXID::String, RelationshipType::String, RelatedSPDXID::String)
