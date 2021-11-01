@@ -44,11 +44,3 @@ function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, doc:
     end
     jsonDoc["documentDescribes"]= docDescribes
 end
-
-#########################
-function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
-    open(fname, "w") do f
-        jsonDoc= convert_to_JSON(doc)
-        JSON.print(f, jsonDoc, 4)
-    end
-end

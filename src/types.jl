@@ -22,6 +22,19 @@ struct SpdxPackageExternalReferenceV2 <: AbstractSpdx
 end
 
 ######################################
+struct SpdxTimeV2 <: AbstractSpdx
+    Time::ZonedDateTime
+
+    function SpdxTimeV2(Time::ZonedDateTime)
+        return new(astimezone(Time, tz"UTC"))
+    end
+end
+
+function SpdxTimeV2(Time::DateTime)
+    SpdxTimeV2(ZonedDateTime(Time, localzone()))
+end
+
+######################################
 struct SpdxChecksumV2 <: AbstractSpdx
     Algorithm::String
     Value::String

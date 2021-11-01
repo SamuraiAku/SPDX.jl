@@ -53,3 +53,8 @@ end
 function _show(io::IO, obj::SpdxRelationshipV2)
     print(io, obj.SPDXID * "  " * obj.RelationshipType * "  " * obj.RelatedSPDXID)
 end
+
+################
+function _show(io::IO, obj::SpdxTimeV2)
+    print(io, Dates.format(obj.Time, "yyyy-mm-ddTHH:MM:SS") * "Z")
+end
