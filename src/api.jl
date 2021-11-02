@@ -7,10 +7,6 @@ function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
 end
 
 #########################
-function setcreationtime(doc::SpdxDocumentV2, CreationTime::ZonedDateTime= now(localzone()))
-    doc.CreationInfo.Created= SpdxTimeV2(CreationTime)
-end
-
-function setcreationtime(doc::SpdxDocumentV2, CreationTime::DateTime)
+function setcreationtime(doc::SpdxDocumentV2, CreationTime::Union{ZonedDateTime, DateTime}= now(localzone()) )
     doc.CreationInfo.Created= SpdxTimeV2(CreationTime)
 end
