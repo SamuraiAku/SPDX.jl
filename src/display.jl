@@ -58,3 +58,8 @@ end
 function _show(io::IO, obj::SpdxTimeV2)
     print(io, Dates.format(obj.Time, "yyyy-mm-ddTHH:MM:SS") * "Z")
 end
+
+################
+function _show(io::IO, obj::SpdxNamespaceV2)
+    print(io, obj.URI * "-" * obj.UUID)
+end

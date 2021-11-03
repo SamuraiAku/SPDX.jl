@@ -35,6 +35,16 @@ function SpdxTimeV2(Time::DateTime)
 end
 
 ######################################
+struct SpdxNamespaceV2 <: AbstractSpdx
+    URI::String
+    UUID::String
+end
+
+function SpdxNamespaceV2(URI::String)
+    SpdxNamespaceV2(URI, string(uuid4()))
+end
+
+######################################
 struct SpdxChecksumV2 <: AbstractSpdx
     Algorithm::String
     Value::String
