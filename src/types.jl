@@ -83,10 +83,6 @@ struct SpdxCreatorV2 <: AbstractSpdx
     end
 end
 
-function SpdxCreatorV2(CreatorType::String, Name::String; validate= true)
-    SpdxCreatorV2(CreatorType, Name, "", validate= validate)
-end
-
 #############################################
 function init_MutableFields(NameTable::Table)
     MutableIndicies= map(row -> row.Mutable == true, NameTable)

@@ -23,3 +23,16 @@ function updatenamespace!(doc::SpdxDocumentV2)
         setnamespace!(doc, doc.Namespace.URI::String)
     end
 end
+
+#########################
+function addcreator!(doc::SpdxDocumentV2, CreatorType::String, Name::String, Email::String= ""; validate= true)
+    push!(doc.CreationInfo.Creator, SpdxCreatorV2(CreatorType, Name, Email, validate= validate))
+end
+
+function deletecreator!(doc::SpdxDocumentV2, creator::SpdxCreatorV2)
+    filter!(x -> x!= creator, doc.CreationInfo.Creator)
+end
+
+function getcreators(doc::SpdxDocumentV2)
+    return deepcopy(doc.CreationInfo.Creator)
+end
