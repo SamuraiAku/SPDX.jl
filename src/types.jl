@@ -1,6 +1,7 @@
 
 
 abstract type AbstractSpdx end
+abstract type AbstractSpdxElement <: AbstractSpdx end
 abstract type AbstractSpdxData <: AbstractSpdx end
 
 ######################################
@@ -13,13 +14,6 @@ SpdxSimpleLicenseExpressionV2(LicenseId::String)= SpdxSimpleLicenseExpressionV2(
 # TODO : Have the constructor check the LicenseId against the approved list from SPDX group
 # TODO : Support user defined licenses
 # TODO : Support compound expressions
-
-######################################
-struct SpdxPackageExternalReferenceV2 <: AbstractSpdx
-    Category::String
-    RefType::String
-    Locator::String
-end
 
 ######################################
 struct SpdxTimeV2 <: AbstractSpdx
@@ -44,26 +38,6 @@ function SpdxNamespaceV2(URI::String)
     SpdxNamespaceV2(URI, string(uuid4()))
 end
 
-######################################
-struct SpdxChecksumV2 <: AbstractSpdx
-    Algorithm::String
-    Value::String
-
-    function SpdxChecksumV2(Algorithm::String, Value::String)
-        if Algorithm ∉ [ "SHA256", "SHA1", "SHA384", "MD2", "MD4", "SHA512", "MD6", "MD5", "SHA224" ]
-            error("Checksum Algorithm is not recognized")
-        end
-        # TODO: verify that the value is the correct length for the specified algorithm and are all hex values
-        return new(Algorithm, Value)
-    end
-end
-
-######################################
-struct SpdxDocumentExternalReferenceV2 <: AbstractSpdx
-    SPDXID::String
-    Namespace::String
-    Checksum::SpdxChecksumV2
-end
 
 ######################################
 struct SpdxCreatorV2 <: AbstractSpdx
@@ -81,6 +55,35 @@ struct SpdxCreatorV2 <: AbstractSpdx
 
         new(CreatorType, Name, Email)
     end
+end
+
+######################################
+struct SpdxChecksumV2 <: AbstractSpdxElement
+    Algorithm::String
+    Value::String
+
+    function SpdxChecksumV2(Algorithm::String, Value::String)
+        if Algorithm ∉ [ "SHA256", "SHA1", "SHA384", "MD2", "MD4", "SHA512", "MD6", "MD5", "SHA224" ]
+            error("Checksum Algorithm is not recognized")
+        end
+        # TODO: verify that the value is the correct length for the specified algorithm and are all hex values
+        return new(Algorithm, Value)
+    end
+end
+
+######################################
+struct SpdxDocumentExternalReferenceV2 <: AbstractSpdxElement
+    SPDXID::String
+    Namespace::String
+    Checksum::SpdxChecksumV2
+end
+
+######################################
+struct SpdxPackageExternalReferenceV2 <: AbstractSpdxElement
+    Category::String
+    RefType::String
+    Locator::String
+    Comment::String
 end
 
 #############################################

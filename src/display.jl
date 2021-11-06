@@ -37,11 +37,12 @@ end
 ###################
 function _show(io::IO, obj::SpdxPackageExternalReferenceV2)
     print(io, obj.Category * " " * obj.RefType * " " * obj.Locator)
+    isempty(obj.Comment) || print(io, "\n" * obj.Comment)
 end
 
 ###################
 function _show(io::IO, obj::SpdxDocumentExternalReferenceV2)
-    print(io, obj.SPDXID * "  " * obj.Namespace * " " * obj.Checksum)
+    print(io, obj.SPDXID * "  " * obj.Namespace * " " * string(obj.Checksum))
 end
 
 ################

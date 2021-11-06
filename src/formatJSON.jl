@@ -2,7 +2,7 @@
 convert_to_JSON(dataElement::AbstractSpdx)= string(dataElement)  # Default
 convert_to_JSON(stringElement::String)= stringElement
 
-function convert_to_JSON(doc::AbstractSpdxData, NameTable::Table)
+function convert_to_JSON(doc::Union{AbstractSpdxData, AbstractSpdxElement}, NameTable::Table)
     jsonDoc= OrderedDict{String, Any}()
     for idx in range(1,length= length(NameTable))
         fieldval= getproperty(doc, NameTable[idx].Symbol)
@@ -28,6 +28,9 @@ convert_to_JSON(doc::SpdxDocumentV2)= convert_to_JSON(doc, SpdxDocumentV2_NameTa
 convert_to_JSON(pkg::SpdxPackageV2) = convert_to_JSON(pkg, SpdxPackageV2_NameTable)
 convert_to_JSON(info::SpdxCreationInfoV2)= convert_to_JSON(info, SpdxCreationInfoV2_NameTable)
 convert_to_JSON(relationship::SpdxRelationshipV2)= convert_to_JSON(relationship, SpdxRelationshipV2_NameTable)
+convert_to_JSON(pkgExtRef::SpdxPackageExternalReferenceV2)= convert_to_JSON(pkgExtRef, SpdxPackageExternalReferenceV2_NameTable)
+convert_to_JSON(docExtRef::SpdxDocumentExternalReferenceV2)= convert_to_JSON(docExtRef, SpdxDocumentExternalReferenceV2_NameTable)
+convert_to_JSON(checksum::SpdxChecksumV2)= convert_to_JSON(checksum, SpdxChecksumV2_NameTable)
 
 #########################
 compute_additional_JSON_fields!(jsonDoc, doc)= nothing
