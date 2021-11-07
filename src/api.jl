@@ -7,6 +7,15 @@ function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
 end
 
 #########################
+function printTagValue(doc::SpdxDocumentV2, fname::AbstractString)
+    TagValueDoc= IOBuffer()
+    open(fname, "w") do f
+        convert_to_TagValue!(TagValueDoc, doc)
+        write(f, take!(TagValueDoc))
+    end
+end
+
+#########################
 function setcreationtime!(doc::SpdxDocumentV2, CreationTime::Union{ZonedDateTime, DateTime}= now(localzone()) )
     doc.CreationInfo.Created= SpdxTimeV2(CreationTime)
 end

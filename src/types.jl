@@ -87,6 +87,15 @@ struct SpdxPackageExternalReferenceV2 <: AbstractSpdxElement
 end
 
 #############################################
+struct SpdxRelationshipV2 <: AbstractSpdxElement
+    SPDXID::String
+    RelationshipType::String
+    RelatedSPDXID::String
+end
+# TODO : Validate the RelationshipType
+# TODO : Check if the IDs are present when added to a Document
+
+#############################################
 function init_MutableFields(NameTable::Table)
     MutableIndicies= map(row -> row.Mutable == true, NameTable)
     MutableFields= OrderedDict{Symbol, Any}(NameTable[MutableIndicies].Symbol .=> deepcopy(NameTable[MutableIndicies].Default))
@@ -126,18 +135,3 @@ function SpdxPackageV2(SPDXID::AbstractString)
     MutableFields= init_MutableFields(SpdxPackageV2_NameTable)
     return SpdxPackageV2(SPDXID, MutableFields)
 end
-
-#############################################
-struct SpdxRelationshipV2 <: AbstractSpdxData
-    SPDXID::String
-    RelationshipType::String
-    RelatedSPDXID::String
-    MutableFields::OrderedDict{Symbol, Any}
-end
-
-function SpdxRelationshipV2(SPDXID::String, RelationshipType::String, RelatedSPDXID::String)
-    MutableFields= init_MutableFields(SpdxRelationshipV2_NameTable)
-    return SpdxRelationshipV2(SPDXID, RelationshipType, RelatedSPDXID, MutableFields)
-end
-# TODO : Validate the RelationshipType
-# TODO : Check if the IDs are present when added to a Document
