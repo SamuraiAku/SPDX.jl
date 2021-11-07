@@ -3,6 +3,19 @@
 convert_to_TagValue!(TagValueDoc::IOBuffer, dataElement::Union{AbstractSpdx, AbstractSpdxElement})= write(TagValueDoc, string(dataElement) * "\n")  # Default
 convert_to_TagValue!(TagValueDoc::IOBuffer, stringElement::String)= write(TagValueDoc, stringElement * "\n")
 
+function write_TagValue(TagValueDoc::IOBuffer, element, TableColumn::NamedTuple)
+    if TableColumn.TagValueName !== nothing
+        write(TagValueDoc, TableColumn.TagValueName * ":  ")
+        if TableColumn.Multiline == true
+            write(TagValueDoc, "<text>")
+        end
+    end
+    convert_to_TagValue!(TagValueDoc, element)
+    if TableColumn.Multiline == true
+        write(TagValueDoc, "    </text>\n")
+    end
+end
+
 function convert_to_TagValue!(TagValueDoc::IOBuffer, doc::AbstractSpdxData, NameTable::Table)
     for idx in range(1,length= length(NameTable))
         fieldval= getproperty(doc, NameTable[idx].Symbol)
@@ -11,28 +24,10 @@ function convert_to_TagValue!(TagValueDoc::IOBuffer, doc::AbstractSpdxData, Name
 
         if isa(fieldval, Vector)
             for element in fieldval
-                if NameTable[idx].TagValueName !== nothing
-                    write(TagValueDoc, NameTable[idx].TagValueName * ":  ")
-                    if NameTable[idx].Multiline == true
-                        write(TagValueDoc, "<text>")
-                    end
-                end
-                convert_to_TagValue!(TagValueDoc, element)
-                if NameTable[idx].Multiline == true
-                    write(TagValueDoc, "    </text>\n")
-                end
+                write_TagValue(TagValueDoc, element, NameTable[idx])
             end
         else
-            if NameTable[idx].TagValueName !== nothing
-                write(TagValueDoc, NameTable[idx].TagValueName * ":  ")
-                if NameTable[idx].Multiline == true
-                    write(TagValueDoc, "<text>")
-                end
-            end
-            convert_to_TagValue!(TagValueDoc, fieldval)
-            if NameTable[idx].Multiline == true
-                write(TagValueDoc, "    </text>\n")
-            end
+            write_TagValue(TagValueDoc, fieldval, NameTable[idx])
         end
     end
     write(TagValueDoc, "\n\n####\n")

@@ -13,6 +13,7 @@ function printTagValue(doc::SpdxDocumentV2, fname::AbstractString)
         convert_to_TagValue!(TagValueDoc, doc)
         write(f, take!(TagValueDoc))
     end
+    return nothing
 end
 
 #########################
