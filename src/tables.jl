@@ -13,6 +13,7 @@ const SpdxPackageExternalReferenceV2_NameTable= Table(
         Mutable= [  false,                 false,               false,                false],
       Multiline= [  false,                 false,               false,                true],
        JSONname= [ "referenceCategory",    "referenceType",     "referenceLocator",   "comment"],
+   TagValueName= [  nothing,               nothing,              nothing,             "ExternalRefComment"]
 )
 
 const SpdxChecksumV2_NameTable= Table(
@@ -41,11 +42,12 @@ const SpdxCreationInfoV2_NameTable= Table(
 )
 
 const SpdxRelationshipV2_NameTable= Table(
-     Symbol= [ :SPDXID,          :RelationshipType,    :RelatedSPDXID],
-    Default= [  nothing,          nothing,              nothing],
-    Mutable= [  false,            false,                false],
-  Multiline= [  false,            false,                false],
-   JSONname= [  "spdxElementId",  "relationshipType",   "relatedSpdxElement"]
+         Symbol= [ :SPDXID,          :RelationshipType,    :RelatedSPDXID,         :Comment],
+        Default= [  nothing,          nothing,              nothing,                nothing],
+        Mutable= [  false,            false,                false,                  false],
+      Multiline= [  false,            false,                false,                  true],
+       JSONname= [  "spdxElementId",  "relationshipType",   "relatedSpdxElement",   "comment"],
+   TagValueName= [  nothing,          nothing,              nothing,                "RelationshipComment"]
 )
 
 const SpdxDocumentV2_NameTable= Table(

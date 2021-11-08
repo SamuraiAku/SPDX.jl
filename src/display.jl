@@ -37,7 +37,7 @@ end
 ###################
 function _show(io::IO, obj::SpdxPackageExternalReferenceV2)
     print(io, obj.Category * " " * obj.RefType * " " * obj.Locator)
-    isempty(obj.Comment) || print(io, "\n" * obj.Comment)
+    ismissing(obj.Comment) || print(io, "\n" * obj.Comment)
 end
 
 ###################
@@ -53,6 +53,7 @@ end
 ################
 function _show(io::IO, obj::SpdxRelationshipV2)
     print(io, obj.SPDXID * "  " * obj.RelationshipType * "  " * obj.RelatedSPDXID)
+    ismissing(obj.Comment) || print(io, "\n" * obj.Comment)
 end
 
 ################

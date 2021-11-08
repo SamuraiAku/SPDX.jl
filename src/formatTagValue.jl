@@ -3,7 +3,7 @@
 convert_to_TagValue!(TagValueDoc::IOBuffer, dataElement::Union{AbstractSpdx, AbstractSpdxElement})= write(TagValueDoc, string(dataElement) * "\n")  # Default
 convert_to_TagValue!(TagValueDoc::IOBuffer, stringElement::String)= write(TagValueDoc, stringElement * "\n")
 
-function write_TagValue(TagValueDoc::IOBuffer, element, TableColumn::NamedTuple)
+function write_TagValue!(TagValueDoc::IOBuffer, element, TableColumn::NamedTuple)
     if TableColumn.TagValueName !== nothing
         write(TagValueDoc, TableColumn.TagValueName * ":  ")
         if TableColumn.Multiline == true
@@ -24,10 +24,10 @@ function convert_to_TagValue!(TagValueDoc::IOBuffer, doc::AbstractSpdxData, Name
 
         if isa(fieldval, Vector)
             for element in fieldval
-                write_TagValue(TagValueDoc, element, NameTable[idx])
+                write_TagValue!(TagValueDoc, element, NameTable[idx])
             end
         else
-            write_TagValue(TagValueDoc, fieldval, NameTable[idx])
+            write_TagValue!(TagValueDoc, fieldval, NameTable[idx])
         end
     end
     write(TagValueDoc, "\n\n####\n")
@@ -40,5 +40,10 @@ convert_to_TagValue!(TagValueDoc::IOBuffer, info::SpdxCreationInfoV2)= convert_t
 
 function convert_to_TagValue!(TagValueDoc::IOBuffer, PkgRef::SpdxPackageExternalReferenceV2)
     write(TagValueDoc, PkgRef.Category * " " * PkgRef.RefType * " " * PkgRef.Locator * "\n")
-    isempty(PkgRef.Comment) || write(TagValueDoc, "ExternalRefComment:  " * PkgRef.Comment * "\n")
+    ismissing(PkgRef.Comment) || write_TagValue!(TagValueDoc, PkgRef.Comment, SpdxPackageExternalReferenceV2_NameTable[4])
+end
+
+function convert_to_TagValue!(TagValueDoc::IOBuffer, relationship::SpdxRelationshipV2)
+    write(TagValueDoc, relationship.SPDXID * "  " * relationship.RelationshipType * "  " * relationship.RelatedSPDXID * "\n")
+    ismissing(relationship.Comment) || write_TagValue!(TagValueDoc, relationship.Comment, SpdxRelationshipV2_NameTable[4])
 end

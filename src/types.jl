@@ -83,7 +83,11 @@ struct SpdxPackageExternalReferenceV2 <: AbstractSpdxElement
     Category::String
     RefType::String
     Locator::String
-    Comment::String
+    Comment::Union{String, Missing}
+end
+
+function SpdxPackageExternalReferenceV2(Category::String, RefType::String, Locator::String)
+    return SpdxPackageExternalReferenceV2(Category, RefType, Locator, missing)
 end
 
 #############################################
@@ -91,6 +95,11 @@ struct SpdxRelationshipV2 <: AbstractSpdxElement
     SPDXID::String
     RelationshipType::String
     RelatedSPDXID::String
+    Comment::Union{String, Missing}
+end
+
+function SpdxRelationshipV2(SPDXID::String, RelationshipType::String, RelatedSPDXID::String)
+    return SpdxRelationshipV2(SPDXID, RelationshipType, RelatedSPDXID, missing)
 end
 # TODO : Validate the RelationshipType
 # TODO : Check if the IDs are present when added to a Document
