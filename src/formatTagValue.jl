@@ -3,7 +3,7 @@
 convert_to_TagValue!(TagValueDoc::IOBuffer, dataElement::Union{AbstractSpdx, AbstractSpdxElement})= write(TagValueDoc, string(dataElement) * "\n")  # Default
 convert_to_TagValue!(TagValueDoc::IOBuffer, stringElement::String)= write(TagValueDoc, stringElement * "\n")
 
-function write_TagValue!(TagValueDoc::IOBuffer, element, TagValueName, Multiline)
+function write_TagValue!(TagValueDoc::IOBuffer, element, TagValueName::Union{Nothing, String}, Multiline::Bool)
     if TagValueName !== nothing
         write(TagValueDoc, string(TagValueName) * ":  ")
         if Multiline == true
@@ -11,7 +11,7 @@ function write_TagValue!(TagValueDoc::IOBuffer, element, TagValueName, Multiline
         end
     end
     convert_to_TagValue!(TagValueDoc, element)
-    if Multiline == true
+    if (TagValueName !== nothing) && (Multiline == true)
         write(TagValueDoc, "    </text>\n")
     end
 end
@@ -31,6 +31,7 @@ function convert_to_TagValue!(TagValueDoc::IOBuffer, doc::AbstractSpdxData, Name
         end
     end
     write(TagValueDoc, "\n\n####\n")
+    return nothing
 end
 
 convert_to_TagValue!(TagValueDoc::IOBuffer, doc::SpdxDocumentV2)= convert_to_TagValue!(TagValueDoc, doc, SpdxDocumentV2_NameTable)
