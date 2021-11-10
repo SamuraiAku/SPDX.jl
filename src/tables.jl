@@ -18,16 +18,12 @@ const SpdxPackageExternalReferenceV2_NameTable= Table(
 
 const SpdxChecksumV2_NameTable= Table(
          Symbol= [ :Algorithm,   :Value          ],
-        Default= [  nothing,      nothing        ],
-        Mutable= [  false,        false          ],
       Multiline= [  false,        false          ],
        JSONname= [ "algorithm",   "checksumValue"],
 )
 
 const SpdxDocumentExternalReferenceV2_NameTable= Table(
          Symbol= [ :SPDXID,              :Namespace,      :Checksum,   ],
-        Default= [  nothing,              nothing,         nothing,    ],
-        Mutable= [  false,                false,           false,      ],
       Multiline= [  false,                false,           false,      ],
        JSONname= [ "externalDocumentId",  "spdxDocument",  "checksum", ],
 )
@@ -43,8 +39,6 @@ const SpdxCreationInfoV2_NameTable= Table(
 
 const SpdxRelationshipV2_NameTable= Table(
          Symbol= [ :SPDXID,          :RelationshipType,    :RelatedSPDXID,         :Comment],
-        Default= [  nothing,          nothing,              nothing,                nothing],
-        Mutable= [  false,            false,                false,                  false],
       Multiline= [  false,            false,                false,                  true],
        JSONname= [  "spdxElementId",  "relationshipType",   "relatedSpdxElement",   "comment"],
    TagValueName= [  nothing,          nothing,              nothing,                "RelationshipComment"]
