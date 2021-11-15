@@ -108,8 +108,8 @@ end
 
 #############################################
 function init_MutableFields(NameTable::Table)
-    MutableIndicies= map(row -> row.Mutable == true, NameTable)
-    MutableFields= OrderedDict{Symbol, Any}(NameTable[MutableIndicies].Symbol .=> deepcopy(NameTable[MutableIndicies].Default))
+    MutableIndicies= map(row -> row == true, NameTable.Mutable)
+    MutableFields= OrderedDict{Symbol, Any}(NameTable.Symbol[MutableIndicies] .=> deepcopy(NameTable.Default[MutableIndicies]))
     return MutableFields
 end
 
