@@ -45,10 +45,11 @@ const SpdxRelationshipV2_NameTable= Table(
 )
 
 const SpdxDocumentV2_NameTable= Table(
-         Symbol= [ :Version,       :DataLicense,    :SPDXID,    :Name,           :Namespace,           :ExternalReferences,                         :CreationInfo,         :DocumentComment,   :Packages,                 :Relationships],
-        Default= [  nothing,        nothing,         nothing,    missing,         missing,              Vector{SpdxDocumentExternalReferenceV2}(),   SpdxCreationInfoV2(),  missing,            Vector{SpdxPackageV2}(),   Vector{SpdxRelationshipV2}()],
-        Mutable= [  false,          false,           false,      true,            true,                 true,                                        true,                  true,               true,                      true],
-      Multiline= [  false,          false,           false,      false,           false,                false,                                       false,                 true,               false,                     false],
-       JSONname= [  "spdxVersion",  "dataLicense",   "SPDXID",   "name",          "documentNamespace",  "externalDocumentRefs",                      "creationInfo",        "comment",          "packages",                "relationships"],
-   TagValueName= [  "SPDXVersion",  "DataLicense",   "SPDXID",   "DocumentName",  "DocumentNamespace",  "ExternalDocumentRef",                       nothing,               "DocumentComment",  nothing,                   "Relationship"] 
+         Symbol= [ :Version,       :DataLicense,                    :SPDXID,    :Name,           :Namespace,           :ExternalReferences,                         :CreationInfo,         :DocumentComment,   :Packages,                 :Relationships],
+        Default= [  nothing,        nothing,                         nothing,    missing,         missing,              Vector{SpdxDocumentExternalReferenceV2}(),   SpdxCreationInfoV2(),  missing,            Vector{SpdxPackageV2}(),   Vector{SpdxRelationshipV2}()],
+    Constructor= [  string,         SpdxSimpleLicenseExpressionV2,   string,     string,          string,               string,                                      string,                string,             string,                    string ],
+        Mutable= [  false,          false,                           false,      true,            true,                 true,                                        true,                  true,               true,                      true],
+      Multiline= [  false,          false,                           false,      false,           false,                false,                                       false,                 true,               false,                     false],
+       JSONname= [  "spdxVersion",  "dataLicense",                   "SPDXID",   "name",          "documentNamespace",  "externalDocumentRefs",                      "creationInfo",        "comment",          "packages",                "relationships"],
+   TagValueName= [  "SPDXVersion",  "DataLicense",                   "SPDXID",   "DocumentName",  "DocumentNamespace",  "ExternalDocumentRef",                       nothing,               "DocumentComment",  nothing,                   "Relationship"] 
 )

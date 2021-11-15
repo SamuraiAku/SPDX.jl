@@ -3,6 +3,7 @@
 abstract type AbstractSpdx end
 abstract type AbstractSpdxElement <: AbstractSpdx end
 abstract type AbstractSpdxData <: AbstractSpdx end
+abstract type AbstractSpdxFile <: AbstractSpdx end
 
 ######################################
 struct SpdxSimpleLicenseExpressionV2 <: AbstractSpdx
@@ -11,6 +12,7 @@ struct SpdxSimpleLicenseExpressionV2 <: AbstractSpdx
 end
 
 SpdxSimpleLicenseExpressionV2(LicenseId::String)= SpdxSimpleLicenseExpressionV2(LicenseId, nothing)
+# TODO : Parse the string so that we can populate both fields from a single string
 # TODO : Have the constructor check the LicenseId against the approved list from SPDX group
 # TODO : Support user defined licenses
 # TODO : Support compound expressions
@@ -134,6 +136,11 @@ function SpdxDocumentV2()
     return SpdxDocumentV2("SPDX-2.2", SpdxSimpleLicenseExpressionV2("CC0-1.0"), "SPDXRef-DOCUMENT", MutableFields)
 end
 
+function SpdxDocumentV2(Version::String, DataLicense::SpdxSimpleLicenseExpressionV2, SPDXID::String)
+    MutableFields= init_MutableFields(SpdxDocumentV2_NameTable)
+    return SpdxDocumentV2(Version, DataLicense, SPDXID, MutableFields)
+end
+
 #############################################
 struct SpdxPackageV2 <: AbstractSpdxData
     SPDXID::String
@@ -143,4 +150,9 @@ end
 function SpdxPackageV2(SPDXID::AbstractString)
     MutableFields= init_MutableFields(SpdxPackageV2_NameTable)
     return SpdxPackageV2(SPDXID, MutableFields)
+end
+
+#############################################
+struct SpdxJsonFile <: AbstractSpdxFile
+    Data::Dict{Any, Any}
 end

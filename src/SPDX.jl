@@ -14,6 +14,7 @@ export printJSON, setcreationtime!, SpdxTimeV2, setnamespace!, updatenamespace!
 export addcreator!, getcreators, deletecreator!, printTagValue
 
 include("types.jl")
+include("parsers.jl")
 include("tables.jl")
 include("accessors.jl")
 include("display.jl")
