@@ -42,7 +42,7 @@ end
 
 ###################
 function _show(io::IO, obj::SpdxDocumentExternalReferenceV2)
-    print(io, obj.SPDXID * "  " * obj.Namespace * " " * string(obj.Checksum))
+    print(io, obj.SPDXID * "  " * string(obj.Namespace) * " " * string(obj.Checksum))
 end
 
 ################

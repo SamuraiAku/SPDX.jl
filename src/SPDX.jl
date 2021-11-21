@@ -8,18 +8,18 @@ using Dates
 using UUIDs
 using TimeZones
 
-export AbstractSpdx, AbstractSpdxData, SpdxPackageV2, SpdxSimpleLicenseExpressionV2, SpdxPackageExternalReferenceV2
+export AbstractSpdx, AbstractSpdxData, SpdxPackageV2, SpdxSimpleLicenseExpressionV2, SpdxPackageExternalReferenceV2, SpdxNamespaceV2
 export SpdxDocumentV2, SpdxCreatorV2, SpdxDocumentExternalReferenceV2, SpdxRelationshipV2, SpdxCreationInfoV2, SpdxChecksumV2
 export printJSON, setcreationtime!, SpdxTimeV2, setnamespace!, updatenamespace!
-export addcreator!, getcreators, deletecreator!, printTagValue
+export addcreator!, getcreators, deletecreator!, printTagValue, readJSON
 
 include("types.jl")
-include("parsers.jl")
 include("tables.jl")
 include("accessors.jl")
 include("display.jl")
 include("formatJSON.jl")
 include("formatTagValue.jl")
+include("readJSON.jl")
 include("api.jl")
 
 # Write your package code here.

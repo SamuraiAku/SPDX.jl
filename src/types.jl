@@ -30,6 +30,11 @@ function SpdxTimeV2(Time::DateTime)
     SpdxTimeV2(ZonedDateTime(Time, localzone()))
 end
 
+function SpdxTimeV2(Time::String)
+    #TODO !!!!!  Actually parse the string
+    SpdxTimeV2(now())
+end
+
 ######################################
 struct SpdxNamespaceV2 <: AbstractSpdx
     URI::String
@@ -59,6 +64,11 @@ struct SpdxCreatorV2 <: AbstractSpdx
     end
 end
 
+function SpdxCreatorV2(Creator::String)
+    #TODO !!!!!  Actually parse the string
+    SpdxCreatorV2(Creator, "", ""; validate= false)
+end
+
 ######################################
 struct SpdxChecksumV2 <: AbstractSpdxElement
     Algorithm::String
@@ -73,10 +83,12 @@ struct SpdxChecksumV2 <: AbstractSpdxElement
     end
 end
 
+SpdxChecksumV2(JSONfile::Dict{String, Any})= SpdxChecksumV2(JSONfile["algorithm"], JSONfile["checksumValue"])
+
 ######################################
 struct SpdxDocumentExternalReferenceV2 <: AbstractSpdxElement
     SPDXID::String
-    Namespace::String
+    Namespace::SpdxNamespaceV2
     Checksum::SpdxChecksumV2
 end
 

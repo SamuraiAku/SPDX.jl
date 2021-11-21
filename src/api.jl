@@ -17,6 +17,13 @@ function printTagValue(doc::SpdxDocumentV2, fname::AbstractString)
 end
 
 #########################
+function readJSON(fname::AbstractString)
+    JSONfile= JSON.parsefile(fname)
+    doc= convert_from_JSON(JSONfile, SpdxDocumentV2_NameTable, SpdxDocumentV2)
+    return doc
+end
+
+#########################
 function setcreationtime!(doc::SpdxDocumentV2, CreationTime::Union{ZonedDateTime, DateTime}= now(localzone()) )
     doc.CreationInfo.Created= SpdxTimeV2(CreationTime)
 end

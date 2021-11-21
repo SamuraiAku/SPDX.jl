@@ -17,6 +17,7 @@ const SpdxChecksumV2_NameTable= Table(
 
 const SpdxDocumentExternalReferenceV2_NameTable= Table(
          Symbol= [ :SPDXID,              :Namespace,       :Checksum,   ],
+        Mutable= [  false,                false,            false],
     Constructor= [  string,               SpdxNamespaceV2,  SpdxChecksumV2],
       Multiline= [  false,                false,            false,      ],
        JSONname= [ "externalDocumentId",  "spdxDocument",   "checksum", ],
@@ -27,6 +28,7 @@ const SpdxCreationInfoV2_NameTable= Table(
         Default= [  missing,               Vector{SpdxCreatorV2}(),  missing,      missing],
         Mutable= [  true,                  true,                     true,         true], 
     Constructor= [  string,                SpdxCreatorV2,            SpdxTimeV2,   string],
+      NameTable= [  nothing,               nothing,                  nothing,      nothing],    
       Multiline= [  false,                 false,                    false,        true],
        JSONname= [ "licenseListVersion",   "creators",               "created",    "comment"],
    TagValueName= [ "LicenseListVersion",   "Creator",                "Created",    "CreatorComment"],
@@ -34,6 +36,7 @@ const SpdxCreationInfoV2_NameTable= Table(
 
 const SpdxRelationshipV2_NameTable= Table(
          Symbol= [ :SPDXID,          :RelationshipType,    :RelatedSPDXID,         :Comment],
+        Mutable= [  false,            false,                false,                  false], 
     Constructor= [  string,           string,               string,                 string],
       Multiline= [  false,            false,                false,                  true],
        JSONname= [  "spdxElementId",  "relationshipType",   "relatedSpdxElement",   "comment"],
