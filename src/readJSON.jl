@@ -4,10 +4,10 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
     ImmutableIndicies= map(value -> value == false, NameTable.Mutable) # Replace with findall? 
     paramnames= NameTable.JSONname[ImmutableIndicies]
     ImmutableParameters= Vector{Any}(missing, length(paramnames))
-    JSONfile= DefaultDict(missing, JSONfile) # In case an optional key, usually "comment", is missing
     for idx in 1:length(paramnames)
-        paramstring= JSONfile[paramnames[idx]]
-        ImmutableParameters[idx]= NameTable.Constructor[idx](paramstring)
+        if haskey(JSONfile, paramnames[idx]) 
+            ImmutableParameters[idx]=  NameTable.Constructor[idx](JSONfile[paramnames[idx]])
+        end
     end
     constructorparams= Tuple(ImmutableParameters)
     obj= constructor(constructorparams...)
