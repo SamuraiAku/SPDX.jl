@@ -31,8 +31,13 @@ function SpdxTimeV2(Time::DateTime)
 end
 
 function SpdxTimeV2(Time::String)
-    #TODO !!!!!  Actually parse the string
-    SpdxTimeV2(now())
+    spdxTimeFormat= TimeZones.dateformat"yyyy-mm-ddTHH:MM:SSZ"  # The 'Z' at the end is a format code for Time Zone 
+    if Time[end] == 'Z'
+        Time= Time[1:end-1] * "UTC"
+    else
+        println("WARNING: SPDX creation date may not match the specification")
+    end
+    return SpdxTimeV2(ZonedDateTime(Time, spdxTimeFormat))
 end
 
 ######################################
