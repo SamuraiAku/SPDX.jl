@@ -88,9 +88,28 @@ struct SpdxCreatorV2 <: AbstractSpdx
     end
 end
 
-function SpdxCreatorV2(Creator::String)
-    #TODO !!!!!  Actually parse the string
-    SpdxCreatorV2(Creator, "", ""; validate= false)
+function SpdxCreatorV2(Creator::AbstractString)
+    regex_full= r"^\s*(?<Type>Person|Organization|Tool):\s*(?<Name>[[:alnum:]]{1}[[:print:]]*)?(\((?<Email>[[:print:]]*)\))"i  # Case-insensitive search, fails if email parenthesis not present (fix this)
+    regex_noemail= r"^\s*(?<Type>Person|Organization|Tool):\s*(?<Name>[[:alnum:]]{1}[[:print:]]*)?"i  # In case first one fails because no email parenthesis is present
+
+    match_creator= match(regex_full, Creator)
+    if match_creator !== nothing
+        c_type=  isnothing(match_creator[:Type])  ? "" : titlecase(match_creator[:Type])
+        c_name=  isnothing(match_creator[:Name])  ? "" : string(rstrip(match_creator[:Name]))
+        c_email= isnothing(match_creator[:Email]) ? "" : string(match_creator[:Email])
+        obj= SpdxCreatorV2(c_type, c_name, c_email ; validate= false)
+    else
+        match_creator= match(regex_noemail, Creator)
+        if match_creator !== nothing
+            c_type=  isnothing(match_creator[:Type])  ? "" : titlecase(match_creator[:Type])
+            c_name=  isnothing(match_creator[:Name])  ? "" : string(rstrip(match_creator[:Name]))
+            obj= SpdxCreatorV2(c_type, c_name, "" ; validate= false)
+        else
+            obj= SpdxCreatorV2("", string(lstrip(rstrip(Creator))), ""; validate= false)
+        end
+    end
+
+    return obj
 end
 
 ######################################
