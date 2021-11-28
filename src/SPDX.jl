@@ -10,7 +10,7 @@ using TimeZones
 
 export AbstractSpdx, AbstractSpdxData, SpdxPackageV2, SpdxSimpleLicenseExpressionV2, SpdxPackageExternalReferenceV2, SpdxNamespaceV2
 export SpdxDocumentV2, SpdxCreatorV2, SpdxDocumentExternalReferenceV2, SpdxRelationshipV2, SpdxCreationInfoV2, SpdxChecksumV2
-export printJSON, setcreationtime!, SpdxTimeV2, setnamespace!, updatenamespace!
+export printJSON, setcreationtime!, SpdxTimeV2, createnamespace!, updatenamespace!
 export addcreator!, getcreators, deletecreator!, printTagValue, readJSON
 
 include("types.jl")

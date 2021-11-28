@@ -63,5 +63,6 @@ end
 
 ################
 function _show(io::IO, obj::SpdxNamespaceV2)
-    print(io, obj.URI * "-" * obj.UUID)
+    print(io, obj.URI)
+    obj.UUID !== nothing && print(io, "-" * obj.UUID)
 end

@@ -29,15 +29,17 @@ function setcreationtime!(doc::SpdxDocumentV2, CreationTime::Union{ZonedDateTime
 end
 
 #########################
-function setnamespace!(doc::SpdxDocumentV2, URI::String)
-    doc.Namespace= SpdxNamespaceV2(URI)
+function createnamespace!(doc::SpdxDocumentV2, URI::String)
+    doc.Namespace= SpdxNamespaceV2(URI, string(uuid4()) )
 end
 
 function updatenamespace!(doc::SpdxDocumentV2)
     if doc.Namespace === missing
-        error("Namespace is not set.  Please use setnamespace!()")
+        error("Namespace is not set.  Please use createnamespace!()")
+    elseif doc.Namespace.UUID === nothing
+        error("UUID not set in namespace. Unable to update")
     else
-        setnamespace!(doc, doc.Namespace.URI::String)
+        createnamespace!(doc, doc.Namespace.URI)
     end
 end
 

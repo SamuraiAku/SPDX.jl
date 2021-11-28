@@ -43,11 +43,30 @@ end
 ######################################
 struct SpdxNamespaceV2 <: AbstractSpdx
     URI::String
-    UUID::String
+    UUID::Union{String, Nothing}
 end
 
-function SpdxNamespaceV2(URI::String)
-    SpdxNamespaceV2(URI, string(uuid4()))
+function SpdxNamespaceV2(Namespace::String)
+    # The URL search is taken from Appendix B of RFC 3986, parts 1-5
+    uri_regex= r"(?<URL>^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*))"
+    best_practice_regex= r"(?<URL>^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*))-(?<UUID>[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12})"
+    
+    # Assume that nearly every SPDX document out there will follow best practices from the SPDX specification for forming a namespace
+    match_namespace= match(best_practice_regex, Namespace)
+    if match_namespace !== nothing
+        obj= SpdxNamespaceV2(match_namespace[:URL], match_namespace[:UUID])
+    else
+        match_namespace= match(uri_regex, Namespace)
+        println("WARNING: Namespace format does not follow SPDX recommended best practices")
+        for idx in 2:6
+            if match_namespace[idx] === nothing
+                println("ERROR: Namespace format is not a valid URI")
+                break;
+            end
+        end
+        obj= SpdxNamespaceV2(match_namespace[:URL], nothing)
+    end
+    return obj
 end
 
 
