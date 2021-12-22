@@ -129,6 +129,45 @@ end
 SpdxChecksumV2(JSONfile::Dict{String, Any})= SpdxChecksumV2(JSONfile["algorithm"], JSONfile["checksumValue"])
 
 ######################################
+struct SpdxPkgVerificationCodeV2 <: AbstractSpdxElement
+    Hash::String
+    ExcludedFiles::Union{Vector{String}, Missing}
+end
+
+function SpdxPkgVerificationCodeV2(VerifCodeString::AbstractString)
+    regex_findhash=  r"^\s*(?<Hash>[[:xdigit:]]{40})(?<PostHash>[[:print:]]*)$"i  # Find 40 digit hash + anything after that
+    regex_findexclusions= r"^\s*\((?<exclusions>[[:print:]]*)\)\s*$"  # Search for the brackets of the exclusions list. Verify only whitespace preceeds and follows it. Grab anything between the brackets.
+    regex_whitespacecheck= r"^\s*$"
+    regex_getfilelist= r"^\s*excludes:(?<Filelist>[[:print:]]*)"i  # Extract the file list as a single string
+
+    match_hash= match(regex_findhash, VerifCodeString)
+    if match_hash !== nothing
+        ExcludedFiles= missing
+        if length(match_hash["PostHash"]) > 0 && match(regex_whitespacecheck, match_hash["PostHash"]) === nothing
+            ExcludedFiles= Vector{String}()
+            match_exclusions= match(regex_findexclusions, match_hash["PostHash"])
+            if (match_exclusions === nothing) 
+                println("WARNING: Unable to parse exclusion list in PackageVerificationCode ==> ", match_hash["PostHash"])
+                ExcludedFiles= push!(ExcludedFiles, match_hash["PostHash"])
+            else
+                match_filelist= match(regex_getfilelist, match_exclusions["exclusions"])
+                if match_filelist === nothing
+                    println("WARNING: Unable to parse exclusion list in PackageVerificationCode ==> ", match_exclusions["exclusions"])
+                    ExcludedFiles= push!(ExcludedFiles, match_exclusions["exclusions"])
+                else
+                    ExcludedFiles= split(match_filelist["Filelist"])
+                end
+            end
+        end
+        obj= SpdxPkgVerificationCodeV2(match_hash["Hash"], ExcludedFiles)
+    else
+        error("Enable to parse Package Verification Code")
+    end
+
+    return obj
+end
+
+######################################
 struct SpdxDocumentExternalReferenceV2 <: AbstractSpdxElement
     SPDXID::String
     Namespace::SpdxNamespaceV2

@@ -34,6 +34,18 @@ function _show(io::IO, obj::SpdxChecksumV2)
     print(io, obj.Algorithm * ": " * obj.Value)
 end
 
+################
+function _show(io::IO, obj::SpdxPkgVerificationCodeV2) 
+    print(io, obj.Hash)
+    if !ismissing(obj.ExcludedFiles) 
+        print(io, "  (excludes:")
+        for fname in obj.ExcludedFiles
+            print(io, " ", fname)
+        end
+        print(io, ")")
+    end
+end
+
 ###################
 function _show(io::IO, obj::SpdxPackageExternalReferenceV2)
     print(io, obj.Category * " " * obj.RefType * " " * obj.Locator)

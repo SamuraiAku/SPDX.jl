@@ -15,6 +15,13 @@ const SpdxChecksumV2_NameTable= Table(
        JSONname= [ "algorithm",   "checksumValue"],
 )
 
+const SpdxPkgVerificationCodeV2_NameTable= Table(
+         Symbol= [ :Hash,                           :ExcludedFiles   ],
+    Constructor= [  string,                          Vector{String} ],
+      Multiline= [  false,                           false          ],
+       JSONname= [  "packageVerificationCodeValue",  "packageVerificationCodeExcludedFiles"],
+)
+
 const SpdxDocumentExternalReferenceV2_NameTable= Table(
          Symbol= [ :SPDXID,              :Namespace,       :Checksum,   ],
         Mutable= [  false,                false,            false],
