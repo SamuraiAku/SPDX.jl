@@ -29,7 +29,7 @@ function setcreationtime!(doc::SpdxDocumentV2, CreationTime::Union{ZonedDateTime
 end
 
 #########################
-function createnamespace!(doc::SpdxDocumentV2, URI::String)
+function createnamespace!(doc::SpdxDocumentV2, URI::AbstractString)
     doc.Namespace= SpdxNamespaceV2(URI, string(uuid4()) )
 end
 
@@ -44,7 +44,7 @@ function updatenamespace!(doc::SpdxDocumentV2)
 end
 
 #########################
-function addcreator!(doc::SpdxDocumentV2, CreatorType::String, Name::String, Email::String= ""; validate= true)
+function addcreator!(doc::SpdxDocumentV2, CreatorType::AbstractString, Name::AbstractString, Email::AbstractString= ""; validate= true)
     push!(doc.CreationInfo.Creator, SpdxCreatorV2(CreatorType, Name, Email, validate= validate))
 end
 

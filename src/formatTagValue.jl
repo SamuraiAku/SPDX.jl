@@ -1,7 +1,7 @@
 
 
 convert_to_TagValue!(TagValueDoc::IOBuffer, dataElement::Union{AbstractSpdx, AbstractSpdxElement})= write(TagValueDoc, string(dataElement) * "\n")  # Default
-convert_to_TagValue!(TagValueDoc::IOBuffer, stringElement::String)= write(TagValueDoc, stringElement * "\n")
+convert_to_TagValue!(TagValueDoc::IOBuffer, stringElement::AbstractString)= write(TagValueDoc, stringElement * "\n")
 
 function write_TagValue!(TagValueDoc::IOBuffer, element, TagValueName::Union{Nothing, String}, Multiline::Bool)
     if TagValueName !== nothing

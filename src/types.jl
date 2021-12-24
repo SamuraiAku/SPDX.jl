@@ -11,7 +11,7 @@ struct SpdxSimpleLicenseExpressionV2 <: AbstractSpdx
     LicenseExceptionId::Union{String, Nothing}
 end
 
-SpdxSimpleLicenseExpressionV2(LicenseId::String)= SpdxSimpleLicenseExpressionV2(LicenseId, nothing)
+SpdxSimpleLicenseExpressionV2(LicenseId::AbstractString)= SpdxSimpleLicenseExpressionV2(LicenseId, nothing)
 # TODO : Parse the string so that we can populate both fields from a single string
 # TODO : Have the constructor check the LicenseId against the approved list from SPDX group
 # TODO : Support user defined licenses
@@ -30,7 +30,7 @@ function SpdxTimeV2(Time::DateTime)
     SpdxTimeV2(ZonedDateTime(Time, localzone()))
 end
 
-function SpdxTimeV2(Time::String)
+function SpdxTimeV2(Time::AbstractString)
     spdxTimeFormat= TimeZones.dateformat"yyyy-mm-ddTHH:MM:SSZ"  # The 'Z' at the end is a format code for Time Zone 
     if Time[end] == 'Z'
         Time= Time[1:end-1] * "UTC"
@@ -46,7 +46,7 @@ struct SpdxNamespaceV2 <: AbstractSpdx
     UUID::Union{String, Nothing}
 end
 
-function SpdxNamespaceV2(Namespace::String)
+function SpdxNamespaceV2(Namespace::AbstractString)
     # The URL search is taken from Appendix B of RFC 3986, parts 1-5
     uri_regex= r"(?<URL>^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*))"
     best_practice_regex= r"(?<URL>^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*))-(?<UUID>[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12})"
@@ -77,7 +77,7 @@ struct SpdxCreatorV2 <: AbstractSpdx
     Email::String
     
     # Inner Constructor
-    function SpdxCreatorV2(CreatorType::String, Name::String, Email::String; validate= true)
+    function SpdxCreatorV2(CreatorType::AbstractString, Name::AbstractString, Email::AbstractString; validate= true)
         validate == false && return new(CreatorType, Name, Email)
 
         ## Input Validation
@@ -117,7 +117,7 @@ struct SpdxChecksumV2 <: AbstractSpdxElement
     Algorithm::String
     Value::String
 
-    function SpdxChecksumV2(Algorithm::String, Value::String)
+    function SpdxChecksumV2(Algorithm::AbstractString, Value::AbstractString)
         if Algorithm ∉ [ "SHA256", "SHA1", "SHA384", "MD2", "MD4", "SHA512", "MD6", "MD5", "SHA224" ]
             error("Checksum Algorithm is not recognized")
         end
@@ -182,7 +182,7 @@ struct SpdxPackageExternalReferenceV2 <: AbstractSpdxElement
     Comment::Union{String, Missing}
 end
 
-function SpdxPackageExternalReferenceV2(Category::String, RefType::String, Locator::String)
+function SpdxPackageExternalReferenceV2(Category::AbstractString, RefType::AbstractString, Locator::AbstractString)
     return SpdxPackageExternalReferenceV2(Category, RefType, Locator, missing)
 end
 
@@ -194,7 +194,7 @@ struct SpdxRelationshipV2 <: AbstractSpdxElement
     Comment::Union{String, Missing}
 end
 
-function SpdxRelationshipV2(SPDXID::String, RelationshipType::String, RelatedSPDXID::String)
+function SpdxRelationshipV2(SPDXID::AbstractString, RelationshipType::AbstractString, RelatedSPDXID::AbstractString)
     return SpdxRelationshipV2(SPDXID, RelationshipType, RelatedSPDXID, missing)
 end
 # TODO : Validate the RelationshipType
@@ -230,7 +230,7 @@ function SpdxDocumentV2()
     return SpdxDocumentV2("SPDX-2.2", SpdxSimpleLicenseExpressionV2("CC0-1.0"), "SPDXRef-DOCUMENT", MutableFields)
 end
 
-function SpdxDocumentV2(Version::String, DataLicense::SpdxSimpleLicenseExpressionV2, SPDXID::String)
+function SpdxDocumentV2(Version::AbstractString, DataLicense::SpdxSimpleLicenseExpressionV2, SPDXID::AbstractString)
     MutableFields= init_MutableFields(SpdxDocumentV2_NameTable)
     return SpdxDocumentV2(Version, DataLicense, SPDXID, MutableFields)
 end
