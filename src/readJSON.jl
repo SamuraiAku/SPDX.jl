@@ -6,9 +6,11 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
     ImmutableIndicies= map(value -> value == false, NameTable.Mutable) # Replace with findall? 
     paramnames= NameTable.JSONname[ImmutableIndicies]
     ImmutableParameters= Vector{Any}(missing, length(paramnames))
+    ImmutableTables= NameTable.NameTable[ImmutableIndicies]
+    ImmutableConstructors= NameTable.Constructor[ImmutableIndicies]
     for idx in 1:length(paramnames)
         if haskey(JSONfile, paramnames[idx]) 
-            ImmutableParameters[idx]=  NameTable.Constructor[idx](JSONfile[paramnames[idx]])
+            ImmutableParameters[idx]=  convert_from_JSON(JSONfile[paramnames[idx]], ImmutableTables[idx], ImmutableConstructors[idx])
         end
     end
     constructorparams= Tuple(ImmutableParameters)

@@ -145,9 +145,6 @@ function SpdxChecksumV2(ChecksumString::AbstractString)
     return obj
 end
 
-# Special constructor for reading JSON files in certain situations
-SpdxChecksumV2(JSONfile::Dict{String, Any})= SpdxChecksumV2(JSONfile["algorithm"], JSONfile["checksumValue"])
-
 ######################################
 struct SpdxPkgVerificationCodeV2 <: AbstractSpdxElement
     Hash::String
