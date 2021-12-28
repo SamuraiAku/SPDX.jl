@@ -9,14 +9,16 @@ const SpdxPackageExternalReferenceV2_NameTable= Table(
 )
 
 const SpdxChecksumV2_NameTable= Table(
-         Symbol= [ :Algorithm,   :Value          ],
-    Constructor= [  string,       string],
+         Symbol= [ :Algorithm,   :Hash           ],
+        Mutable= [  false,        false          ],
+    Constructor= [  string,       string         ],
       Multiline= [  false,        false          ],
        JSONname= [ "algorithm",   "checksumValue"],
 )
 
 const SpdxPkgVerificationCodeV2_NameTable= Table(
-         Symbol= [ :Hash,                           :ExcludedFiles   ],
+         Symbol= [ :Hash,                           :ExcludedFiles  ],
+        Mutable= [  false,                           false,         ],
     Constructor= [  string,                          Vector{String} ],
       Multiline= [  false,                           false          ],
        JSONname= [  "packageVerificationCodeValue",  "packageVerificationCodeExcludedFiles"],
@@ -24,7 +26,7 @@ const SpdxPkgVerificationCodeV2_NameTable= Table(
 
 const SpdxDocumentExternalReferenceV2_NameTable= Table(
          Symbol= [ :SPDXID,              :Namespace,       :Checksum,   ],
-        Mutable= [  false,                false,            false],
+        Mutable= [  false,                false,            false       ],
     Constructor= [  string,               SpdxNamespaceV2,  SpdxChecksumV2],
       Multiline= [  false,                false,            false,      ],
        JSONname= [ "externalDocumentId",  "spdxDocument",   "checksum", ],
@@ -55,7 +57,7 @@ const SpdxPackageV2_NameTable= Table(
         Default= [  missing,            nothing,   missing,           missing,            missing,            missing,              missing,                    missing,          missing,                    Vector{SpdxChecksumV2}(),   missing,            missing,              missing,                          Vector{SpdxSimpleLicenseExpressionV2}(),  missing,                           missing,                   missing,                 missing,           missing,                missing,           Vector{SpdxPackageExternalReferenceV2}(),   Vector{String}()],
         Mutable= [  true,               false,     true,              true,               true,               true,                 true,                       true,             true,                       true,                       true,               true,                 true,                             true,                                     true,                              true,                      true,                    true,              true,                   true,              true,                                       true],
     Constructor= [  string,             string,    string,            string,             string,             string,               string,                     string,           string,                     SpdxChecksumV2,             string,             string,               SpdxSimpleLicenseExpressionV2,    SpdxSimpleLicenseExpressionV2,            SpdxSimpleLicenseExpressionV2,     string,                    string,                  string,            string,                 string,            SpdxPackageExternalReferenceV2,             string],    
-      NameTable= [  nothing,            nothing,   nothing,           nothing,            nothing,            nothing,              nothing,                    nothing,          nothing,                    nothing,                    nothing,            nothing,              nothing,                          nothing,                                  nothing,                           nothing,                   nothing,                 nothing,           nothing,                nothing,           SpdxPackageExternalReferenceV2_NameTable,   nothing], 
+      NameTable= [  nothing,            nothing,   nothing,           nothing,            nothing,            nothing,              nothing,                    nothing,          nothing,                    SpdxChecksumV2_NameTable,   nothing,            nothing,              nothing,                          nothing,                                  nothing,                           nothing,                   nothing,                 nothing,           nothing,                nothing,           SpdxPackageExternalReferenceV2_NameTable,   nothing], 
       Multiline= [  false,              false,     false,             false,              false,              false,                false,                      false,            false,                      false,                      false,              true,                 false,                            false,                                    false,                             true,                      true,                    true,              true,                   true,              false,                                      true],
        JSONname= [  "name",             "SPDXID",  "versionInfo",     "packageFileName",  "supplier",         "originator",         "downloadLocation",         "filesAnalyzed",  "packageVerificationCode",  "checksums",                "homepage",         "sourceInfo",         "licenseConcluded",               "licenseInfoFromFiles",                   "licenseDeclared",                 "licenseComments",         "copyrightText",         "summary",         "description",          "comment",         "externalRefs",                             "attributionTexts" ],
    TagValueName= [  "PackageName",      "SPDXID",  "PackageVersion",  "PackageFileName",  "PackageSupplier",  "PackageOriginator",  "PackageDownloadLocation",  "FilesAnalyzed",  "PackageVerificationCode",  "PackageChecksum",          "PackageHomePage",  "PackageSourceInfo",  "PackageLicenseConcluded",        "PackageLicenseInfoFromFiles",            "PackageLicenseDeclared",          "PackageLicenseComments",  "PackageCopyrightText",  "PackageSummary",  "PackageDescription",   "PackageComment",  "ExternalRef",                              "PackageAttributionText"]

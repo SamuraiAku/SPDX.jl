@@ -31,7 +31,7 @@ end
 
 ################
 function _show(io::IO, obj::SpdxChecksumV2) 
-    print(io, obj.Algorithm * ": " * obj.Value)
+    print(io, obj.Algorithm * ": " * obj.Hash)
 end
 
 ################

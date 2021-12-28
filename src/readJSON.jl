@@ -1,6 +1,8 @@
 
+# Default
+convert_from_JSON(element, unused, constructor::Union{Type, Function})= constructor(element)
 
-function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Type)
+function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Union{Type, Function})
     ImmutableIndicies= map(value -> value == false, NameTable.Mutable) # Replace with findall? 
     paramnames= NameTable.JSONname[ImmutableIndicies]
     ImmutableParameters= Vector{Any}(missing, length(paramnames))
@@ -36,6 +38,3 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
 
     return obj
 end
-
-
-convert_from_JSON(element, unused, constructor::Union{Type, Function})= constructor(element)

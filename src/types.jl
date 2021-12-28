@@ -115,17 +115,37 @@ end
 ######################################
 struct SpdxChecksumV2 <: AbstractSpdxElement
     Algorithm::String
-    Value::String
+    Hash::String
 
-    function SpdxChecksumV2(Algorithm::AbstractString, Value::AbstractString)
+    function SpdxChecksumV2(Algorithm::AbstractString, Hash::AbstractString)
+        regex_findhash=  r"^\s*[[:xdigit:]]*\s*$"i  # Find hexadecimal values and nothing else besides whitespace
+
         if Algorithm ∉ [ "SHA256", "SHA1", "SHA384", "MD2", "MD4", "SHA512", "MD6", "MD5", "SHA224" ]
             error("Checksum Algorithm is not recognized")
         end
         # TODO: verify that the value is the correct length for the specified algorithm and are all hex values
-        return new(Algorithm, Value)
+        match_hash= match(regex_findhash, Hash)
+        if match_hash === nothing
+            error("Checksum Hash is invalid: Non-hex values detected ==> ", Hash)
+        end
+        return new(Algorithm, Hash)
     end
 end
 
+function SpdxChecksumV2(ChecksumString::AbstractString)
+    regex_checksum= r"^\s*(?<Algorithm>[[:print:]]*):\s*(?<Hash>[[:xdigit:]]*)\x*$"
+
+    match_checksum= match(regex_checksum, ChecksumString)
+    if match_checksum === nothing
+        error("Unable to parse checksum string ==> ", ChecksumString)
+    else
+        obj= SpdxChecksumV2(match_checksum["Algorithm"], match_checksum["Hash"])
+    end
+
+    return obj
+end
+
+# Special constructor for reading JSON files in certain situations
 SpdxChecksumV2(JSONfile::Dict{String, Any})= SpdxChecksumV2(JSONfile["algorithm"], JSONfile["checksumValue"])
 
 ######################################
