@@ -1,6 +1,7 @@
 
 convert_to_JSON(dataElement::AbstractSpdx)= string(dataElement)  # Default
 convert_to_JSON(stringElement::AbstractString)= stringElement
+convert_to_JSON(boolval::Bool)= boolval
 
 function convert_to_JSON(doc::Union{AbstractSpdxData, AbstractSpdxElement}, NameTable::Table)
     jsonDoc= OrderedDict{String, Any}()
