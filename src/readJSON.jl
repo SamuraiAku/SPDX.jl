@@ -16,9 +16,7 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
     constructorparams= Tuple(ImmutableParameters)
     obj= constructor(constructorparams...)
 
-    if sum(ImmutableIndicies) == length(NameTable.Mutable)
-        return obj
-    else
+    if sum(ImmutableIndicies) != length(NameTable.Mutable)
         for (name, value) in JSONfile
             idx= findfirst(isequal(name), NameTable.JSONname)
             if idx === nothing
