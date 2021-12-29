@@ -31,6 +31,7 @@ convert_to_JSON(relationship::SpdxRelationshipV2)= convert_to_JSON(relationship,
 convert_to_JSON(pkgExtRef::SpdxPackageExternalReferenceV2)= convert_to_JSON(pkgExtRef, SpdxPackageExternalReferenceV2_NameTable)
 convert_to_JSON(docExtRef::SpdxDocumentExternalReferenceV2)= convert_to_JSON(docExtRef, SpdxDocumentExternalReferenceV2_NameTable)
 convert_to_JSON(checksum::SpdxChecksumV2)= convert_to_JSON(checksum, SpdxChecksumV2_NameTable)
+convert_to_JSON(VerificationCode::SpdxPkgVerificationCodeV2)= convert_to_JSON(VerificationCode, SpdxPkgVerificationCodeV2_NameTable)
 
 #########################
 compute_additional_JSON_fields!(jsonDoc, doc)= nothing
