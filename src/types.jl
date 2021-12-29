@@ -28,7 +28,7 @@ function SpdxSimpleLicenseExpressionV2(LicenseString::AbstractString)
     if length(match_LicenseId["PostLicense"]) > 0 && match(regex_whitespacecheck, match_LicenseId["PostLicense"]) === nothing
         match_Exception= match(regex_Exception, match_LicenseId["PostLicense"])
         if match_Exception === nothing
-            println("WARNING:  Enable to parse License Exception ==> ", LicenseString)
+            println("WARNING:  Unable to parse License Exception ==> ", LicenseString)
         else
             Exception= match_Exception["Exception"]
         end
@@ -199,7 +199,7 @@ function SpdxPkgVerificationCodeV2(VerifCodeString::AbstractString)
         end
         obj= SpdxPkgVerificationCodeV2(match_hash["Hash"], ExcludedFiles)
     else
-        error("Enable to parse Package Verification Code")
+        error("Unable to parse Package Verification Code")
     end
 
     return obj
