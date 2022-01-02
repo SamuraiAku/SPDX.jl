@@ -20,6 +20,7 @@ include("display.jl")
 include("formatJSON.jl")
 include("formatTagValue.jl")
 include("readJSON.jl")
+include("readTagValue.jl")
 include("api.jl")
 
 # Write your package code here.
