@@ -24,6 +24,15 @@ function readJSON(fname::AbstractString)
 end
 
 #########################
+function readTagValue(fname::AbstractString)
+    doc= nothing
+    open(fname) do TVfile
+        doc= parse_TagValue(TVfile, SpdxDocumentV2_NameTable, SpdxDocumentV2)
+    end
+    return doc
+end
+
+#########################
 function setcreationtime!(doc::SpdxDocumentV2, CreationTime::Union{ZonedDateTime, DateTime}= now(localzone()) )
     doc.CreationInfo.Created= SpdxTimeV2(CreationTime)
 end
