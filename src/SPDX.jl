@@ -13,8 +13,25 @@ export SpdxDocumentV2, SpdxCreatorV2, SpdxDocumentExternalReferenceV2, SpdxRelat
 export printJSON, setcreationtime!, SpdxTimeV2, createnamespace!, updatenamespace!
 export addcreator!, getcreators, deletecreator!, printTagValue, readJSON
 
+
+# Type creation
+abstract type AbstractSpdx end
+abstract type AbstractSpdxElement <: AbstractSpdx end
+abstract type AbstractSpdxData <: AbstractSpdx end
+abstract type AbstractSpdxFile <: AbstractSpdx end
+
+
+function init_MutableFields(NameTable::Table)
+    MutableIndicies= findall(NameTable.Mutable)
+    MutableFields= OrderedDict{Symbol, Any}(NameTable.Symbol[MutableIndicies] .=> deepcopy(NameTable.Default[MutableIndicies]))
+    return MutableFields
+end
+
+
 include("types.jl")
-include("tables.jl")
+include("spdxRelationship.jl")
+include("spdxPackage.jl")
+include("spdxDocument.jl")
 include("accessors.jl")
 include("display.jl")
 include("formatJSON.jl")
