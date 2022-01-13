@@ -18,7 +18,6 @@ export addcreator!, getcreators, deletecreator!, printTagValue, readJSON
 abstract type AbstractSpdx end
 abstract type AbstractSpdxElement <: AbstractSpdx end
 abstract type AbstractSpdxData <: AbstractSpdx end
-abstract type AbstractSpdxFile <: AbstractSpdx end
 
 
 function init_MutableFields(NameTable::Table)

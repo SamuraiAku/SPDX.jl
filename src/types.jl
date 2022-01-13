@@ -77,6 +77,15 @@ function SpdxCreatorV2(Creator::AbstractString)
 end
 
 ######################################
+const SpdxChecksumV2_NameTable= Table(
+         Symbol= [ :Algorithm,   :Hash           ],
+        Mutable= [  false,        false          ],
+    Constructor= [  string,       string         ],
+      NameTable= [  nothing,      nothing        ],
+      Multiline= [  false,        false          ],
+       JSONname= [ "algorithm",   "checksumValue"],
+)
+
 struct SpdxChecksumV2 <: AbstractSpdxElement
     Algorithm::String
     Hash::String

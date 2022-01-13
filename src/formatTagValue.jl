@@ -1,6 +1,6 @@
 
 
-convert_to_TagValue!(TagValueDoc::IO, dataElement::Union{AbstractSpdx, AbstractSpdxElement})= write(TagValueDoc, string(dataElement) * "\n")  # Default
+convert_to_TagValue!(TagValueDoc::IO, dataElement::AbstractSpdx)= write(TagValueDoc, string(dataElement) * "\n")  # Default
 convert_to_TagValue!(TagValueDoc::IO, stringElement::AbstractString)= write(TagValueDoc, stringElement * "\n")
 
 function write_TagValue!(TagValueDoc::IO, element, TagValueName::Union{Nothing, String}, Multiline::Bool)
