@@ -87,6 +87,12 @@ struct SpdxDocumentExternalReferenceV2 <: AbstractSpdxElement
     Checksum::SpdxChecksumV2
 end
 
+function SpdxDocumentExternalReferenceV2(TVstring::AbstractString)
+    regex_reference= r"^\s*(?<SPDXID>[^\s]+)\s+(?<Namespace>[^\s]+)\s+(?<Checksum>.+)$"
+    match_reference= match(regex_reference, TVstring)
+    return SpdxDocumentExternalReferenceV2(match_reference["SPDXID"], SpdxNamespaceV2(match_reference["Namespace"]), SpdxChecksumV2(match_reference["Checksum"]))
+end
+
 #############################################
 const SpdxDocumentV2_NameTable= Table(
          Symbol= [ :Version,       :DataLicense,                    :SPDXID,    :Name,           :Namespace,           :ExternalReferences,                         :CreationInfo,                   :DocumentComment,   :Packages,                 :Relationships],
