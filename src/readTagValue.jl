@@ -37,7 +37,7 @@ end
 function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, constructor::Union{Type, Function})
     TagValueNames= NameTable.TagValueName
     tags::Vector{SubString}= getindex.(getproperty.(TagValues, :captures), 1)
-    constructoridx= findall(.!NameTable.Mutable)
+    constructoridx= findall(.!NameTable.Mutable::Vector{Bool} .& (NameTable.TagValueName .!== nothing))
     constructorparameters= Vector{Any}(missing, length(constructoridx))
     objparameters= Vector{Any}(missing, length(tags))
 
