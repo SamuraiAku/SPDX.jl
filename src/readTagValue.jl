@@ -18,8 +18,9 @@ function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, F
         
         sectionidx= findfirst(isequal(TVdata.TagValues[1]["Tag"]), NameTable.TagValueName)
         if isnothing(sectionidx)
-            println("Parsing Error! Tag ", TVdata.TagValues[1]["Tag"], " is not recognized.")
-            break
+            println("INFO: Ignoring Tag section beginning at ", TVdata.TagValues[1]["Tag"], ": ", TVdata.TagValues[1]["Value"])
+            NextSection= TVdata.NextSection
+            continue
         end
         sectionNameTable= NameTable.NameTable[sectionidx]
         sectionconstructor= NameTable.Constructor[sectionidx]
