@@ -95,7 +95,7 @@ end
 
 #############################################
 const SpdxDocumentV2_NameTable= Table(
-         Symbol= [ :Version,       :DataLicense,                    :SPDXID,    :Name,           :Namespace,           :ExternalReferences,                         :CreationInfo,                   :DocumentComment,   :Packages,                 :Relationships],
+         Symbol= [ :Version,       :DataLicense,                    :SPDXID,    :Name,           :Namespace,           :ExternalDocReferences,                      :CreationInfo,                   :DocumentComment,   :Packages,                 :Relationships],
         Default= [  nothing,        nothing,                         nothing,    missing,         missing,              Vector{SpdxDocumentExternalReferenceV2}(),   SpdxCreationInfoV2(),            missing,            Vector{SpdxPackageV2}(),   Vector{SpdxRelationshipV2}()],
         Mutable= [  false,          false,                           false,      true,            true,                 true,                                        true,                            true,               true,                      true],
     Constructor= [  string,         SpdxSimpleLicenseExpressionV2,   string,     string,          SpdxNamespaceV2,      SpdxDocumentExternalReferenceV2,             SpdxCreationInfoV2,              string,             SpdxPackageV2,             SpdxRelationshipV2 ],

@@ -1,24 +1,36 @@
 ######################################
 const SpdxPackageExternalReferenceV2_NameTable= Table(
          Symbol= [ :Category,             :RefType,            :Locator,             :Comment],
-        Default= [  nothing,               nothing,             nothing,              nothing],
-        Mutable= [  false,                 false,               false,                false],
+        Default= [  nothing,               nothing,             nothing,              missing],
+        Mutable= [  false,                 false,               false,                true],
     Constructor= [  string,                string,              string,               string], 
       NameTable= [  nothing,               nothing,             nothing,              nothing],
       Multiline= [  false,                 false,               false,                true],
-       JSONname= [ "referenceCategory",    "referenceType",     "referenceLocator",   "comment"],
-   TagValueName= [  nothing,               nothing,              nothing,             "ExternalRefComment"]
+       JSONname= [  "referenceCategory",   "referenceType",     "referenceLocator",   "comment"],
+   TagValueName= [  "ExternalRef",         nothing,              nothing,             "ExternalRefComment"]
 )
 
-struct SpdxPackageExternalReferenceV2 <: AbstractSpdxElement
+struct SpdxPackageExternalReferenceV2 <: AbstractSpdxData
     Category::String
     RefType::String
     Locator::String
-    Comment::Union{String, Missing}
+    MutableFields::OrderedDict{Symbol, Any}
 end
 
 function SpdxPackageExternalReferenceV2(Category::AbstractString, RefType::AbstractString, Locator::AbstractString)
-    return SpdxPackageExternalReferenceV2(Category, RefType, Locator, missing)
+    MutableFields= init_MutableFields(SpdxPackageExternalReferenceV2_NameTable)
+    return SpdxPackageExternalReferenceV2(Category, RefType, Locator, MutableFields)
+end
+
+function SpdxPackageExternalReferenceV2(TVstring::AbstractString)
+    regex_reference= r"^\s*(?<Category>[^\s]+)\s+(?<Type>[^\s]+)\s+(?<Locator>[^\s]+)\s*$"
+    match_reference= match(regex_reference, TVstring)
+    if isnothing(match_reference)
+        println("Error: Unable to parse Package External Reference: ", TVstring)
+        return nothing
+    end
+
+    return SpdxPackageExternalReferenceV2(match_reference["Category"], match_reference["Type"], match_reference["Locator"])
 end
 
 ######################################

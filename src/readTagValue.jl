@@ -74,14 +74,15 @@ end
 constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Integer, NameTable::Table)= NameTable.Constructor[paramidx](TagValues[tagidx]["Value"])
 
 function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Nothing, NameTable::Table)
-    # Check if creationInfo exists in this NameTable (i.e. we're constructing Document level parameters)
-    creationcheck= findfirst(isequal(:CreationInfo), NameTable.Symbol)
-    if isnothing(creationcheck)
+    # Check if :CreationInfo exists in this NameTable (i.e. we're constructing Document level parameters)
+    # Check if :ExternalReferences exists in this NameTable (i.e. we're construcing Package level parameters)
+    objectcheck= findfirst(in([:CreationInfo, :ExternalReferences]), NameTable.Symbol)
+    if isnothing(objectcheck)
         return nothing
     else
-        creationNameTable= NameTable.NameTable[creationcheck]
-        creationidx= findfirst(isequal(TagValues[tagidx]["Tag"]), creationNameTable.TagValueName)
-        value= constructvalue(tagidx, TagValues, creationidx, creationNameTable)
+        objNameTable= NameTable.NameTable[objectcheck]
+        objidx= findfirst(isequal(TagValues[tagidx]["Tag"]), objNameTable.TagValueName)
+        value= constructvalue(tagidx, TagValues, objidx, objNameTable)
     end
     return value
 end
@@ -99,6 +100,15 @@ function set_from_TagValue!(obj::SpdxDocumentV2, value, valueidx::Nothing, Tag::
     creationNameTable= NameTable.NameTable[creationidx]
     paramidx= findfirst(isequal(Tag), creationNameTable.TagValueName)
     set_from_TagValue!(obj.CreationInfo, value, paramidx, Tag, creationNameTable)
+end
+
+function set_from_TagValue!(obj::SpdxPackageV2, value, valueidx::Nothing, Tag::AbstractString, NameTable::Table)
+    # Special case where we need to set the comment field on an external reference sub-object
+    refcommentidx= findfirst(isequal(:ExternalReferences), NameTable.Symbol)
+    refNameTable= NameTable.NameTable[refcommentidx]
+    paramidx= findfirst(isequal(Tag), refNameTable.TagValueName)
+    # Assume that the  is being applied to the latest Reference
+    set_from_TagValue!(obj.ExternalReferences[end], value, paramidx, Tag, refNameTable)
 end
 
 
