@@ -1,7 +1,7 @@
 
-convert_to_JSON(dataElement::AbstractSpdx)= string(dataElement)  # Default
-convert_to_JSON(stringElement::AbstractString)= stringElement
-convert_to_JSON(boolval::Bool)= boolval
+convert_to_JSON(dataElement::AbstractSpdx, unused::Nothing)= string(dataElement)  # Default
+convert_to_JSON(stringElement::AbstractString, unused)= stringElement
+convert_to_JSON(boolval::Bool, unused)= boolval
 
 function convert_to_JSON(doc::Union{AbstractSpdxData, AbstractSpdxElement}, NameTable::Table)
     jsonDoc= OrderedDict{String, Any}()
@@ -13,26 +13,17 @@ function convert_to_JSON(doc::Union{AbstractSpdxData, AbstractSpdxElement}, Name
         if isa(fieldval, Vector)
             elementVector= Vector{Any}()
             for element in fieldval
-                push!(elementVector, convert_to_JSON(element))
+                push!(elementVector, convert_to_JSON(element, NameTable.NameTable[idx]))
             end
             jsonDoc[NameTable.JSONname[idx]]= elementVector
         else
-            jsonDoc[NameTable.JSONname[idx]]= convert_to_JSON(fieldval)
+            jsonDoc[NameTable.JSONname[idx]]= convert_to_JSON(fieldval, NameTable.NameTable[idx])
         end
     end
 
     compute_additional_JSON_fields!(jsonDoc, doc)
     return jsonDoc
 end
-
-convert_to_JSON(doc::SpdxDocumentV2)= convert_to_JSON(doc, SpdxDocumentV2_NameTable)
-convert_to_JSON(pkg::SpdxPackageV2) = convert_to_JSON(pkg, SpdxPackageV2_NameTable)
-convert_to_JSON(info::SpdxCreationInfoV2)= convert_to_JSON(info, SpdxCreationInfoV2_NameTable)
-convert_to_JSON(relationship::SpdxRelationshipV2)= convert_to_JSON(relationship, SpdxRelationshipV2_NameTable)
-convert_to_JSON(pkgExtRef::SpdxPackageExternalReferenceV2)= convert_to_JSON(pkgExtRef, SpdxPackageExternalReferenceV2_NameTable)
-convert_to_JSON(docExtRef::SpdxDocumentExternalReferenceV2)= convert_to_JSON(docExtRef, SpdxDocumentExternalReferenceV2_NameTable)
-convert_to_JSON(checksum::SpdxChecksumV2)= convert_to_JSON(checksum, SpdxChecksumV2_NameTable)
-convert_to_JSON(VerificationCode::SpdxPkgVerificationCodeV2)= convert_to_JSON(VerificationCode, SpdxPkgVerificationCodeV2_NameTable)
 
 #########################
 compute_additional_JSON_fields!(jsonDoc, doc)= nothing

@@ -1,7 +1,7 @@
 #########################
 function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
     open(fname, "w") do f
-        jsonDoc= convert_to_JSON(doc)
+        jsonDoc= convert_to_JSON(doc, SpdxDocumentV2_NameTable)
         JSON.print(f, jsonDoc, 4)
     end
 end
