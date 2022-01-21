@@ -142,7 +142,7 @@ function read_from_TagValue(TVfile::IO)
                 end
                 match_tv= match(regex_multiline, fileline)
             end
-            if match_tv["Tag"] in ["SPDXVersion", "PackageName", "FileName", "SnippetSPDXID", "LicenseID", "Relationship", "Annotator"]
+            if match_tv["Tag"] in ("SPDXVersion", "PackageName", "FileName", "SnippetSPDXID", "LicenseID", "Relationship", "Annotator")
                 NextSection= match_tv
                 break
             else
