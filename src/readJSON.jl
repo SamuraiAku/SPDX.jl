@@ -23,14 +23,14 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
                 println("INFO: Ignoring JSON field ", name)
                 # TODO: Functions that process these extra JSON fields like documentDescribes
             elseif NameTable.Mutable[idx] == true
-                elements= (value isa Vector) ? value : Vector([value])
-                for item in elements
-                    objval= convert_from_JSON(item, NameTable.NameTable[idx], NameTable.Constructor[idx])
-                    if NameTable.Default[idx] isa Vector
+                if value isa Vector
+                    for element in value
+                        objval= convert_from_JSON(element, NameTable.NameTable[idx], NameTable.Constructor[idx])
                         push!(getproperty(obj, NameTable.Symbol[idx]),  objval)
-                    else
-                        setproperty!(obj, NameTable.Symbol[idx], objval)
                     end
+                else
+                    objval= convert_from_JSON(value, NameTable.NameTable[idx], NameTable.Constructor[idx])
+                    setproperty!(obj, NameTable.Symbol[idx], objval)
                 end
             end
         end
