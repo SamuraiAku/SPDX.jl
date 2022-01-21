@@ -22,12 +22,9 @@ function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, F
             NextSection= TVdata.NextSection
             continue
         end
-        sectionNameTable= NameTable.NameTable[sectionidx]
-        sectionconstructor= NameTable.Constructor[sectionidx]
-        sectionsymbol= NameTable.Symbol[sectionidx] 
 
-        obj= convert_from_TagValue(TVdata.TagValues, sectionNameTable, sectionconstructor)
-        set_obj_param!(spdxdoc, obj, sectionsymbol)
+        obj= convert_from_TagValue(TVdata.TagValues, NameTable.NameTable[sectionidx], NameTable.Constructor[sectionidx])
+        set_obj_param!(spdxdoc, obj, NameTable.Symbol[sectionidx] )
         NextSection= TVdata.NextSection
     end
 
