@@ -20,8 +20,7 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
         for (name, value) in JSONfile
             idx= findfirst(isequal(name), NameTable.JSONname)
             if idx === nothing
-                println("INFO: Ignoring JSON field ", name)
-                # TODO: Functions that process these extra JSON fields like documentDescribes
+                process_additional_JSON_fields!(obj, name, value)
             elseif NameTable.Mutable[idx] == true
                 if value isa Vector
                     for element in value
@@ -37,4 +36,22 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
     end
 
     return obj
+end
+
+############
+process_additional_JSON_fields!(obj, name, value)= nothing
+
+function process_additional_JSON_fields!(doc::SpdxDocumentV2, name::AbstractString, value)
+    if name == "documentDescribes"
+        if value isa Vector
+            for element in value
+                obj= SpdxRelationshipV2("SPDXRef-DOCUMENT", "DESCRIBES", element)
+                push!(doc.Relationships, obj)
+            end
+        else
+            println("Unable to parse \"documentdocumentDescribes\" :", value)
+        end
+    else
+        println("INFO: Ignoring JSON field ", name)
+    end
 end
