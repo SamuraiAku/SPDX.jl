@@ -39,7 +39,10 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
 end
 
 ############
-process_additional_JSON_fields!(obj, name, value)= nothing
+function process_additional_JSON_fields!(obj, name, value)
+    println("INFO: Ignoring JSON field ", name)
+    return nothing
+end
 
 function process_additional_JSON_fields!(doc::SpdxDocumentV2, name::AbstractString, value)
     if name == "documentDescribes"
@@ -47,9 +50,10 @@ function process_additional_JSON_fields!(doc::SpdxDocumentV2, name::AbstractStri
             for element in value
                 obj= SpdxRelationshipV2("SPDXRef-DOCUMENT", "DESCRIBES", element)
                 push!(doc.Relationships, obj)
+                # TODO: Check if the relationship already exists?
             end
         else
-            println("Unable to parse \"documentdocumentDescribes\" :", value)
+            println("Unable to parse \"documentDescribes\" : ", value)
         end
     else
         println("INFO: Ignoring JSON field ", name)
