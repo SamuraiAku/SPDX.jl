@@ -74,7 +74,7 @@ constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Integer
 function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Nothing, NameTable::Table)
     # Check if :CreationInfo exists in this NameTable (i.e. we're constructing Document level parameters)
     # Check if :ExternalReferences exists in this NameTable (i.e. we're construcing Package level parameters)
-    objectcheck= findfirst(in([:CreationInfo, :ExternalReferences]), NameTable.Symbol)
+    objectcheck= findfirst(in((:CreationInfo, :ExternalReferences)), NameTable.Symbol)
     if isnothing(objectcheck)
         return nothing
     else
