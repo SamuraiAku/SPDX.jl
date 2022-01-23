@@ -31,17 +31,17 @@ compute_additional_JSON_fields!(jsonDoc, doc)= nothing
 # These fields are derived from the document contents
 function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, unused::SpdxDocumentV2)
     docDescribes= Vector{String}()
-    described= Vector{OrderedDict{String, Any}}()
-    for element in jsonDoc["relationships"]
-        if element["relationshipType"] == "DESCRIBES" && element["spdxElementId"] == "SPDXRef-DOCUMENT" 
-            push!(docDescribes, element["relatedSpdxElement"])
-            push!(described, element)
-        elseif element["relationshipType"] == "DESCRIBED_BY" && element["spdxElementId"] == "SPDXRef-DOCUMENT"
-            push!(docDescribes, element["spdxElementId"])
-            push!(described, element)
+    describedidx= Vector{Int}()
+    for idx in 1:length(jsonDoc["relationships"])
+        if jsonDoc["relationships"][idx]["relationshipType"] == "DESCRIBES" && jsonDoc["relationships"][idx]["spdxElementId"] == "SPDXRef-DOCUMENT" 
+            push!(docDescribes, jsonDoc["relationships"][idx]["relatedSpdxElement"])
+            push!(describedidx, idx)
+        elseif jsonDoc["relationships"][idx]["relationshipType"] == "DESCRIBED_BY" && jsonDoc["relationships"][idx]["spdxElementId"] == "SPDXRef-DOCUMENT"
+            push!(docDescribes, jsonDoc["relationships"][idx]["spdxElementId"])
+            push!(describedidx, idx)
         end
     end
-    filter!(!in(described), jsonDoc["relationships"])
+    deleteat!(jsonDoc["relationships"], describedidx)
     if !isempty(docDescribes)
         jsonDoc["documentDescribes"]= docDescribes
     end
