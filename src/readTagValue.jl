@@ -112,8 +112,15 @@ end
 
 #######################
 function set_obj_param!(obj::AbstractSpdx, value, objsym::Symbol)
+    #println(objsym, " ==> ", typeof(obj), ": (", typeof(value), ")  ", value)
     if getproperty(obj, objsym) isa Vector
-        push!(getproperty(obj, objsym), value)
+        if value isa Vector
+            for element in value
+                push!(getproperty(obj, objsym), element)
+            end
+        else
+            push!(getproperty(obj, objsym), value)
+        end
     else
         setproperty!(obj, objsym, value)
     end
