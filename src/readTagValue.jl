@@ -55,7 +55,7 @@ function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, 
         end
     end
 
-    obj= constructor(Tuple(constructorparameters)...)
+    obj= constructor(constructorparameters...)
 
     # Populate the object with any remaining fields
     populatedidx= findall(!ismissing, objparameters)
