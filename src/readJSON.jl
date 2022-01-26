@@ -3,23 +3,22 @@
 convert_from_JSON(element, unused, constructor::Union{Type, Function})= constructor(element)
 
 function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Union{Type, Function})
-    ImmutableIndicies= map(value -> value == false, NameTable.Mutable) # Replace with findall? 
-    paramnames= NameTable.JSONname[ImmutableIndicies]
-    ImmutableParameters= Vector{Any}(missing, length(paramnames))
-    ImmutableTables= NameTable.NameTable[ImmutableIndicies]
-    ImmutableConstructors= NameTable.Constructor[ImmutableIndicies]
-    for idx in 1:length(paramnames)
-        if haskey(JSONfile, paramnames[idx]) 
-            ImmutableParameters[idx]=  convert_from_JSON(JSONfile[paramnames[idx]], ImmutableTables[idx], ImmutableConstructors[idx])
+    constructoridx= map(isequal(false), NameTable.Mutable)
+    constructornames= NameTable.JSONname[constructoridx]
+    constructorparameters= Vector{Any}(missing, length(constructornames))
+    paramtables= NameTable.NameTable[constructoridx]
+    paramconstructors= NameTable.Constructor[constructoridx]
+    for idx in 1:length(constructornames)
+        if haskey(JSONfile, constructornames[idx]) 
+            constructorparameters[idx]=  convert_from_JSON(JSONfile[constructornames[idx]], paramtables[idx], paramconstructors[idx])
         end
     end
-    constructorparams= Tuple(ImmutableParameters)
-    obj= constructor(constructorparams...)
+    obj= constructor(constructorparameters...)
 
-    if sum(ImmutableIndicies) != length(NameTable.Mutable)
+    if length(constructornames) != length(NameTable.Mutable)
         for (name, value) in JSONfile
             idx= findfirst(isequal(name), NameTable.JSONname)
-            if idx === nothing
+            if isnothing(idx)
                 process_additional_JSON_fields!(obj, name, value)
             elseif NameTable.Mutable[idx] == true
                 if value isa Vector
