@@ -1,4 +1,15 @@
 
+abstract type AbstractSpdx end
+abstract type AbstractSpdxElement <: AbstractSpdx end
+abstract type AbstractSpdxData <: AbstractSpdx end
+
+######################################
+function init_MutableFields(NameTable::Table)
+    MutableIndicies= findall(NameTable.Mutable)
+    MutableFields= OrderedDict{Symbol, Any}(NameTable.Symbol[MutableIndicies] .=> deepcopy(NameTable.Default[MutableIndicies]))
+    return MutableFields
+end
+
 
 ######################################
 struct SpdxSimpleLicenseExpressionV2 <: AbstractSpdx
