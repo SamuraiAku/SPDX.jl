@@ -10,10 +10,12 @@ using TimeZones
 
 export AbstractSpdx, AbstractSpdxData, SpdxPackageV2, SpdxSimpleLicenseExpressionV2, SpdxPackageExternalReferenceV2, SpdxNamespaceV2
 export SpdxDocumentV2, SpdxCreatorV2, SpdxDocumentExternalReferenceV2, SpdxRelationshipV2, SpdxCreationInfoV2, SpdxChecksumV2
+export SpdxLicenseInfoV2, SpdxLicenseCrossReferenceV2
 export printJSON, setcreationtime!, SpdxTimeV2, createnamespace!, updatenamespace!
 export addcreator!, getcreators, deletecreator!, printTagValue, readJSON, readTagValue
 
 include("types.jl")
+include("spdxLicense.jl")
 include("spdxRelationship.jl")
 include("spdxPackage.jl")
 include("spdxDocument.jl")
