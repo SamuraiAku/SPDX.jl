@@ -1,25 +1,3 @@
-######################################
-struct SpdxTimeV2 <: AbstractSpdx
-    Time::ZonedDateTime
-
-    function SpdxTimeV2(Time::ZonedDateTime)
-        return new(astimezone(Time, tz"UTC"))
-    end
-end
-
-function SpdxTimeV2(Time::DateTime)
-    SpdxTimeV2(ZonedDateTime(Time, localzone()))
-end
-
-function SpdxTimeV2(Time::AbstractString)
-    spdxTimeFormat= TimeZones.dateformat"yyyy-mm-ddTHH:MM:SSZ"  # The 'Z' at the end is a format code for Time Zone 
-    if Time[end] == 'Z'
-        Time= Time[1:prevind(Time, end, 1)] * "UTC"
-    else
-        println("WARNING: SPDX creation date may not match the specification")
-    end
-    return SpdxTimeV2(ZonedDateTime(Time, spdxTimeFormat))
-end
 
 #############################################
 const SpdxCreationInfoV2_NameTable= Table(
@@ -95,14 +73,14 @@ end
 
 #############################################
 const SpdxDocumentV2_NameTable= Table(
-         Symbol= [ :Version,       :DataLicense,                    :SPDXID,    :Name,           :Namespace,           :ExternalDocReferences,                      :CreationInfo,                   :DocumentComment,   :Packages,                 :LicenseInfo,                  :Relationships],
-        Default= [  nothing,        nothing,                         nothing,    missing,         missing,              Vector{SpdxDocumentExternalReferenceV2}(),   SpdxCreationInfoV2(),            missing,            Vector{SpdxPackageV2}(),   Vector{SpdxLicenseInfoV2}(),   Vector{SpdxRelationshipV2}()],
-        Mutable= [  false,          false,                           false,      true,            true,                 true,                                        true,                            true,               true,                      true,                          true],
-    Constructor= [  string,         SpdxSimpleLicenseExpressionV2,   string,     string,          SpdxNamespaceV2,      SpdxDocumentExternalReferenceV2,             SpdxCreationInfoV2,              string,             SpdxPackageV2,             SpdxLicenseInfoV2,             SpdxRelationshipV2 ],
-      NameTable= [  nothing,        nothing,                         nothing,    nothing,         nothing,              SpdxDocumentExternalReferenceV2_NameTable,   SpdxCreationInfoV2_NameTable,    nothing,            SpdxPackageV2_NameTable,   SpdxLicenseInfoV2_NameTable,   SpdxRelationshipV2_NameTable],
-      Multiline= [  false,          false,                           false,      false,           false,                false,                                       false,                           true,               false,                     false,                         false],
-       JSONname= [  "spdxVersion",  "dataLicense",                   "SPDXID",   "name",          "documentNamespace",  "externalDocumentRefs",                      "creationInfo",                  "comment",          "packages",                "hasExtractedLicensingInfos",  "relationships"],
-   TagValueName= [  "SPDXVersion",  "DataLicense",                   "SPDXID",   "DocumentName",  "DocumentNamespace",  "ExternalDocumentRef",                       nothing,                         "DocumentComment",  "PackageName",             "LicenseID",                   "Relationship"] 
+         Symbol= [ :Version,       :DataLicense,                    :SPDXID,    :Name,           :Namespace,           :ExternalDocReferences,                      :CreationInfo,                   :DocumentComment,   :Packages,                 :LicenseInfo,                  :Relationships,                :Annotations],
+        Default= [  nothing,        nothing,                         nothing,    missing,         missing,              Vector{SpdxDocumentExternalReferenceV2}(),   SpdxCreationInfoV2(),            missing,            Vector{SpdxPackageV2}(),   Vector{SpdxLicenseInfoV2}(),   Vector{SpdxRelationshipV2}(),  Vector{SpdxAnnotationV2}()],
+        Mutable= [  false,          false,                           false,      true,            true,                 true,                                        true,                            true,               true,                      true,                          true,                          true],
+    Constructor= [  string,         SpdxSimpleLicenseExpressionV2,   string,     string,          SpdxNamespaceV2,      SpdxDocumentExternalReferenceV2,             SpdxCreationInfoV2,              string,             SpdxPackageV2,             SpdxLicenseInfoV2,             SpdxRelationshipV2,            SpdxAnnotationV2],
+      NameTable= [  nothing,        nothing,                         nothing,    nothing,         nothing,              SpdxDocumentExternalReferenceV2_NameTable,   SpdxCreationInfoV2_NameTable,    nothing,            SpdxPackageV2_NameTable,   SpdxLicenseInfoV2_NameTable,   SpdxRelationshipV2_NameTable,  SpdxAnnotationV2_NameTable],
+      Multiline= [  false,          false,                           false,      false,           false,                false,                                       false,                           true,               false,                     false,                         false,                         false],
+       JSONname= [  "spdxVersion",  "dataLicense",                   "SPDXID",   "name",          "documentNamespace",  "externalDocumentRefs",                      "creationInfo",                  "comment",          "packages",                "hasExtractedLicensingInfos",  "relationships",               "annotations"],
+   TagValueName= [  "SPDXVersion",  "DataLicense",                   "SPDXID",   "DocumentName",  "DocumentNamespace",  "ExternalDocumentRef",                       nothing,                         "DocumentComment",  "PackageName",             "LicenseID",                   "Relationship",                "Annotator"] 
 )
 
 struct SpdxDocumentV2 <: AbstractSpdxData

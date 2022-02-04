@@ -15,6 +15,7 @@ export printJSON, setcreationtime!, SpdxTimeV2, createnamespace!, updatenamespac
 export addcreator!, getcreators, deletecreator!, printTagValue, readJSON, readTagValue
 
 include("types.jl")
+include("spdxAnnotation.jl")
 include("spdxLicense.jl")
 include("spdxRelationship.jl")
 include("spdxPackage.jl")

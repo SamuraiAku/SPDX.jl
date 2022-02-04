@@ -88,6 +88,29 @@ function SpdxCreatorV2(Creator::AbstractString)
 end
 
 ######################################
+struct SpdxTimeV2 <: AbstractSpdx
+    Time::ZonedDateTime
+
+    function SpdxTimeV2(Time::ZonedDateTime)
+        return new(astimezone(Time, tz"UTC"))
+    end
+end
+
+function SpdxTimeV2(Time::DateTime)
+    SpdxTimeV2(ZonedDateTime(Time, localzone()))
+end
+
+function SpdxTimeV2(Time::AbstractString)
+    spdxTimeFormat= TimeZones.dateformat"yyyy-mm-ddTHH:MM:SSZ"  # The 'Z' at the end is a format code for Time Zone 
+    if Time[end] == 'Z'
+        Time= Time[1:prevind(Time, end, 1)] * "UTC"
+    else
+        println("WARNING: SPDX creation date may not match the specification")
+    end
+    return SpdxTimeV2(ZonedDateTime(Time, spdxTimeFormat))
+end
+
+######################################
 const SpdxChecksumV2_NameTable= Table(
          Symbol= [ :Algorithm,   :Hash           ],
         Mutable= [  false,        false          ],
