@@ -10,6 +10,7 @@ function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, F
     TVdata= read_from_TagValue(TVfile)
     pushfirst!(TVdata.TagValues, NextSection)
     spdxdoc= convert_from_TagValue(TVdata.TagValues, NameTable, constructor)
+    deferredData= Vector{Tuple}()
 
     NextSection= TVdata.NextSection
     while !isnothing(NextSection)
@@ -24,8 +25,16 @@ function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, F
         end
 
         obj= convert_from_TagValue(TVdata.TagValues, NameTable.NameTable[sectionidx], NameTable.Constructor[sectionidx])
-        set_obj_param!(spdxdoc, obj, NameTable.Symbol[sectionidx] )
+        if obj isa Tuple
+            push!(deferredData, obj)
+        else
+            set_obj_param!(spdxdoc, obj, NameTable.Symbol[sectionidx] )
+        end
         NextSection= TVdata.NextSection
+    end
+
+    for data in deferredData
+        set_obj_deferred_param!(spdxdoc, data)
     end
 
     return spdxdoc
@@ -38,13 +47,19 @@ function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, 
     constructoridx= findall(.!NameTable.Mutable::Vector{Bool} .& (NameTable.TagValueName .!== nothing))
     constructorparameters= Vector{Any}(missing, length(constructoridx))
     objparameters= Vector{Any}(missing, length(tags))
+    Annotation_SPDXREF::Union{Nothing, AbstractString}= nothing
 
     # Process all the TagValue pairs
     for tagidx in 1:length(tags)
         paramidx= findfirst(isequal(tags[tagidx]), TagValueNames)
         value= constructvalue(tagidx, TagValues, paramidx, NameTable)
         if isnothing(value)
-            println("INFO: Ignoring Tag ", tags[tagidx])
+            if tags[tagidx] == "SPDXREF"
+                # This case happens only with Annotations, a very small percentage of the whole file
+                Annotation_SPDXREF= TagValues[tagidx]["Value"]
+            else
+                println("INFO: Ignoring Tag ", tags[tagidx])
+            end
         else
             idx= findfirst(isequal(paramidx), constructoridx)
             if idx isa Integer
@@ -65,7 +80,11 @@ function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, 
         set_from_TagValue!(obj, parameter, paramidx, tags[idx], NameTable)
     end
 
-    return obj
+    if isnothing(Annotation_SPDXREF)
+        return obj
+    else
+        return (Annotation_SPDXREF, obj)
+    end
 end
 
 #######################
@@ -116,6 +135,21 @@ function set_obj_param!(obj::AbstractSpdx, value, objsym::Symbol)
         push!(getproperty(obj, objsym), value)
     else
         setproperty!(obj, objsym, value)
+    end
+end
+
+#######################
+function set_obj_deferred_param!(doc::SpdxDocumentV2, param::Tuple{AbstractString, SpdxAnnotationV2})
+    # Check the document, package, file, and snippet SPDXIDs and find a match
+    if param[1] == doc.SPDXID
+        push!(doc.Annotations, param[2])
+        return
+    end
+
+    packagecheck= findfirst(isequal(param[1]), getproperty.(doc.Packages, :SPDXID))
+    if packagecheck isa Int
+        push!(doc.Packages[packagecheck].Annotations, param[2])
+        return
     end
 end
 

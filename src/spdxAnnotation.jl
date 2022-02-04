@@ -9,7 +9,7 @@ const SpdxAnnotationV2_NameTable= Table(
       NameTable= [  nothing,          nothing,            nothing,              nothing], 
       Multiline= [  false,            false,              true,                 true],
        JSONname= [ "annotator",       "annotationDate",   "annotationType",     "comment"],
-   TagValueName= [ "Annotator",       "AnnotationDate",   "AnnotationType",     "CreatorComment"],
+   TagValueName= [ "Annotator",       "AnnotationDate",   "AnnotationType",     "AnnotationComment"],
 )
 
 struct SpdxAnnotationV2 <: AbstractSpdxData
