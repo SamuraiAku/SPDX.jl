@@ -1,5 +1,11 @@
 
-function convert_to_TagValue!(TagValueDoc::IO, doc::AbstractSpdx, NameTable::Table)
+function convert_to_TagValue!(TagValueDoc::IO, doc::AbstractSpdx, NameTable::Table, SPDXREF::AbstractString= "")
+    if hasproperty(doc, :SPDXID)
+        SPDXID= doc.SPDXID
+    else
+        SPDXID= ""
+    end
+
     for idx in range(1,length= length(NameTable))
         fieldval= getproperty(doc, NameTable.Symbol[idx])
         (ismissing(fieldval) || (isa(fieldval, Vector) && isempty(fieldval))) && continue  # goto next symbol if this one has no data
@@ -16,24 +22,28 @@ function convert_to_TagValue!(TagValueDoc::IO, doc::AbstractSpdx, NameTable::Tab
         else
             if fieldval isa Vector
                 for element in fieldval
-                    convert_to_TagValue!(TagValueDoc, element, NameTable.NameTable[idx])
+                    convert_to_TagValue!(TagValueDoc, element, NameTable.NameTable[idx], SPDXID)
                 end
             else
-                convert_to_TagValue!(TagValueDoc, fieldval, NameTable.NameTable[idx])
+                convert_to_TagValue!(TagValueDoc, fieldval, NameTable.NameTable[idx], SPDXID)
             end
         end
+    end
+
+    if !isempty(SPDXREF)  && (doc isa SpdxAnnotationV2)
+        write(TagValueDoc, "SPDXREF: " * SPDXREF * "\n")
     end
     write(TagValueDoc, "\n\n####\n")
     return nothing
 end
 
 # TODO: Work on a generic function for these types of structures
-function convert_to_TagValue!(TagValueDoc::IO, PkgRef::SpdxPackageExternalReferenceV2, NameTable::Table)
+function convert_to_TagValue!(TagValueDoc::IO, PkgRef::SpdxPackageExternalReferenceV2, NameTable::Table, unused::AbstractString)
     write_TagValue!(TagValueDoc, PkgRef.Category * " " * PkgRef.RefType * " " * PkgRef.Locator, NameTable.TagValueName[1], NameTable.Multiline[1])
     ismissing(PkgRef.Comment) || write_TagValue!(TagValueDoc, PkgRef.Comment, NameTable.TagValueName[4], NameTable.Multiline[4])
 end
 
-function convert_to_TagValue!(TagValueDoc::IO, relationship::SpdxRelationshipV2, NameTable::Table)
+function convert_to_TagValue!(TagValueDoc::IO, relationship::SpdxRelationshipV2, NameTable::Table, unused::AbstractString)
     write_TagValue!(TagValueDoc, relationship.SPDXID * "  " * relationship.RelationshipType * "  " * relationship.RelatedSPDXID, NameTable.TagValueName[1], NameTable.Multiline[1])
     ismissing(relationship.Comment) || write_TagValue!(TagValueDoc, relationship.Comment, NameTable.TagValueName[4], NameTable.Multiline[4])
 end
