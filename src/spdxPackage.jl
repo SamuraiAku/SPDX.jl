@@ -33,6 +33,8 @@ function SpdxPackageExternalReferenceV2(TVstring::AbstractString)
     return SpdxPackageExternalReferenceV2(match_reference["Category"], match_reference["Type"], match_reference["Locator"])
 end
 
+precompile(string, (SpdxPackageExternalReferenceV2,))
+
 ######################################
 const SpdxPkgVerificationCodeV2_NameTable= Table(
          Symbol= [ :Hash,                           :ExcludedFiles  ],
@@ -81,6 +83,8 @@ function SpdxPkgVerificationCodeV2(VerifCodeString::AbstractString)
     return obj
 end
 
+precompile(string, (SpdxPkgVerificationCodeV2,))
+
 #############################################
 const SpdxPackageV2_NameTable= Table(  
          Symbol= [ :Name,              :SPDXID,   :Version,          :FileName,          :Supplier,          :Originator,          :DownloadLocation,          :FilesAnalyzed,   :VerificationCode,                      :Checksums,                 :HomePage,          :SourceInfo,          :LicenseConcluded,                :LicenseInfoFromFiles,                    :LicenseDeclared,                  :LicenseComments,          :Copyright,              :Summary,          :DetailedDescription,   :Comment,          :ExternalReferences,                        :Attributions,               :Annotations],
@@ -103,3 +107,5 @@ function SpdxPackageV2(SPDXID::AbstractString)
     MutableFields= init_MutableFields(SpdxPackageV2_NameTable)
     return SpdxPackageV2(SPDXID, MutableFields)
 end
+
+precompile(string, (SpdxPackageV2,))

@@ -44,6 +44,8 @@ function SpdxSimpleLicenseExpressionV2(LicenseString::AbstractString)
     return obj
 end
 
+precompile(string, (SpdxSimpleLicenseExpressionV2,))
+
 
 ######################################
 struct SpdxCreatorV2 <: AbstractSpdx
@@ -87,6 +89,8 @@ function SpdxCreatorV2(Creator::AbstractString)
     return obj
 end
 
+precompile(string, (SpdxCreatorV2,))
+
 ######################################
 struct SpdxTimeV2 <: AbstractSpdx
     Time::ZonedDateTime
@@ -109,6 +113,8 @@ function SpdxTimeV2(Time::AbstractString)
     end
     return SpdxTimeV2(ZonedDateTime(Time, spdxTimeFormat))
 end
+
+precompile(string, (SpdxTimeV2,))
 
 ######################################
 const SpdxChecksumV2_NameTable= Table(
@@ -151,3 +157,5 @@ function SpdxChecksumV2(ChecksumString::AbstractString)
 
     return obj
 end
+
+precompile(string, (SpdxChecksumV2,))

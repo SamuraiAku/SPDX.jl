@@ -26,6 +26,8 @@ function SpdxLicenseCrossReferenceV2(URL::AbstractString)
     obj.URL= URL
 end
 
+precompile(string, (SpdxLicenseCrossReferenceV2,))
+
 
 ######################################
 const SpdxLicenseInfoV2_NameTable= Table(
@@ -48,3 +50,5 @@ function SpdxLicenseInfoV2(LicenseID::AbstractString)
     MutableFields= init_MutableFields(SpdxLicenseInfoV2_NameTable)
     return SpdxLicenseInfoV2(LicenseID, MutableFields)
 end
+
+precompile(string, (SpdxLicenseInfoV2,))

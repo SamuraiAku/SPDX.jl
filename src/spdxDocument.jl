@@ -20,6 +20,8 @@ function SpdxCreationInfoV2()
     return SpdxCreationInfoV2(MutableFields)
 end
 
+precompile(string, (SpdxCreationInfoV2,))
+
 ######################################
 struct SpdxNamespaceV2 <: AbstractSpdx
     URI::String
@@ -49,6 +51,8 @@ function SpdxNamespaceV2(Namespace::AbstractString)
     return obj
 end
 
+precompile(string, (SpdxNamespaceV2,))
+
 ######################################
 const SpdxDocumentExternalReferenceV2_NameTable= Table(
          Symbol= [ :SPDXID,              :Namespace,       :Checksum,   ],
@@ -70,6 +74,8 @@ function SpdxDocumentExternalReferenceV2(TVstring::AbstractString)
     match_reference= match(regex_reference, TVstring)
     return SpdxDocumentExternalReferenceV2(match_reference["SPDXID"], SpdxNamespaceV2(match_reference["Namespace"]), SpdxChecksumV2(match_reference["Checksum"]))
 end
+
+precompile(string, (SpdxDocumentExternalReferenceV2,))
 
 #############################################
 const SpdxDocumentV2_NameTable= Table(
@@ -99,3 +105,5 @@ function SpdxDocumentV2(Version::AbstractString, DataLicense::SpdxSimpleLicenseE
     MutableFields= init_MutableFields(SpdxDocumentV2_NameTable)
     return SpdxDocumentV2(Version, DataLicense, SPDXID, MutableFields)
 end
+
+precompile(string, (SpdxDocumentV2,))
