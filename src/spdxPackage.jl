@@ -109,3 +109,10 @@ function SpdxPackageV2(SPDXID::AbstractString)
 end
 
 precompile(string, (SpdxPackageV2,))
+precompile(Pair, (Symbol, Vector{SpdxChecksumV2}))
+precompile(Pair, (Symbol, Vector{SpdxSimpleLicenseExpressionV2}))
+precompile(Pair, (Symbol, Vector{SpdxPackageExternalReferenceV2}))
+
+precompile(deepcopy, (Vector{SpdxChecksumV2},))
+precompile(deepcopy, (Vector{SpdxSimpleLicenseExpressionV2},))
+precompile(deepcopy, (Vector{SpdxPackageExternalReferenceV2},))

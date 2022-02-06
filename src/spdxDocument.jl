@@ -21,6 +21,8 @@ function SpdxCreationInfoV2()
 end
 
 precompile(string, (SpdxCreationInfoV2,))
+precompile(Pair, (Symbol, Vector{SpdxCreatorV2}))
+precompile(deepcopy, (Vector{SpdxCreatorV2},))
 
 ######################################
 struct SpdxNamespaceV2 <: AbstractSpdx
@@ -107,3 +109,16 @@ function SpdxDocumentV2(Version::AbstractString, DataLicense::SpdxSimpleLicenseE
 end
 
 precompile(string, (SpdxDocumentV2,))
+precompile(Pair, (Symbol, Vector{SpdxDocumentExternalReferenceV2}))
+precompile(Pair, (Symbol, SpdxCreationInfoV2))
+precompile(Pair, (Symbol, Vector{SpdxPackageV2}))
+precompile(Pair, (Symbol, Vector{SpdxLicenseInfoV2}))
+precompile(Pair, (Symbol, Vector{SpdxRelationshipV2}))
+precompile(Pair, (Symbol, Vector{SpdxAnnotationV2}))
+
+precompile(deepcopy, (Vector{SpdxDocumentExternalReferenceV2},))
+precompile(deepcopy, (SpdxCreationInfoV2,))
+precompile(deepcopy, (Vector{SpdxPackageV2},))
+precompile(deepcopy, (Vector{SpdxLicenseInfoV2},))
+precompile(deepcopy, (Vector{SpdxRelationshipV2},))
+precompile(deepcopy, (Vector{SpdxAnnotationV2},))

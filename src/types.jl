@@ -10,6 +10,8 @@ function init_MutableFields(NameTable::Table)
     return MutableFields
 end
 
+precompile(Pair, (Symbol, Vector{String}))
+precompile(Pair, (Symbol, Missing))
 
 ######################################
 struct SpdxSimpleLicenseExpressionV2 <: AbstractSpdx
