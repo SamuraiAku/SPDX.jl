@@ -27,6 +27,7 @@ function SpdxLicenseCrossReferenceV2(URL::AbstractString)
 end
 
 precompile(string, (SpdxLicenseCrossReferenceV2,))
+precompile(init_MutableFields, (typeof(SpdxLicenseCrossReferenceV2_NameTable),))
 
 
 ######################################
@@ -52,3 +53,4 @@ function SpdxLicenseInfoV2(LicenseID::AbstractString)
 end
 
 precompile(string, (SpdxLicenseInfoV2,))
+precompile(init_MutableFields, (typeof(SpdxLicenseInfoV2_NameTable),))

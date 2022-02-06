@@ -36,3 +36,4 @@ end
 # TODO : Support external document references
 
 precompile(string, (SpdxRelationshipV2,))
+precompile(init_MutableFields, (typeof(SpdxRelationshipV2_NameTable),))

@@ -22,3 +22,4 @@ function SpdxAnnotationV2()
 end
 
 precompile(string, (SpdxAnnotationV2,))
+precompile(init_MutableFields, (typeof(SpdxAnnotationV2_NameTable),))

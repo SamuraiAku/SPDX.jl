@@ -23,6 +23,7 @@ end
 precompile(string, (SpdxCreationInfoV2,))
 precompile(Pair, (Symbol, Vector{SpdxCreatorV2}))
 precompile(deepcopy, (Vector{SpdxCreatorV2},))
+precompile(init_MutableFields, (typeof(SpdxCreationInfoV2_NameTable),))
 
 ######################################
 struct SpdxNamespaceV2 <: AbstractSpdx
@@ -122,3 +123,5 @@ precompile(deepcopy, (Vector{SpdxPackageV2},))
 precompile(deepcopy, (Vector{SpdxLicenseInfoV2},))
 precompile(deepcopy, (Vector{SpdxRelationshipV2},))
 precompile(deepcopy, (Vector{SpdxAnnotationV2},))
+
+precompile(init_MutableFields, (typeof(SpdxDocumentV2_NameTable),))

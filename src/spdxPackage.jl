@@ -34,6 +34,7 @@ function SpdxPackageExternalReferenceV2(TVstring::AbstractString)
 end
 
 precompile(string, (SpdxPackageExternalReferenceV2,))
+precompile(init_MutableFields, (typeof(SpdxPackageExternalReferenceV2_NameTable),))
 
 ######################################
 const SpdxPkgVerificationCodeV2_NameTable= Table(
@@ -116,3 +117,5 @@ precompile(Pair, (Symbol, Vector{SpdxPackageExternalReferenceV2}))
 precompile(deepcopy, (Vector{SpdxChecksumV2},))
 precompile(deepcopy, (Vector{SpdxSimpleLicenseExpressionV2},))
 precompile(deepcopy, (Vector{SpdxPackageExternalReferenceV2},))
+
+precompile(init_MutableFields, (typeof(SpdxPackageV2_NameTable),))
