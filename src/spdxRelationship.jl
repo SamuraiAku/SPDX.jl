@@ -34,6 +34,3 @@ end
 # TODO : Validate the RelationshipType
 # TODO : Check if the IDs are present when added to a Document
 # TODO : Support external document references
-
-precompile(string, (SpdxRelationshipV2,))
-precompile(init_MutableFields, (typeof(SpdxRelationshipV2_NameTable),))

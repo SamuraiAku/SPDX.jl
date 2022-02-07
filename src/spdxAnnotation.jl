@@ -20,6 +20,3 @@ function SpdxAnnotationV2()
     MutableFields= init_MutableFields(SpdxAnnotationV2_NameTable)
     return SpdxAnnotationV2(MutableFields)
 end
-
-precompile(string, (SpdxAnnotationV2,))
-precompile(init_MutableFields, (typeof(SpdxAnnotationV2_NameTable),))

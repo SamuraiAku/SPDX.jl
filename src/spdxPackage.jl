@@ -33,8 +33,6 @@ function SpdxPackageExternalReferenceV2(TVstring::AbstractString)
     return SpdxPackageExternalReferenceV2(match_reference["Category"], match_reference["Type"], match_reference["Locator"])
 end
 
-precompile(string, (SpdxPackageExternalReferenceV2,))
-precompile(init_MutableFields, (typeof(SpdxPackageExternalReferenceV2_NameTable),))
 
 ######################################
 const SpdxPkgVerificationCodeV2_NameTable= Table(
@@ -84,7 +82,6 @@ function SpdxPkgVerificationCodeV2(VerifCodeString::AbstractString)
     return obj
 end
 
-precompile(string, (SpdxPkgVerificationCodeV2,))
 
 #############################################
 const SpdxPackageV2_NameTable= Table(  
@@ -108,14 +105,3 @@ function SpdxPackageV2(SPDXID::AbstractString)
     MutableFields= init_MutableFields(SpdxPackageV2_NameTable)
     return SpdxPackageV2(SPDXID, MutableFields)
 end
-
-precompile(string, (SpdxPackageV2,))
-precompile(Pair, (Symbol, Vector{SpdxChecksumV2}))
-precompile(Pair, (Symbol, Vector{SpdxSimpleLicenseExpressionV2}))
-precompile(Pair, (Symbol, Vector{SpdxPackageExternalReferenceV2}))
-
-precompile(deepcopy, (Vector{SpdxChecksumV2},))
-precompile(deepcopy, (Vector{SpdxSimpleLicenseExpressionV2},))
-precompile(deepcopy, (Vector{SpdxPackageExternalReferenceV2},))
-
-precompile(init_MutableFields, (typeof(SpdxPackageV2_NameTable),))

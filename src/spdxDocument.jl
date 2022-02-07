@@ -20,10 +20,6 @@ function SpdxCreationInfoV2()
     return SpdxCreationInfoV2(MutableFields)
 end
 
-precompile(string, (SpdxCreationInfoV2,))
-precompile(Pair, (Symbol, Vector{SpdxCreatorV2}))
-precompile(deepcopy, (Vector{SpdxCreatorV2},))
-precompile(init_MutableFields, (typeof(SpdxCreationInfoV2_NameTable),))
 
 ######################################
 struct SpdxNamespaceV2 <: AbstractSpdx
@@ -54,7 +50,6 @@ function SpdxNamespaceV2(Namespace::AbstractString)
     return obj
 end
 
-precompile(string, (SpdxNamespaceV2,))
 
 ######################################
 const SpdxDocumentExternalReferenceV2_NameTable= Table(
@@ -77,8 +72,6 @@ function SpdxDocumentExternalReferenceV2(TVstring::AbstractString)
     match_reference= match(regex_reference, TVstring)
     return SpdxDocumentExternalReferenceV2(match_reference["SPDXID"], SpdxNamespaceV2(match_reference["Namespace"]), SpdxChecksumV2(match_reference["Checksum"]))
 end
-
-precompile(string, (SpdxDocumentExternalReferenceV2,))
 
 #############################################
 const SpdxDocumentV2_NameTable= Table(
@@ -108,20 +101,3 @@ function SpdxDocumentV2(Version::AbstractString, DataLicense::SpdxSimpleLicenseE
     MutableFields= init_MutableFields(SpdxDocumentV2_NameTable)
     return SpdxDocumentV2(Version, DataLicense, SPDXID, MutableFields)
 end
-
-precompile(string, (SpdxDocumentV2,))
-precompile(Pair, (Symbol, Vector{SpdxDocumentExternalReferenceV2}))
-precompile(Pair, (Symbol, SpdxCreationInfoV2))
-precompile(Pair, (Symbol, Vector{SpdxPackageV2}))
-precompile(Pair, (Symbol, Vector{SpdxLicenseInfoV2}))
-precompile(Pair, (Symbol, Vector{SpdxRelationshipV2}))
-precompile(Pair, (Symbol, Vector{SpdxAnnotationV2}))
-
-precompile(deepcopy, (Vector{SpdxDocumentExternalReferenceV2},))
-precompile(deepcopy, (SpdxCreationInfoV2,))
-precompile(deepcopy, (Vector{SpdxPackageV2},))
-precompile(deepcopy, (Vector{SpdxLicenseInfoV2},))
-precompile(deepcopy, (Vector{SpdxRelationshipV2},))
-precompile(deepcopy, (Vector{SpdxAnnotationV2},))
-
-precompile(init_MutableFields, (typeof(SpdxDocumentV2_NameTable),))

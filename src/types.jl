@@ -10,8 +10,7 @@ function init_MutableFields(NameTable::Table)
     return MutableFields
 end
 
-precompile(Pair, (Symbol, Vector{String}))
-precompile(Pair, (Symbol, Missing))
+
 
 ######################################
 struct SpdxSimpleLicenseExpressionV2 <: AbstractSpdx
@@ -45,8 +44,6 @@ function SpdxSimpleLicenseExpressionV2(LicenseString::AbstractString)
     obj= SpdxSimpleLicenseExpressionV2(match_LicenseId["LicenseId"], Exception)
     return obj
 end
-
-precompile(string, (SpdxSimpleLicenseExpressionV2,))
 
 
 ######################################
@@ -91,7 +88,6 @@ function SpdxCreatorV2(Creator::AbstractString)
     return obj
 end
 
-precompile(string, (SpdxCreatorV2,))
 
 ######################################
 struct SpdxTimeV2 <: AbstractSpdx
@@ -115,8 +111,6 @@ function SpdxTimeV2(Time::AbstractString)
     end
     return SpdxTimeV2(ZonedDateTime(Time, spdxTimeFormat))
 end
-
-precompile(string, (SpdxTimeV2,))
 
 ######################################
 const SpdxChecksumV2_NameTable= Table(
@@ -159,5 +153,3 @@ function SpdxChecksumV2(ChecksumString::AbstractString)
 
     return obj
 end
-
-precompile(string, (SpdxChecksumV2,))
