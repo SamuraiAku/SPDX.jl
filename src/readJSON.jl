@@ -2,7 +2,7 @@
 # Default
 convert_from_JSON(element, unused, constructor::Union{Type, Function})= constructor(element)
 
-function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Union{Type, Function})
+function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Type)
     constructoridx= map(isequal(false), NameTable.Mutable)
     constructornames= NameTable.JSONname[constructoridx]
     constructorparameters= Vector{Any}(missing, length(constructornames))
@@ -13,7 +13,7 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
             constructorparameters[idx]=  convert_from_JSON(JSONfile[constructornames[idx]], paramtables[idx], paramconstructors[idx])
         end
     end
-    obj= constructor(constructorparameters...)
+    obj= constructobj_json(constructor, Tuple(constructorparameters))
 
     if length(constructornames) != length(NameTable.Mutable)
         for (name, value) in JSONfile
@@ -37,8 +37,12 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
     return obj
 end
 
+
 ############
-function process_additional_JSON_fields!(obj, name, value)
+constructobj_json(constructor::Type, params::Tuple)= constructor(params...)
+
+############
+function process_additional_JSON_fields!(obj, name::AbstractString, value)
     println("INFO: Ignoring JSON field ", name)
     return nothing
 end
