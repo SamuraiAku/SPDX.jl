@@ -40,6 +40,7 @@ function __init__()
     precompile(propertynames, (SpdxRelationshipV2,))
     precompile(convert_to_JSON, (SpdxRelationshipV2, typeof(SpdxRelationshipV2_NameTable)))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxRelationshipV2_NameTable), Type{SpdxRelationshipV2}))
+    precompile(convert_to_TagValue!, (IOBuffer, SpdxRelationshipV2, typeof(SpdxRelationshipV2_NameTable), String))
 
     #### SpdxSimpleLicenseExpressionV2
     b= string(SpdxSimpleLicenseExpressionV2("MIT"))
@@ -57,6 +58,7 @@ function __init__()
     e= string(SpdxChecksumV2("SHA1: 85ed0817af83a24ad8da68c2b5094de69833983c"))
     precompile(convert_to_JSON, (SpdxChecksumV2, typeof(SpdxChecksumV2_NameTable)))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxChecksumV2_NameTable), Type{SpdxChecksumV2}))
+    precompile(convert_to_TagValue!, (IOBuffer, SpdxChecksumV2, typeof(SpdxChecksumV2_NameTable), String))
 
     #### SpdxAnnotationV2
     f= string(SpdxAnnotationV2())
@@ -65,6 +67,7 @@ function __init__()
     precompile(propertynames, (SpdxAnnotationV2,))
     precompile(convert_to_JSON, (SpdxAnnotationV2, typeof(SpdxAnnotationV2_NameTable)))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxAnnotationV2_NameTable), Type{SpdxAnnotationV2}))
+    precompile(convert_to_TagValue!, (IOBuffer, SpdxAnnotationV2, typeof(SpdxAnnotationV2_NameTable), String))
 
     #### SpdxLicenseInfoV2
     g= string(SpdxLicenseInfoV2("LicID"))
@@ -73,6 +76,7 @@ function __init__()
     precompile(propertynames, (SpdxLicenseInfoV2,))
     precompile(convert_to_JSON, (SpdxLicenseInfoV2, typeof(SpdxLicenseInfoV2_NameTable)))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxLicenseInfoV2_NameTable), Type{SpdxLicenseInfoV2}))
+    precompile(convert_to_TagValue!, (IOBuffer, SpdxLicenseInfoV2, typeof(SpdxLicenseInfoV2_NameTable), String))
 
 
     #### SpdxLicenseCrossReferenceV2
@@ -82,7 +86,8 @@ function __init__()
     precompile(propertynames, (SpdxLicenseCrossReferenceV2,))
     precompile(convert_to_JSON, (SpdxLicenseCrossReferenceV2, typeof(SpdxLicenseCrossReferenceV2_NameTable)))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxLicenseCrossReferenceV2_NameTable), Type{SpdxLicenseCrossReferenceV2}))
-    
+    precompile(convert_to_TagValue!, (IOBuffer, SpdxLicenseCrossReferenceV2, typeof(SpdxLicenseCrossReferenceV2_NameTable), String))
+
     #### SpdxPackageExternalReferenceV2
     i= string(SpdxPackageExternalReferenceV2("SECURITY cpe23Type cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*"))
     precompile(getproperty,   (SpdxPackageExternalReferenceV2, Symbol))
@@ -90,7 +95,7 @@ function __init__()
     precompile(propertynames, (SpdxPackageExternalReferenceV2,))
     precompile(convert_to_JSON, (SpdxPackageExternalReferenceV2, typeof(SpdxPackageExternalReferenceV2_NameTable)))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxPackageExternalReferenceV2_NameTable), Type{SpdxPackageExternalReferenceV2}))
-
+    precompile(convert_to_TagValue!, (IOBuffer, SpdxPackageExternalReferenceV2, typeof(SpdxPackageExternalReferenceV2_NameTable), String))
     
     #### SpdxPkgVerificationCodeV2
     j= string(SpdxPkgVerificationCodeV2("d6a770ba38583ed4bb4525bd96e50461655d2758 (excludes: ./package.spdx)"))
@@ -105,6 +110,7 @@ function __init__()
     precompile(propertynames, (SpdxPackageV2,))
     precompile(convert_to_JSON, (SpdxPackageV2, typeof(SpdxPackageV2_NameTable)))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxPackageV2_NameTable), Type{SpdxPackageV2}))
+    precompile(convert_to_TagValue!, (IOBuffer, SpdxPackageV2, typeof(SpdxPackageV2_NameTable), String))
 
 
     #### SpdxCreationInfoV2
@@ -114,6 +120,7 @@ function __init__()
     precompile(propertynames, (SpdxCreationInfoV2,))
     precompile(convert_to_JSON, (SpdxCreationInfoV2, typeof(SpdxCreationInfoV2_NameTable)))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxCreationInfoV2_NameTable), Type{SpdxCreationInfoV2}))
+    precompile(convert_to_TagValue!, (IOBuffer, SpdxCreationInfoV2, typeof(SpdxCreationInfoV2_NameTable), String))
 
     #### SpdxNamespaceV2
     m= string(SpdxNamespaceV2("http://spdx.org/spdxdocs/spdx-example-444504E0-4F89-41D3-9A0C-0305E82C3301"))
@@ -133,6 +140,7 @@ function __init__()
     precompile(compute_additional_JSON_fields!, (OrderedDict{String, Any}, SpdxDocumentV2))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxDocumentV2_NameTable), Type{SpdxDocumentV2}))
     precompile(process_additional_JSON_fields!, (SpdxDocumentV2, String, String))
+    precompile(convert_to_TagValue!, (IOBuffer, SpdxDocumentV2, typeof(SpdxDocumentV2_NameTable), String))
 
     #### Other
     precompile(convert_from_JSON, (Bool, Nothing, Type{Bool}))
