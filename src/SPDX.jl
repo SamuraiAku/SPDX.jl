@@ -41,6 +41,7 @@ function __init__()
     precompile(convert_to_JSON, (SpdxRelationshipV2, typeof(SpdxRelationshipV2_NameTable)))
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxRelationshipV2_NameTable), Type{SpdxRelationshipV2}))
     precompile(convert_to_TagValue!, (IOBuffer, SpdxRelationshipV2, typeof(SpdxRelationshipV2_NameTable), String))
+    precompile(convert_from_TagValue, (Vector{RegexMatch}, typeof(SpdxRelationshipV2_NameTable), Type{SpdxRelationshipV2}))
 
     #### SpdxSimpleLicenseExpressionV2
     b= string(SpdxSimpleLicenseExpressionV2("MIT"))
@@ -141,9 +142,12 @@ function __init__()
     precompile(convert_from_JSON, (Dict{String, Any}, typeof(SpdxDocumentV2_NameTable), Type{SpdxDocumentV2}))
     precompile(process_additional_JSON_fields!, (SpdxDocumentV2, String, String))
     precompile(convert_to_TagValue!, (IOBuffer, SpdxDocumentV2, typeof(SpdxDocumentV2_NameTable), String))
+    precompile(parse_TagValue, (IOStream, typeof(SpdxDocumentV2_NameTable), Type{SpdxDocumentV2}))
+    precompile(convert_from_TagValue, (Vector{RegexMatch}, typeof(SpdxDocumentV2_NameTable), Type{SpdxDocumentV2}))
 
     #### Other
     precompile(convert_from_JSON, (Bool, Nothing, Type{Bool}))
+    precompile(read_from_TagValue, (IOStream,))
     
     
 end

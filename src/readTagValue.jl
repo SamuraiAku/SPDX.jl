@@ -1,4 +1,4 @@
-function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, Function})
+function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Type)
     TVdata= read_from_TagValue(TVfile) # TagValues will be empty, only NextSection will be filled
 
     if TVdata.NextSection["Tag"] != NameTable.TagValueName[1]
@@ -41,7 +41,7 @@ function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, F
 end
 
 #######################
-function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, constructor::Union{Type, Function})
+function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, constructor::Type)
     TagValueNames= NameTable.TagValueName
     tags::Vector{SubString}= getindex.(getproperty.(TagValues, :captures), 1)
     constructoridx= findall(.!NameTable.Mutable::Vector{Bool} .& (NameTable.TagValueName .!== nothing))
