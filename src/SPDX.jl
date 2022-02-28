@@ -18,6 +18,7 @@ include("types.jl")
 include("spdxAnnotation.jl")
 include("spdxLicense.jl")
 include("spdxRelationship.jl")
+include("spdxSnippet.jl")
 include("spdxFile.jl")
 include("spdxPackage.jl")
 include("spdxDocument.jl")
@@ -67,6 +68,8 @@ function __init__()
         (SpdxLicenseCrossReferenceV2,     SpdxLicenseCrossReferenceV2_NameTable,     Tuple(()),                 Dict{String, Any}),
         (SpdxPackageExternalReferenceV2,  SpdxPackageExternalReferenceV2_NameTable,  ("SECURITY cpe23Type cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*",), Dict{String, Any}),
         (SpdxPkgVerificationCodeV2,       SpdxPkgVerificationCodeV2_NameTable,       ("d6a770ba38583ed4bb4525bd96e50461655d2758 (excludes: ./package.spdx)",), Dict{String, Any}),
+        (SpdxSnippetRangeV2,              SpdxSnippetRangeV2_NameTable,              ("mySPDXID",),             Dict{String, Any}),
+        (SpdxSnippetV2,                   SpdxSnippetV2_NameTable,                   ("SnippetID", "FileID"),   Dict{String, Any}),
         (SpdxFileV2,                      SpdxFileV2_NameTable,                      ("MyFile", "FileID"),      Dict{String, Any}),
         (SpdxPackageV2,                   SpdxPackageV2_NameTable,                   ("MyID",),                 Dict{String, Any}),
         (SpdxCreationInfoV2,              SpdxCreationInfoV2_NameTable,              Tuple(()),                 Dict{String, Any}),

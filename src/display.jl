@@ -83,3 +83,29 @@ end
 function _show(io::IO, obj::SpdxFileTypeV2)
     print(io, obj.Value)
 end
+
+################
+function _show(io::IO, obj::SpdxSnippetRangeV2)
+    hasbyteoffset= !ismissing(obj.Start.Offset) || !ismissing(obj.End.Offset)
+    haslinenumber= !ismissing(obj.Start.LineNumber) || !ismissing(obj.End.LineNumber)
+
+    if hasbyteoffset && haslinenumber
+        print(io, "(")
+    end
+
+    if hasbyteoffset
+        print(io, "ByteOffset   ",  string(obj.Start.Offset) * ":" * string(obj.End.Offset))
+    end
+
+    if hasbyteoffset && haslinenumber
+        print(io, ",  ")
+    end
+
+    if haslinenumber
+        print(io, "LineNumber   ",  string(obj.Start.LineNumber) * ":" * string(obj.End.LineNumber))
+    end
+
+    if hasbyteoffset && haslinenumber
+        print(io, ")")
+    end
+end
