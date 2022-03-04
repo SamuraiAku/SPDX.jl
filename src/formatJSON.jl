@@ -37,16 +37,17 @@ function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, doc:
     hasFiles= Tuple([Vector{String}() for i= 1:length(pkgIDs)])
     hasFilesidx= Vector{Int}()
 
-    for idx in 1:length(jsonDoc["relationships"])
-        if jsonDoc["relationships"][idx]["relationshipType"] == "DESCRIBES" && jsonDoc["relationships"][idx]["spdxElementId"] == "SPDXRef-DOCUMENT" 
-            push!(docDescribes, jsonDoc["relationships"][idx]["relatedSpdxElement"])
+    relationships::Vector{SpdxRelationshipV2}= doc.Relationships
+    for idx in 1:length(relationships)
+        if relationships[idx].RelationshipType == "DESCRIBES" && relationships[idx].SPDXID == "SPDXRef-DOCUMENT" 
+            push!(docDescribes, relationships[idx].RelatedSPDXID)
             push!(describedidx, idx)
-        elseif jsonDoc["relationships"][idx]["relationshipType"] == "DESCRIBED_BY" && jsonDoc["relationships"][idx]["spdxElementId"] == "SPDXRef-DOCUMENT"
-            push!(docDescribes, jsonDoc["relationships"][idx]["spdxElementId"])
+        elseif relationships[idx].RelationshipType == "DESCRIBED_BY" && relationships[idx].RelatedSPDXID == "SPDXRef-DOCUMENT"
+            push!(docDescribes, relationships[idx].SPDXID)
             push!(describedidx, idx)
         end
 
-        if (doc.Relationships[idx].RelationshipType == "CONTAINS") && ((p_idx= findfirst(isequal(doc.Relationships[idx].SPDXID), pkgIDs)) != nothing) && ((f_idx= findfirst(isequal(doc.Relationships[idx].RelatedSPDXID), fileIDs)) != nothing)
+        if (relationships[idx].RelationshipType == "CONTAINS") && ((p_idx= findfirst(isequal(relationships[idx].SPDXID), pkgIDs)) != nothing) && ((f_idx= findfirst(isequal(relationships[idx].RelatedSPDXID), fileIDs)) != nothing)
             push!(hasFiles[p_idx], fileIDs[f_idx])
             push!(hasFilesidx, idx)
         end
