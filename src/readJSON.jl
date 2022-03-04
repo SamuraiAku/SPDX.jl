@@ -19,7 +19,7 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
         for (name, value) in JSONfile
             idx= findfirst(isequal(name), NameTable.JSONname)
             if isnothing(idx)
-                process_additional_JSON_fields!(obj, name, (value,))
+                check_unknown_JSON_field(obj, name,)
             elseif NameTable.Mutable[idx] == true
                 if value isa Vector
                     for element in value
@@ -34,12 +34,16 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
         end
     end
 
-    # Loop through all the packages and process their hasFiles field
+    # Process other JSON fields that add additional relationships to the SPDX document
     if obj isa SpdxDocumentV2
         for pkg_json::Dict{String, Any} in JSONfile["packages"]
             if haskey(pkg_json, "hasFiles")
                 process_additional_JSON_fields!(obj, "hasFiles", (pkg_json["hasFiles"], pkg_json["SPDXID"]))
             end
+        end
+
+        if haskey(JSONfile, "documentDescribes")
+            process_additional_JSON_fields!(obj, "documentDescribes", (JSONfile["documentDescribes"],))
         end
     end
 
@@ -51,8 +55,10 @@ end
 constructobj_json(constructor::Type, params::Tuple)= constructor(params...)
 
 ############
-function process_additional_JSON_fields!(obj, name::AbstractString, unused::Tuple)
+function check_unknown_JSON_field(obj, name::AbstractString)
     if obj isa SpdxPackageV2 && name == "hasFiles"
+        return nothing
+    elseif obj isa SpdxDocumentV2 && name == "documentDescribes"
         return nothing
     else
         println("INFO: Ignoring JSON field ", name)
@@ -65,7 +71,7 @@ function process_additional_JSON_fields!(doc::SpdxDocumentV2, name::AbstractStri
     if name in ("documentDescribes", "hasFiles")
         # 1-element Tuple structure is (describesVector,)
         # 2-element Tuple structure is (filesVector, pkgSPDXID)
-        doc_r= doc.Relationships
+        doc_r::Vector{SpdxRelationshipV2}= doc.Relationships
         if value[1] isa Vector
             if name == "documentDescribes"
                 ID= "SPDXRef-DOCUMENT"
