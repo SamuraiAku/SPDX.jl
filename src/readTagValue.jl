@@ -138,6 +138,39 @@ function set_obj_param!(obj::AbstractSpdx, value, objsym::Symbol)
     end
 end
 
+function set_obj_param!(doc::SpdxDocumentV2, value::SpdxFileV2, objsym::Symbol)
+    # Files come right after the Package they belong to. Create a relationship for that
+    # If a File appears before any Packages, then no such relationship exists
+    packages::Vector{SpdxPackageV2}= doc.Packages
+    relationships::Vector{SpdxRelationshipV2}= doc.Relationships
+
+    if objsym == :Files
+        if !isempty(packages)
+            fileRelationship= SpdxRelationshipV2(packages[end].SPDXID, "CONTAINS", value.SPDXID)
+            if isnothing(findfirst(isequal(fileRelationship), relationships))  # Check for duplicates
+                push!(relationships, fileRelationship)
+            end
+        end
+        push!(doc.Files, value)
+    else
+        # This should never execute, but it's an easy error check
+        println("ERROR:  set_obj_param!(::SpdxDocumentV2, ::SpdxFileV2, ::Symbol);  Symbol is wrong somehow!")
+    end
+end
+
+function set_obj_param!(doc::SpdxDocumentV2, value::SpdxRelationshipV2, objsym::Symbol)
+    relationships::Vector{SpdxRelationshipV2}= doc.Relationships
+
+    if objsym == :Relationships
+        if isnothing(findfirst(isequal(value), relationships))  # Check for duplicates
+            push!(relationships, value)
+        end
+    else
+        # This should never execute, but it's an easy error check
+        println("ERROR:  set_obj_param!(::SpdxDocumentV2, ::SpdxRelationshipV2, ::Symbol);  Symbol is wrong somehow!")
+    end
+end
+
 #######################
 function set_obj_deferred_param!(doc::SpdxDocumentV2, param::Tuple{AbstractString, SpdxAnnotationV2})
     # Check the document, package, file, and snippet SPDXIDs and find a match
