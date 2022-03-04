@@ -34,3 +34,7 @@ end
 # TODO : Validate the RelationshipType
 # TODO : Check if the IDs are present when added to a Document
 # TODO : Support external document references
+
+#############################################
+# Deliberately not comparing the comments 
+Base.isequal(y::SpdxRelationshipV2, x::SpdxRelationshipV2)= (y.SPDXID == x.SPDXID) && (y.RelationshipType == x.RelationshipType) && (y.RelatedSPDXID == x.RelatedSPDXID)

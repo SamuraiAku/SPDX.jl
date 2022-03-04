@@ -28,9 +28,15 @@ end
 compute_additional_JSON_fields!(jsonDoc, doc)= nothing
 
 # These fields are derived from the document contents
-function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, unused::SpdxDocumentV2)
+function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, doc::SpdxDocumentV2)
     docDescribes= Vector{String}()
     describedidx= Vector{Int}()
+
+    pkgIDs= Tuple(getproperty.(doc.Packages, :SPDXID))
+    fileIDs= Tuple(getproperty.(doc.Files, :SPDXID))
+    hasFiles= Tuple([Vector{String}() for i= 1:length(pkgIDs)])
+    hasFilesidx= Vector{Int}()
+
     for idx in 1:length(jsonDoc["relationships"])
         if jsonDoc["relationships"][idx]["relationshipType"] == "DESCRIBES" && jsonDoc["relationships"][idx]["spdxElementId"] == "SPDXRef-DOCUMENT" 
             push!(docDescribes, jsonDoc["relationships"][idx]["relatedSpdxElement"])
@@ -39,9 +45,22 @@ function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, unus
             push!(docDescribes, jsonDoc["relationships"][idx]["spdxElementId"])
             push!(describedidx, idx)
         end
+
+        if (doc.Relationships[idx].RelationshipType == "CONTAINS") && ((p_idx= findfirst(isequal(doc.Relationships[idx].SPDXID), pkgIDs)) != nothing) && ((f_idx= findfirst(isequal(doc.Relationships[idx].RelatedSPDXID), fileIDs)) != nothing)
+            push!(hasFiles[p_idx], fileIDs[f_idx])
+            push!(hasFilesidx, idx)
+        end
     end
-    deleteat!(jsonDoc["relationships"], describedidx)
+    
     if !isempty(docDescribes)
         jsonDoc["documentDescribes"]= docDescribes
     end
+
+    for idx in 1:length(hasFiles)
+        if !isempty(hasFiles[idx])
+            jsonDoc["packages"][idx]["hasFiles"]= hasFiles[idx]
+        end
+    end
+
+    deleteat!(jsonDoc["relationships"], sort(union(describedidx, hasFilesidx)))
 end
