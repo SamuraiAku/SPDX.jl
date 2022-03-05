@@ -179,9 +179,21 @@ function set_obj_deferred_param!(doc::SpdxDocumentV2, param::Tuple{AbstractStrin
         return
     end
 
-    packagecheck= findfirst(isequal(param[1]), getproperty.(doc.Packages, :SPDXID))
-    if packagecheck isa Int
-        push!(doc.Packages[packagecheck].Annotations, param[2])
+    idcheck= findfirst(isequal(param[1]), getproperty.(doc.Packages, :SPDXID))
+    if idcheck isa Int
+        push!(doc.Packages[idcheck].Annotations, param[2])
+        return
+    end
+
+    idcheck= findfirst(isequal(param[1]), getproperty.(doc.Files, :SPDXID))
+    if idcheck isa Int
+        push!(doc.Files[idcheck].Annotations, param[2])
+        return
+    end
+
+    idcheck= findfirst(isequal(param[1]), getproperty.(doc.Snippets, :SPDXID))
+    if idcheck isa Int
+        push!(doc.Snippets[idcheck].Annotations, param[2])
         return
     end
 end
