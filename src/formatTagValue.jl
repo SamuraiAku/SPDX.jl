@@ -1,4 +1,80 @@
 
+#########################
+function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTable::Table)
+    docfieldindicies= findall(!in((:Packages, :Files, :Snippets, :Relationships, :LicenseInfo)), NameTable.Symbol)
+    docfieldsNameTable= NameTable[docfieldindicies]
+
+    convert_to_TagValue!(TagValueDoc, doc, docfieldsNameTable)
+
+    # Now analyze the relationships to find the proper order for writing packages, files, Snippets, and relationships
+    # Order for writing as specified by SPDX is:
+    # - Non Package-File relationships
+    # - Files that have no relationships specified
+    # - Loop through the packages
+    #    - Write package
+    #    - File contained in the package as specified in the relationships
+    #    - Snippets associated with the file
+
+    relationships::Vector{SpdxRelationshipV2}= doc.Relationships
+    packages::Vector{SpdxPackageV2}= doc.Packages
+    files::Vector{SpdxFileV2}= doc.Files
+    snippets::Vector{SpdxSnippetV2}= doc.Snippets
+
+    # Organize the packages/files/snippets into vectors in packagefilesets
+    packagefilesets= [Vector() for x in 1:(length(packages)+1)]
+    for idx in 1:length(packages)
+        push!(packagefilesets[idx+1], packages[idx])
+        # packagefilesets[1] is for files that are not contained in any packages
+    end
+
+    pkgIDs= getproperty.(packages, :SPDXID)
+    mark_pkgfilerelationships= [false for x in 1:length(relationships)]
+    r_contains= in.(getproperty.(relationships, :RelationshipType), Ref(("CONTAINS",)))
+    r_pkgIDs= in.(getproperty.(relationships, :SPDXID), Ref(pkgIDs))
+    for file in files
+        contained= in.(getproperty.(relationships, :RelatedSPDXID), Ref((file.SPDXID, )))  .&&  r_contains .&& r_pkgIDs
+        if reduce(|, contained) == false 
+            push!(packagefilesets[1], file)  # File is not contained in any package
+        else
+            contained_idx= findall(contained)
+            length(contained_idx) > 1  &&  println("WARNING: file $(file.SPDXID) is contained in multiple packages")
+            for idx in contained_idx
+                pkgidx= findfirst(isequal(relationships[idx].SPDXID), pkgIDs)
+                push!(packagefilesets[pkgidx+1], file)
+            end
+        end
+        mark_pkgfilerelationships= mark_pkgfilerelationships .| contained
+        # How do I add snippets as well?  After a file is added to a package I have to add all its snippets
+    end
+    
+    # Write all non pkg-file relationships
+    r_notpkgfile= .!mark_pkgfilerelationships
+    r_nametable::Table= NameTable.NameTable[findfirst(isequal(:Relationships), NameTable.Symbol)]
+    for r in relationships[r_notpkgfile]
+        convert_to_TagValue!(TagValueDoc, r, r_nametable)
+    end
+
+    # Write all the package/files/snippets in the order specified by SPDX
+    p_nametable::Table= NameTable.NameTable[findfirst(isequal(:Packages), NameTable.Symbol)]
+    f_nametable::Table= NameTable.NameTable[findfirst(isequal(:Files), NameTable.Symbol)]
+    s_nametable::Table= NameTable.NameTable[findfirst(isequal(:Snippets), NameTable.Symbol)]
+    for fileset in packagefilesets
+        for element in fileset
+            element_nametable= typeof(element)==SpdxFileV2 ? f_nametable : typeof(element)==SpdxPackageV2 ? p_nametable : s_nametable
+            convert_to_TagValue!(TagValueDoc, element, element_nametable)
+        end
+    end
+
+    # Write all License Info. Not required to be at the end, but it makes human reading of the document a little easier
+    l_nametable::Table= NameTable.NameTable[findfirst(isequal(:LicenseInfo), NameTable.Symbol)]
+    for lic::SpdxLicenseInfoV2 in doc.LicenseInfo
+        convert_to_TagValue!(TagValueDoc, lic, l_nametable)
+    end
+
+end
+
+
+#########################
 function convert_to_TagValue!(TagValueDoc::IO, doc::AbstractSpdx, NameTable::Table, SPDXREF::AbstractString= "")
     if hasproperty(doc, :SPDXID)
         SPDXID= doc.SPDXID

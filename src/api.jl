@@ -10,7 +10,7 @@ end
 function printTagValue(doc::SpdxDocumentV2, fname::AbstractString)
     TagValueDoc= IOBuffer()
     open(fname, "w") do f
-        convert_to_TagValue!(TagValueDoc, doc, SpdxDocumentV2_NameTable)
+        convert_doc_to_TagValue!(TagValueDoc, doc, SpdxDocumentV2_NameTable)
         write(f, take!(TagValueDoc))
     end
     return nothing

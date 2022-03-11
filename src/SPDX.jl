@@ -88,7 +88,8 @@ function __init__()
     precompile(convert_from_JSON, (Bool, Nothing, Type{Bool}))
     precompile(read_from_TagValue, (IOStream,))
     
-    
+    a= SpdxDocumentV2_NameTable[1:5]
+    return nothing
 end
 
 
