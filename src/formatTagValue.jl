@@ -27,8 +27,9 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
         # packagefilesets[1] is for files that are not contained in any packages
     end
 
-    pkgIDs= getproperty.(packages, :SPDXID)
+    pkgIDs::Vector{String}= getproperty.(packages, :SPDXID)
     mark_pkgfilerelationships= [false for x in 1:length(relationships)]
+    snippetfileIDs::Vector{String}= getproperty.(snippets, :FileSPDXID)
     r_contains= in.(getproperty.(relationships, :RelationshipType), Ref(("CONTAINS",)))
     r_pkgIDs= in.(getproperty.(relationships, :SPDXID), Ref(pkgIDs))
     for file in files
@@ -41,10 +42,13 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
             for idx in contained_idx
                 pkgidx= findfirst(isequal(relationships[idx].SPDXID), pkgIDs)
                 push!(packagefilesets[pkgidx+1], file)
+                mark_filesnippets= in.(snippetfileIDs, Ref((file.SPDXID, )))
+                for s in snippets[mark_filesnippets]
+                    push!(packagefilesets[pkgidx+1], s)
+                end
             end
         end
         mark_pkgfilerelationships= mark_pkgfilerelationships .| contained
-        # How do I add snippets as well?  After a file is added to a package I have to add all its snippets
     end
     
     # Write all non pkg-file relationships
@@ -122,6 +126,13 @@ end
 function convert_to_TagValue!(TagValueDoc::IO, relationship::SpdxRelationshipV2, NameTable::Table, unused::AbstractString)
     write_TagValue!(TagValueDoc, relationship.SPDXID * "  " * relationship.RelationshipType * "  " * relationship.RelatedSPDXID, NameTable.TagValueName[1], NameTable.Multiline[1])
     ismissing(relationship.Comment) || write_TagValue!(TagValueDoc, relationship.Comment, NameTable.TagValueName[4], NameTable.Multiline[4])
+end
+
+function convert_to_TagValue!(TagValueDoc::IO, snippet::SpdxSnippetRangeV2, NameTable::Table, unused::AbstractString)
+    tvstrings= _tvSnippetRange(snippet, NameTable)
+    for tagvalue in tvstrings
+        write_TagValue!(TagValueDoc, tagvalue[2], tagvalue[1], false)
+    end
 end
 
 #########################

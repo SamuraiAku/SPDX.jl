@@ -1,13 +1,13 @@
 #############################################
 const SpdxSnippetPointerV2_NameTable= Table(
-         Symbol= [ :SPDXID,       :Offset,    :LineNumber,  ],
-        Default= [  nothing,       missing,    missing,     ],
-        Mutable= [  false,         true,       true,        ],
-    Constructor= [  string,        UInt,       UInt,        ],
-      NameTable= [  nothing,       nothing,    nothing,     ],
-      Multiline= [  false,         false,      false,       ],
-       JSONname= [  "reference",   "offset",   "lineNumber",],
-   TagValueName= [  nothing,       nothing,    nothing,     ],
+         Symbol= [ :SPDXID,       :Offset,               :LineNumber,  ],
+        Default= [  nothing,       missing,               missing,     ],
+        Mutable= [  false,         true,                  true,        ],
+    Constructor= [  string,        UInt,                  UInt,        ],
+      NameTable= [  nothing,       nothing,               nothing,     ],
+      Multiline= [  false,         false,                 false,       ],
+       JSONname= [  "reference",   "offset",              "lineNumber",],
+   TagValueName= [  nothing,       "SnippetByteRange",    "SnippetLineRange",],
 )
 
 struct SpdxSnippetPointerV2 <: AbstractSpdxData
@@ -32,13 +32,36 @@ const SpdxSnippetRangeV2_NameTable= Table(
    TagValueName= [  nothing,                          nothing,                        ],
 )
 
-struct SpdxSnippetRangeV2 <: AbstractSpdxElement
+struct SpdxSnippetRangeV2 <: AbstractSpdxData
     Start::SpdxSnippetPointerV2
     End::SpdxSnippetPointerV2
+    MutableFields::OrderedDict{Symbol, Any}
+end
+
+function SpdxSnippetRangeV2(Start::SpdxSnippetPointerV2, End::SpdxSnippetPointerV2)
+    MutableFields= init_MutableFields(SpdxSnippetRangeV2_NameTable)
+    return SpdxSnippetRangeV2(Start, End, MutableFields)
 end
 
 function SpdxSnippetRangeV2(SPDXID::String)
     return SpdxSnippetRangeV2(SpdxSnippetPointerV2(SPDXID), SpdxSnippetPointerV2(SPDXID))
+end
+
+# Special formatting function for TagValue
+function _tvSnippetRange(obj::SpdxSnippetRangeV2, NameTable::Table)
+    hasbyteoffset= !ismissing(obj.Start.Offset) || !ismissing(obj.End.Offset)
+    haslinenumber= !ismissing(obj.Start.LineNumber) || !ismissing(obj.End.LineNumber)
+    ranges= Vector{Tuple}()
+
+    if hasbyteoffset
+        push!(ranges, (NameTable.NameTable[1].TagValueName[2], string(obj.Start.Offset) * ":" * string(obj.End.Offset)))
+    end
+
+    if haslinenumber
+        push!(ranges, (NameTable.NameTable[1].TagValueName[3], string(obj.Start.LineNumber) * ":" * string(obj.End.LineNumber)))
+    end
+
+    return ranges
 end
 
 
