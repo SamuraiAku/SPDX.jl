@@ -2,7 +2,7 @@
 const SpdxSnippetPointerV2_NameTable= Table(
          Symbol= [ :SPDXID,       :Offset,               :LineNumber,  ],
         Default= [  nothing,       missing,               missing,     ],
-        Mutable= [  false,         true,                  true,        ],
+        Mutable= [  true,          true,                  true,        ],
     Constructor= [  string,        UInt,                  UInt,        ],
       NameTable= [  nothing,       nothing,               nothing,     ],
       Multiline= [  false,         false,                 false,       ],
@@ -11,13 +11,24 @@ const SpdxSnippetPointerV2_NameTable= Table(
 )
 
 struct SpdxSnippetPointerV2 <: AbstractSpdxData
-    SPDXID::String
     MutableFields::OrderedDict{Symbol, Any}
 end
 
 function SpdxSnippetPointerV2(SPDXID::AbstractString)
     MutableFields= init_MutableFields(SpdxSnippetPointerV2_NameTable)
-    return SpdxSnippetPointerV2(SPDXID, MutableFields)
+    MutableFields[:SPDXID]= SPDXID
+    return SpdxSnippetPointerV2(MutableFields)
+end
+
+function SpdxSnippetPointerV2(SPDXID::AbstractString, Tag::AbstractString, Value::UInt)
+    # Used for TagValue processing
+    pointer= SpdxSnippetPointerV2(SPDXID)
+    pntr_idx= findfirst(isequal(Tag), SpdxSnippetPointerV2_NameTable.TagValueName)
+    pntr_idx === nothing && return nothing
+
+    pntr_symbol= SpdxSnippetPointerV2_NameTable.Symbol[pntr_idx]
+    setproperty!(pointer, pntr_symbol, Value)
+    return pointer
 end
 
 #############################################
@@ -43,8 +54,23 @@ function SpdxSnippetRangeV2(Start::SpdxSnippetPointerV2, End::SpdxSnippetPointer
     return SpdxSnippetRangeV2(Start, End, MutableFields)
 end
 
-function SpdxSnippetRangeV2(SPDXID::String)
+function SpdxSnippetRangeV2(SPDXID::AbstractString)
     return SpdxSnippetRangeV2(SpdxSnippetPointerV2(SPDXID), SpdxSnippetPointerV2(SPDXID))
+end
+
+function SpdxSnippetRangeV2(SPDXID::AbstractString, Tag::AbstractString, Range::AbstractString)
+    # Used for TagValue processing
+    regex_range= r"^\s*(?<Start>[[:digit:]]+):(?<End>[[:digit:]]+)\s*$"
+    match_range= match(regex_range, Range)
+    range_start= parse(UInt, match_range["Start"])
+    range_end=  parse(UInt, match_range["End"])
+
+    startpntr= SpdxSnippetPointerV2(SPDXID, Tag, range_start)
+    stoppntr= SpdxSnippetPointerV2(SPDXID, Tag, range_end)
+    (startpntr===nothing || stoppntr===nothing) && return nothing
+
+    return SpdxSnippetRangeV2(startpntr, stoppntr)
+    
 end
 
 # Special formatting function for TagValue

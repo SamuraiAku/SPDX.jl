@@ -93,10 +93,16 @@ constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Integer
 function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Nothing, NameTable::Table)
     # Check if :CreationInfo exists in this NameTable (i.e. we're constructing Document level parameters)
     # Check if :ExternalReferences exists in this NameTable (i.e. we're construcing Package level parameters)
-    objectcheck= findfirst(in((:CreationInfo, :ExternalReferences)), NameTable.Symbol)
+    # Check if :SnippetRange exists in this NameTable (i.e. we're constructing Snippet level parameters)
+    objectcheck= findfirst(in((:CreationInfo, :ExternalReferences, :SnippetRange)), NameTable.Symbol)
     if isnothing(objectcheck)
-        return nothing
+        value= nothing
+    elseif NameTable.Symbol[objectcheck] == :SnippetRange
+        # Weird case that requires special handling
+        # The tag tells us which fields of the snippetRange to fill out
+        value= SpdxSnippetRangeV2("Unknown", TagValues[tagidx]["Tag"], TagValues[tagidx]["Value"])
     else
+        # If the tag is not valid, then this call of constructvalue will return nothing, so no need for further checks here
         objNameTable= NameTable.NameTable[objectcheck]
         objidx= findfirst(isequal(TagValues[tagidx]["Tag"]), objNameTable.TagValueName)
         value= constructvalue(tagidx, TagValues, objidx, objNameTable)
@@ -126,6 +132,10 @@ function set_from_TagValue!(obj::SpdxPackageV2, value, valueidx::Nothing, Tag::A
     paramidx= findfirst(isequal(Tag), refNameTable.TagValueName)
     # Assume that the  is being applied to the latest Reference
     set_from_TagValue!(obj.ExternalReferences[end], value, paramidx, Tag, refNameTable)
+end
+
+function set_from_TagValue!(obj::SpdxSnippetV2, value::SpdxSnippetRangeV2, valueidx::Nothing, Tag::AbstractString, NameTable::Table)
+    set_obj_param!(obj, value, :SnippetRange)
 end
 
 
@@ -168,6 +178,19 @@ function set_obj_param!(doc::SpdxDocumentV2, value::SpdxRelationshipV2, objsym::
     else
         # This should never execute, but it's an easy error check
         println("ERROR:  set_obj_param!(::SpdxDocumentV2, ::SpdxRelationshipV2, ::Symbol);  Symbol is wrong somehow!")
+    end
+end
+
+function set_obj_param!(snippet::SpdxSnippetV2, range::SpdxSnippetRangeV2, objsym::Symbol)
+    # Had to wait until now to be able to set the SPDXID in the SnippetRange
+    range.Start.SPDXID= snippet.SPDXID
+    range.End.SPDXID= snippet.SPDXID
+
+    if objsym == :SnippetRange
+        push!(snippet.SnippetRange, range)
+    else
+        # This should never execute, but it's an easy error check
+        println("ERROR:  set_obj_param!(::SpdxSnippetV2, ::SpdxSnippetRangeV2, ::Symbol);  Symbol is wrong somehow!")
     end
 end
 
