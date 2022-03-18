@@ -1,7 +1,7 @@
 #############################################
 const SpdxSnippetPointerV2_NameTable= Table(
          Symbol= [ :SPDXID,       :Offset,               :LineNumber,  ],
-        Default= [  nothing,       missing,               missing,     ],
+        Default= [  missing,       missing,               missing,     ],
         Mutable= [  true,          true,                  true,        ],
     Constructor= [  string,        UInt,                  UInt,        ],
       NameTable= [  nothing,       nothing,               nothing,     ],
@@ -12,6 +12,11 @@ const SpdxSnippetPointerV2_NameTable= Table(
 
 struct SpdxSnippetPointerV2 <: AbstractSpdxData
     MutableFields::OrderedDict{Symbol, Any}
+end
+
+function SpdxSnippetPointerV2()
+    MutableFields= init_MutableFields(SpdxSnippetPointerV2_NameTable)
+    return SpdxSnippetPointerV2(MutableFields)
 end
 
 function SpdxSnippetPointerV2(SPDXID::AbstractString)
