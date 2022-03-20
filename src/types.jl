@@ -11,41 +11,6 @@ function init_MutableFields(NameTable::Table)
 end
 
 
-
-######################################
-struct SpdxSimpleLicenseExpressionV2 <: AbstractSpdx
-    LicenseId::String
-    LicenseExceptionId::Union{String, Nothing}
-end
-
-# TODO : Have the constructor check the LicenseId against the approved list from SPDX group
-# TODO : Support user defined licenses
-# TODO : Support compound expressions
-function SpdxSimpleLicenseExpressionV2(LicenseString::AbstractString)
-    regex_LicenseId= r"^\s*(?<LicenseId>[^\s]+)(?<PostLicense>[[:print:]]*)$"
-    regex_Exception= r"\s*WITH\s*(?<Exception>[^\s]*)\s*$"i
-    regex_whitespacecheck= r"^\s*$"
-
-    match_LicenseId= match(regex_LicenseId, LicenseString)
-    if match_LicenseId === nothing
-        error("Empty License String ", LicenseString)
-    end
-
-    Exception= nothing
-    if length(match_LicenseId["PostLicense"]) > 0 && match(regex_whitespacecheck, match_LicenseId["PostLicense"]) === nothing
-        match_Exception= match(regex_Exception, match_LicenseId["PostLicense"])
-        if match_Exception === nothing
-            println("WARNING:  Unable to parse License Exception ==> ", LicenseString)
-        else
-            Exception= match_Exception["Exception"]
-        end
-    end
-
-    obj= SpdxSimpleLicenseExpressionV2(match_LicenseId["LicenseId"], Exception)
-    return obj
-end
-
-
 ######################################
 struct SpdxCreatorV2 <: AbstractSpdx
     CreatorType::String

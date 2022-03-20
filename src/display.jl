@@ -30,6 +30,11 @@ function _show(io::IO, obj::SpdxSimpleLicenseExpressionV2)
 end
 
 ################
+function _show(io::IO, obj::SpdxComplexLicenseExpressionV2)
+    print(io, obj.Expression)
+end
+
+################
 function _show(io::IO, obj::SpdxChecksumV2) 
     print(io, obj.Algorithm * ": " * obj.Hash)
 end

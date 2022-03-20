@@ -2,7 +2,7 @@
 # Default
 convert_from_JSON(element, unused, constructor::Union{Type, Function})= constructor(element)
 
-function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Type)
+function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Union{Type, Function})
     constructoridx= map(isequal(false), NameTable.Mutable)
     constructornames= NameTable.JSONname[constructoridx]
     constructorparameters= Vector{Any}(missing, length(constructornames))
@@ -52,7 +52,7 @@ end
 
 
 ############
-constructobj_json(constructor::Type, params::Tuple)= constructor(params...)
+constructobj_json(constructor::Union{Type, Function}, params::Tuple)= constructor(params...)
 
 ############
 function check_unknown_JSON_field(obj, name::AbstractString)
