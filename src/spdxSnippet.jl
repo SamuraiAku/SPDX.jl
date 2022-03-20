@@ -1,6 +1,6 @@
 #############################################
 const SpdxSnippetPointerV2_NameTable= Table(
-         Symbol= [ :SPDXID,       :Offset,               :LineNumber,  ],
+         Symbol= [ :Reference,    :Offset,               :LineNumber,  ],
         Default= [  missing,       missing,               missing,     ],
         Mutable= [  true,          true,                  true,        ],
     Constructor= [  string,        UInt,                  UInt,        ],
@@ -19,15 +19,15 @@ function SpdxSnippetPointerV2()
     return SpdxSnippetPointerV2(MutableFields)
 end
 
-function SpdxSnippetPointerV2(SPDXID::AbstractString)
+function SpdxSnippetPointerV2(Reference::AbstractString)
     MutableFields= init_MutableFields(SpdxSnippetPointerV2_NameTable)
-    MutableFields[:SPDXID]= SPDXID
+    MutableFields[:Reference]= Reference
     return SpdxSnippetPointerV2(MutableFields)
 end
 
-function SpdxSnippetPointerV2(SPDXID::AbstractString, Tag::AbstractString, Value::UInt)
+function SpdxSnippetPointerV2(Reference::AbstractString, Tag::AbstractString, Value::UInt)
     # Used for TagValue processing
-    pointer= SpdxSnippetPointerV2(SPDXID)
+    pointer= SpdxSnippetPointerV2(Reference)
     pntr_idx= findfirst(isequal(Tag), SpdxSnippetPointerV2_NameTable.TagValueName)
     pntr_idx === nothing && return nothing
 

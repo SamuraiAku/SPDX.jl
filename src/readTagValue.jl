@@ -183,8 +183,8 @@ end
 
 function set_obj_param!(snippet::SpdxSnippetV2, range::SpdxSnippetRangeV2, objsym::Symbol)
     # Had to wait until now to be able to set the SPDXID in the SnippetRange
-    range.Start.SPDXID= snippet.SPDXID
-    range.End.SPDXID= snippet.SPDXID
+    range.Start.Reference= snippet.FileSPDXID
+    range.End.Reference= snippet.FileSPDXID
 
     if objsym == :SnippetRange
         push!(snippet.SnippetRange, range)
