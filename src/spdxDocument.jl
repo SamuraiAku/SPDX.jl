@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 #############################################
 const SpdxCreationInfoV2_NameTable= Table(

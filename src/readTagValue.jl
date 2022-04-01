@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, Function})
     TVdata= read_from_TagValue(TVfile) # TagValues will be empty, only NextSection will be filled
 

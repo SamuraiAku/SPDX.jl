@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 Base.show(io::IO, x::AbstractSpdx)= _show(io, x)
 

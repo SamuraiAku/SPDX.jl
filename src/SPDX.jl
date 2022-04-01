@@ -1,4 +1,4 @@
-# TODO: Put SPDX license header here
+# SPDX-License-Identifier: MIT
 module SPDX
 
 using JSON

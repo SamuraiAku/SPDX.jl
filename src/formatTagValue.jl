@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 #########################
 function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTable::Table)

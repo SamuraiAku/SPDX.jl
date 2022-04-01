@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 #############################################
 const SpdxSnippetPointerV2_NameTable= Table(
          Symbol= [ :Reference,    :Offset,               :LineNumber,  ],

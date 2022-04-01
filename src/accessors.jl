@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 ################  Default Accessors for AbstractSpdxData
 function Base.getproperty(obj::AbstractSpdxData, sym::Symbol)

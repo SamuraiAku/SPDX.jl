@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 abstract type AbstractSpdx end
 abstract type AbstractSpdxElement <: AbstractSpdx end

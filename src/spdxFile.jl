@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 #############################################
 struct SpdxFileTypeV2 <: AbstractSpdx
     Value::String

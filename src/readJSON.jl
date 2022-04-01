@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 # Default
 convert_from_JSON(element, unused, constructor::Union{Type, Function})= constructor(element)

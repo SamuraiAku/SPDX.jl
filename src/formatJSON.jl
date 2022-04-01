@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 convert_to_JSON(dataElement::AbstractSpdx, unused::Nothing)= string(dataElement)
 convert_to_JSON(data, unused)= data # For Bool, Int, etc.
