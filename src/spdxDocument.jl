@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
+export SpdxCreationInfoV2, SpdxNamespaceV2, SpdxDocumentExternalReferenceV2, SpdxDocumentV2
+
 #############################################
 const SpdxCreationInfoV2_NameTable= Table(
          Symbol= [ :LicenseListVersion,   :Creator,                 :Created,     :CreatorComment],

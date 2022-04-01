@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
+export SpdxRelationshipV2
+
 #############################################
 const SpdxRelationshipV2_NameTable= Table(
          Symbol= [ :SPDXID,          :RelationshipType,    :RelatedSPDXID,         :Comment],

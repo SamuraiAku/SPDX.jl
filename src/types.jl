@@ -4,6 +4,9 @@ abstract type AbstractSpdx end
 abstract type AbstractSpdxElement <: AbstractSpdx end
 abstract type AbstractSpdxData <: AbstractSpdx end
 
+export AbstractSpdx, AbstractSpdxData, AbstractSpdxElement
+export SpdxCreatorV2, SpdxTimeV2, SpdxChecksumV2
+
 ######################################
 function init_MutableFields(NameTable::Table)
     MutableIndicies= findall(NameTable.Mutable)

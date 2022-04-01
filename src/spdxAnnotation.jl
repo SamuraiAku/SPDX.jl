@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
+export SpdxAnnotationV2
+
 #############################################
 const SpdxAnnotationV2_NameTable= Table(
          Symbol= [ :Annotator,       :Created,           :Type,                :Comment],

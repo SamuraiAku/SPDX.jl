@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
+export SpdxPackageExternalReferenceV2, SpdxPkgVerificationCodeV2, SpdxPackageV2
+
 ######################################
 const SpdxPackageExternalReferenceV2_NameTable= Table(
          Symbol= [ :Category,             :RefType,            :Locator,             :Comment],

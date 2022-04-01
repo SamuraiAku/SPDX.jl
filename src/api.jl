@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: MIT
 
+export printJSON, setcreationtime!, createnamespace!, updatenamespace!
+export addcreator!, getcreators, deletecreator!, printTagValue, readJSON, readTagValue
+
 ########################
 function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
     open(fname, "w") do f

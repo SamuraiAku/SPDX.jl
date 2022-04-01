@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
+export SpdxLicenseCrossReferenceV2, SpdxLicenseInfoV2, SpdxSimpleLicenseExpressionV2, SpdxComplexLicenseExpressionV2, SpdxLicenseExpressionV2
+
 ######################################
 const SpdxLicenseCrossReferenceV2_NameTable= Table(
         Symbol= [ :URL,       :isValid,    :isLive,   :isWayBackLink,   :Match,    :Timestamp,   :Order],
