@@ -2,6 +2,7 @@
 
 export createnamespace!, updatenamespace!
 export addcreator!, getcreators, deletecreator!, setcreationtime!
+export readspdx, writespdx
 
 ########################
 function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
@@ -35,6 +36,58 @@ function readTagValue(fname::AbstractString)
         doc= parse_TagValue(TVfile, SpdxDocumentV2_NameTable, SpdxDocumentV2)
     end
     return doc
+end
+
+#########################
+function readspdx(fname::AbstractString; format::Union{AbstractString, Nothing}=nothing)
+    if !isnothing(format)
+        if format=="JSON"
+            fext= ".json"
+        elseif format=="TagValue"
+            fext= ".spdx"
+        else
+            error("Specified Format ", format, " is not supported")
+        end
+    else
+        temp= splitext(fname)
+        if !in(temp[2], (".json", ".spdx"))
+            error("File format ", temp[2], " is not supported")
+        end
+        fext= temp[2]
+    end
+
+    if fext == ".json"
+        doc= readJSON(fname)
+    elseif fext == ".spdx"
+        doc= readTagValue(fname)
+    end
+
+    return doc
+end
+
+#########################
+function writespdx(doc::SpdxDocumentV2, fname::AbstractString; format::Union{AbstractString, Nothing}=nothing)
+    if !isnothing(format)
+        if format=="JSON"
+            fext= ".json"
+        elseif format=="TagValue"
+            fext= ".spdx"
+        else
+            error("Specified Format ", format, " is not supported")
+        end
+    else
+        temp= splitext(fname)
+        if !in(temp[2], (".json", ".spdx"))
+            error("File format ", temp[2], " is not supported")
+        end
+        fext= temp[2]
+    end
+
+    if fext == ".json"
+        printJSON(doc, fname)
+    elseif fext == ".spdx"
+        printTagValue(doc, fname)
+    end
 end
 
 #########################
