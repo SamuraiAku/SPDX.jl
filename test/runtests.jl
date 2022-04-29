@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 using SPDX
+using JSON
 using Test
 
 @testset "Relationship" begin
@@ -8,8 +9,13 @@ using Test
     b= SpdxRelationshipV2(" SPDX-Ref1     CONTAINS  SPDX-Ref2 ")  # Create object via string parsing. Add extra spaces to make it interesting
     @test SPDX.compare_b(a, b)
 
-    # Create object via Dictionary parse (from JSON read)
-    c_dict= Dict{String, Any}("spdxElementId" => "SPDX-Ref1", "relationshipType" => "CONTAINS", "relatedSpdxElement" => "SPDX-Ref2")
+    # Create object from JSON fragment
+    c_json= "{
+           \"spdxElementId\" : \"SPDX-Ref1\",
+           \"relationshipType\" : \"CONTAINS\",
+           \"relatedSpdxElement\" : \"SPDX-Ref2\"
+         }"
+    c_dict= JSON.parse(c_json)
     c= SPDX.convert_from_JSON(c_dict, SPDX.SpdxRelationshipV2_NameTable, SpdxRelationshipV2)
     @test SPDX.compare_b(a, c)
     
