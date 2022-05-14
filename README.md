@@ -2,6 +2,8 @@
 
 This package provides for the creation, reading and writing of SPDX files in multiple file formats. Written in pure Julia.
 
+Software Package Data eXchange (SPDX) is an open standard for communicating software bill of material information, including provenance, license, security, and other related information. SPDX reduces redundant work by providing common formats for organizations and communities to share important data, thereby streamlining and improving compliance, security, and dependability. The SPDX specification is recognized as the international open standard for security, license compliance, and other software supply chain artifacts as ISO/IEC 5962:2021.
+
 Supports version 2.2 of the SPDX spec.
 
 Please read the SPDX specification ([link](https://spdx.github.io/spdx-spec/))  for full details.
