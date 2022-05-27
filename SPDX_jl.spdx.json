@@ -1,0 +1,105 @@
+{
+    "spdxVersion": "SPDX-2.2",
+    "dataLicense": "CC0-1.0",
+    "SPDXID": "SPDXRef-DOCUMENT",
+    "name": "SPDX-spdx",
+    "documentNamespace": "https://github.com/SamuraiAku/SPDX.jl-bacccd20-d299-4ee6-bd1e-3a0ff2a7309c",
+    "creationInfo": {
+        "creators": [
+            "Person:  Simon Avery  ()"
+        ],
+        "created": "2022-05-24T19:17:24Z"
+    },
+    "packages": [
+        {
+            "name": "SPDX.jl",
+            "SPDXID": "SPDXRef-SPDX",
+            "versionInfo": "0.1.0",
+            "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git@v0.1.0",
+            "filesAnalyzed": false,
+            "homepage": "https://github.com/SamuraiAku/SPDX.jl",
+            "licenseConcluded": "MIT",
+            "licenseDeclared": "MIT",
+            "copyrightText": "Copyright (c) 2022 Simon Avery <savery@ieee.org> and contributors",
+            "summary": "Provides for the creation, reading and writing of SPDX files in multiple file formats. Written in pure Julia.",
+            "comment": "[compat]\njulia = \"1.7\""
+        },
+        {
+            "name": "DataStructures.jl",
+            "SPDXID": "SPDXRef-DataStructures",
+            "versionInfo": "0.18.11",
+            "downloadLocation": "git+https://github.com/JuliaCollections/DataStructures.jl.git@3daef5523dd2e769dad2365274f760ff5f282c7d",
+            "filesAnalyzed": false,
+            "homepage": "https://github.com/JuliaCollections/DataStructures.jl",
+            "licenseConcluded": "MIT",
+            "licenseDeclared": "MIT",
+            "copyrightText": "Copyright (c) 2013 Dahua Lin",
+            "summary": "Julia implementation of Data structures"
+        },
+        {
+            "name": "JSON.jl",
+            "SPDXID": "SPDXRef-JSON",
+            "versionInfo": "0.21.3",
+            "downloadLocation": "git+https://github.com/JuliaIO/JSON.jl.git@3c837543ddb02250ef42f4738347454f95079d4e",
+            "filesAnalyzed": false,
+            "homepage": "https://github.com/JuliaIO/JSON.jl",
+            "licenseConcluded": "MIT",
+            "licenseDeclared": "MIT",
+            "copyrightText": "Copyright (c) 2002: JSON.org, 2012-2016: Avik Sengupta, Stefan Karpinski, David de Laat, Dirk Gadsen, Milo Yip and other contributors - https://github.com/JuliaLang/JSON.jl/contributors and https://github.com/miloyip/nativejson-benchmark/contributors",
+            "summary": "This package provides for parsing and printing JSON in pure Julia."
+        },
+        {
+            "name": "TypedTables.jl",
+            "SPDXID": "SPDXRef-TypedTables",
+            "versionInfo": "1.4.0",
+            "downloadLocation": "git+https://github.com/JuliaData/TypedTables.jl.git@f91a10d0132310a31bc4f8d0d29ce052536bd7d7",
+            "filesAnalyzed": false,
+            "homepage": "https://github.com/JuliaData/TypedTables.jl",
+            "licenseConcluded": "MIT",
+            "licenseDeclared": "MIT",
+            "copyrightText": "Copyright (c) 2016-2018: Andy Ferris",
+            "summary": "Simple, fast, column-based storage for data analysis in Julia"
+        },
+        {
+            "name": "TimeZones.jl",
+            "SPDXID": "SPDXRef-TimeZones",
+            "versionInfo": "1.7.2",
+            "downloadLocation": "git+https://github.com/JuliaTime/TimeZones.jl.git@2d4b6de8676b34525ac518de36006dc2e89c7e2e",
+            "filesAnalyzed": false,
+            "homepage": "https://github.com/JuliaTime/TimeZones.jl",
+            "licenseConcluded": "MIT",
+            "licenseDeclared": "MIT",
+            "copyrightText": "Copyright (c) 2014-2016: Jacob Quinn, Curtis Vogt, and other contributors:\n\nhttps://github.com/JuliaTime/TimeZones.jl/contributors",
+            "summary": "IANA time zone database access for the Julia programming language"
+        }
+    ],
+    "relationships": [
+        {
+            "spdxElementId": "SPDXRef-DataStructures",
+            "relationshipType": "BUILD_DEPENDENCY_OF",
+            "relatedSpdxElement": "SPDXRef-SPDX",
+            "comment": "[compat]\nDataStructures = \"0.18\""
+        },
+        {
+            "spdxElementId": "SPDXRef-JSON",
+            "relationshipType": "BUILD_DEPENDENCY_OF",
+            "relatedSpdxElement": "SPDXRef-SPDX",
+            "comment": "[compat]\nJSON = \"0.21\""
+        },
+        {
+            "spdxElementId": "SPDXRef-TypedTables",
+            "relationshipType": "BUILD_DEPENDENCY_OF",
+            "relatedSpdxElement": "SPDXRef-SPDX",
+            "comment": "[compat]\nTypedTables = \"1\""
+        },
+        {
+            "spdxElementId": "SPDXRef-TimeZones",
+            "relationshipType": "BUILD_DEPENDENCY_OF",
+            "relatedSpdxElement": "SPDXRef-SPDX",
+            "comment": "[compat]\nTimeZones = \"1\""
+        }
+    ],
+    "documentDescribes": [
+        "SPDXRef-SPDX"
+    ]
+}
