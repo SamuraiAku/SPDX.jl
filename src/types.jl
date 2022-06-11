@@ -63,7 +63,7 @@ struct SpdxTimeV2 <: AbstractSpdx
     Time::ZonedDateTime
 
     function SpdxTimeV2(Time::ZonedDateTime)
-        return new(astimezone(Time, tz"UTC"))
+        return new(astimezone(floor(Time, Dates.Second), tz"UTC"))
     end
 end
 
