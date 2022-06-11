@@ -111,7 +111,7 @@ struct SpdxChecksumV2 <: AbstractSpdxElement
 end
 
 function SpdxChecksumV2(ChecksumString::AbstractString)
-    regex_checksum= r"^\s*(?<Algorithm>[[:print:]]*):\s*(?<Hash>[[:xdigit:]]*)\x*$"
+    regex_checksum= r"^\s*(?<Algorithm>[[:print:]]*):\s*(?<Hash>[[:xdigit:]]*)\s*$"
 
     match_checksum= match(regex_checksum, ChecksumString)
     if match_checksum === nothing
