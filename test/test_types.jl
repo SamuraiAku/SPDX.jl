@@ -39,3 +39,22 @@
   d_tags= getproperty(SPDX.read_from_TagValue(d_tv), :TagValues)
   @test d_tags[1]["Tag"] in SPDX.SpdxCreationInfoV2_NameTable.TagValueName
 end
+
+
+@testset "SpdxChecksumV2" begin
+  a= SpdxChecksumV2("SHA256", "11b6d3ee554eedf79299905a98f9b9a04e498210b59f15094c916c91d150efcd")
+  b= SpdxChecksumV2("SHA256:   11b6d3ee554eedf79299905a98f9b9a04e498210b59f15094c916c91d150efcd   ")
+  @test SPDX.compare_b(a, b)
+
+  
+  # Create object from JSON fragment
+  c_json= "{ \"algorithm\" : \"SHA256\", \"checksumValue\" : \"11b6d3ee554eedf79299905a98f9b9a04e498210b59f15094c916c91d150efcd\" }"
+  c_dict= JSON.parse(c_json)
+  c= SPDX.convert_from_JSON(c_dict, SPDX.SpdxChecksumV2_NameTable, SpdxChecksumV2)
+  @test SPDX.compare_b(a, c)
+
+  # Create object from TagValue parse
+  d_tv= IOBuffer("PackageChecksum: SHA256: 11b6d3ee554eedf79299905a98f9b9a04e498210b59f15094c916c91d150efcd")
+  d_tags= getproperty(SPDX.read_from_TagValue(d_tv), :TagValues)
+  @test d_tags[1]["Tag"] in SPDX.SpdxPackageV2_NameTable.TagValueName
+end
