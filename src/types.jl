@@ -34,7 +34,7 @@ struct SpdxCreatorV2 <: AbstractSpdx
 end
 
 function SpdxCreatorV2(Creator::AbstractString)
-    regex_full= r"^\s*(?<Type>Person|Organization|Tool):\s*(?<Name>[[:alnum:]]{1}[[:print:]]*)?(\((?<Email>[[:print:]]*)\))"i  # Case-insensitive search, fails if email parenthesis not present (fix this)
+    regex_full= r"^\s*(?<Type>Person|Organization|Tool):\s*(?<Name>[[:alnum:]]{1}[[:print:]]*)?(\(\s*(?<Email>[[:print:]]*)\)\s*)"i  # Case-insensitive search, fails if email parenthesis not present (fix this)
     regex_noemail= r"^\s*(?<Type>Person|Organization|Tool):\s*(?<Name>[[:alnum:]]{1}[[:print:]]*)?"i  # In case first one fails because no email parenthesis is present
 
     match_creator= match(regex_full, Creator)
