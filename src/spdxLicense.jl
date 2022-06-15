@@ -32,7 +32,7 @@ end
 ######################################
 const SpdxLicenseInfoV2_NameTable= Table(
         Symbol= [ :LicenseID,    :ExtractedText,   :Name,           :URL,                       :CrossReference,                          :Comment],
-       Default= [  nothing,       missing,          missing,         Vector{String}(),           missing,                                  missing],
+       Default= [  nothing,       missing,          missing,         Vector{String}(),           Vector{SpdxLicenseCrossReferenceV2}(),    missing],
        Mutable= [  false,         true,             true,            true,                       true,                                     true],
    Constructor= [  string,        string,           string,          string,                     SpdxLicenseCrossReferenceV2,              string],
      NameTable= [  nothing,       nothing,          nothing,         nothing,                    SpdxLicenseCrossReferenceV2_NameTable,    nothing],
