@@ -26,6 +26,7 @@ end
 function SpdxLicenseCrossReferenceV2(URL::AbstractString)
     obj= SpdxLicenseCrossReferenceV2()
     obj.URL= URL
+    return obj
 end
 
 
