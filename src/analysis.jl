@@ -1,8 +1,12 @@
 # SPDX-License-Identifier: MIT
 
 ###################
-function compare(x::T, y::T; skipproperties::Vector{Symbol}= Symbol[]) where T
-    return (bval= isequal(x,y), mismatches= Symbol[] )
+function compare(x, y; skipproperties::Vector{Symbol}= Symbol[])
+    if typeof(x) === typeof(y)
+        return (bval= isequal(x,y), mismatches= Symbol[])
+    else
+        return (bval= false, mismatches= Symbol[])
+    end
 end
 
 function compare(x::T, y::T; skipproperties::Vector{Symbol}= Symbol[]) where T<:AbstractSpdx
@@ -16,16 +20,10 @@ function compare(x::T, y::T; skipproperties::Vector{Symbol}= Symbol[]) where T<:
     bval= true
 
     for prop in compareprops
-        # How to compare vectors? Broadcast will error if they are different sizes
-        x_prop= getproperty(x,prop)
-        if x_prop isa Vector
-            println("INFO: Also skipping property %s because compare() can't handle vectors at this time")
-        else
-            compareresult= compare_b(x_prop, getproperty(y,prop))
-            if false == compareresult
-                bval= false
-                push!(mismatches, prop)
-            end
+        compareresult= compare_b(getproperty(x,prop), getproperty(y,prop))
+        if false == compareresult
+            bval= false
+            push!(mismatches, prop)
         end
     end
     return (bval= bval, mismatches= mismatches) 
@@ -33,10 +31,16 @@ end
 
 ###################
 function compare_b(x, y; skipproperties::Vector{Symbol}= Symbol[])
-    if typeof(x) !== typeof(y)
-        return false
+    (;bval::Bool, mismatches)= compare(x, y; skipproperties= skipproperties)
+    return bval
+end
+
+function compare_b(x::Vector, y::Vector; skipproperties::Vector{Symbol}= Symbol[])
+    if length(x) == length(y)
+        results= compare.(x, y; skipproperties= skipproperties)
+        results_b= mapreduce(z -> z.bval, &, results)
+        return results_b
     else
-        (;bval::Bool, mismatches)= compare(x, y; skipproperties= skipproperties)
-        return bval
+        return false
     end
 end
