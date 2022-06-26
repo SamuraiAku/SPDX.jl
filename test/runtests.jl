@@ -9,4 +9,5 @@ using TimeZones
 
 include("test_types.jl")
 include("test_SpdxAnnotation.jl")
+include("test_SpdxLicense.jl")
 include("test_SpdxRelationship.jl")
