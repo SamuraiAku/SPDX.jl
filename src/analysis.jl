@@ -3,6 +3,9 @@
 ###################
 function compare(x, y; skipproperties::Vector{Symbol}= Symbol[])
     if typeof(x) === typeof(y)
+        if x isa Vector
+            println("You are comparing 2 vectors. Use broadcast \"compare.(...)\" to compare their contents")
+        end
         return (bval= isequal(x,y), mismatches= Symbol[])
     else
         return (bval= false, mismatches= Symbol[])
