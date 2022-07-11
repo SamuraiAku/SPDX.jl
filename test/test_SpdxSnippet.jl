@@ -94,4 +94,27 @@ end
   c_dict= JSON.parse(c_json)
   c= SPDX.convert_from_JSON(c_dict, SPDX.SpdxSnippetV2_NameTable, SpdxSnippetV2)
   @test SPDX.compare_b(a, c)
+
+  # Create object from TagValue parse
+  d_tv= IOBuffer("
+  SnippetSPDXID: SPDXRef-SnippetID
+  SnippetFromFileSPDXID: SPDXRef-FileID
+  SnippetName: MySnippet
+  SnippetCopyrightText: Copyright 2022 SamuraiAku
+  SnippetByteRange: 3000:4000
+  SnippetLicenseConcluded: MIT
+  LicenseInfoInSnippet: MIT
+  LicenseInfoInSnippet: GPL-2.0-only WITH Exception
+  SnippetLicenseComments: Not much to say about this.
+  SnippetAttributionText: Attribution 1
+  SnippetAttributionText: Attribution 2
+  SnippetComment: You should know where this came from
+  # Annotations
+  Annotator: Person: Jane Doe (nowhere@loopback.com)
+  AnnotationDate: $(annotation.Created)
+  AnnotationType: REVIEW
+  AnnotationComment: This is a comment
+  ")
+  d= SPDX.parse_TagValue(d_tv, SPDX.SpdxSnippetV2_NameTable, SpdxSnippetV2)
+  @test SPDX.compare_b(a, d)
 end
