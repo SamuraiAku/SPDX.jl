@@ -41,7 +41,7 @@ end
 function compare_b(x::Vector, y::Vector; skipproperties::Vector{Symbol}= Symbol[])
     if length(x) == length(y)
         results= compare.(x, y; skipproperties= skipproperties)
-        results_b= mapreduce(z -> z.bval, &, results)
+        results_b= isempty(x) || mapreduce(z -> z.bval, &, results)
         return results_b
     else
         return false
