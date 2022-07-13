@@ -47,3 +47,9 @@ function compare_b(x::Vector, y::Vector; skipproperties::Vector{Symbol}= Symbol[
         return false
     end
 end
+
+compare_b(x)= Base.Fix2(compare_b, x)
+
+###################
+compare_rel(r1::SpdxRelationshipV2, r2::SpdxRelationshipV2)= compare_b(r1, r2; skipproperties=Symbol[:Comment])
+compare_rel(r1::SpdxRelationshipV2)= Base.Fix2(compare_rel, r1)

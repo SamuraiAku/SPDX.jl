@@ -159,7 +159,7 @@ function set_obj_param!(doc::SpdxDocumentV2, value::SpdxFileV2, objsym::Symbol)
     if objsym == :Files
         if !isempty(packages)
             fileRelationship= SpdxRelationshipV2(packages[end].SPDXID, "CONTAINS", value.SPDXID)
-            if isnothing(findfirst(isequal(fileRelationship), relationships))  # Check for duplicates
+            if isnothing(findfirst(compare_rel(fileRelationship), relationships))  # Check for duplicates
                 push!(relationships, fileRelationship)
             end
         end
@@ -174,7 +174,7 @@ function set_obj_param!(doc::SpdxDocumentV2, value::SpdxRelationshipV2, objsym::
     relationships::Vector{SpdxRelationshipV2}= doc.Relationships
 
     if objsym == :Relationships
-        if isnothing(findfirst(isequal(value), relationships))  # Check for duplicates
+        if isnothing(findfirst(compare_rel(value), relationships))  # Check for duplicates
             push!(relationships, value)
         end
     else
