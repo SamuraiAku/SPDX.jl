@@ -100,20 +100,20 @@ end
   SnippetSPDXID: SPDXRef-SnippetID
   SnippetFromFileSPDXID: SPDXRef-FileID
   SnippetName: MySnippet
-  SnippetCopyrightText: Copyright 2022 SamuraiAku
+  SnippetCopyrightText: <text>Copyright 2022 SamuraiAku</text>
   SnippetByteRange: 3000:4000
   SnippetLicenseConcluded: MIT
   LicenseInfoInSnippet: MIT
   LicenseInfoInSnippet: GPL-2.0-only WITH Exception
-  SnippetLicenseComments: Not much to say about this.
-  SnippetAttributionText: Attribution 1
+  SnippetLicenseComments: <text>Not much to say about this.</text>
+  SnippetAttributionText: <text>Attribution 1</text>
   SnippetAttributionText: Attribution 2
-  SnippetComment: You should know where this came from
+  SnippetComment: <text>You should know where this came from</text>
   # Annotations
   Annotator: Person: Jane Doe (nowhere@loopback.com)
   AnnotationDate: $(annotation.Created)
   AnnotationType: REVIEW
-  AnnotationComment: This is a comment
+  AnnotationComment: <text>This is a comment</text>
   ")
   d= SPDX.parse_TagValue(d_tv, SPDX.SpdxSnippetV2_NameTable, SpdxSnippetV2)
   @test SPDX.compare_b(a, d)
