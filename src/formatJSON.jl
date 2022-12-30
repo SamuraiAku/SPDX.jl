@@ -64,5 +64,5 @@ function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, doc:
         end
     end
 
-    deleteat!(jsonDoc["relationships"], sort(union(describedidx, hasFilesidx)))
+    !isempty(relationships) && deleteat!(jsonDoc["relationships"], sort(union(describedidx, hasFilesidx)))
 end
