@@ -37,7 +37,7 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
 
     # Process other JSON fields that add additional relationships to the SPDX document
     if obj isa SpdxDocumentV2
-        for pkg_json::Dict{String, Any} in JSONfile["packages"]
+        haskey(JSONfile, "packages") && for pkg_json::Dict{String, Any} in JSONfile["packages"]
             if haskey(pkg_json, "hasFiles")
                 process_additional_JSON_fields!(obj, "hasFiles", (pkg_json["hasFiles"], pkg_json["SPDXID"]))
             end
