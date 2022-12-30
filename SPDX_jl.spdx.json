@@ -14,8 +14,8 @@
         {
             "name": "SPDX.jl",
             "SPDXID": "SPDXRef-SPDX",
-            "versionInfo": "0.1.3",
-            "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git@v0.1.3",
+            "versionInfo": "0.1.4",
+            "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git@v0.1.4",
             "filesAnalyzed": false,
             "homepage": "https://github.com/SamuraiAku/SPDX.jl",
             "licenseConcluded": "MIT",
