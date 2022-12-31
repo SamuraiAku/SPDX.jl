@@ -23,6 +23,11 @@ end
 
 
 ################
+function _show(io::IO, obj::SPDX.SpdxPkgPurposeV2)
+    print(io, obj.Purpose)
+end
+
+################
 function _show(io::IO, obj::SpdxSimpleLicenseExpressionV2)
     print(io, obj.LicenseId)
     if obj.LicenseExceptionId !== nothing && length(obj.LicenseExceptionId) > 0
