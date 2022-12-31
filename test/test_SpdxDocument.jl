@@ -121,6 +121,10 @@ end
         pkg.Comment= "It's a pretty good piece of code."
         push!(pkg.ExternalReferences, SpdxPackageExternalReferenceV2("SECURITY", "cpe23Type", "cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*"))
         push!(pkg.Attributions, "Attribution 1")
+        pkg.PrimaryPurpose= SpdxPkgPurposeV2("APPLICATION")
+        pkg.ReleaseDate= SpdxTimeV2(now())
+        pkg.BuiltDate= SpdxTimeV2(now()-Dates.Day(1))
+        pkg.ValidUntilDate= SpdxTimeV2(now()+Dates.Day(3))
             pkg_annotation= SpdxAnnotationV2()
             pkg_annotation.Annotator= SpdxCreatorV2(" Person:  Jane Doe    (nowhere@loopback.com)")
             pkg_annotation.Created= SpdxTimeV2(now())
@@ -259,6 +263,10 @@ end
                     }
                 ],
                 "attributionTexts": ["Attribution 1"],
+                "primaryPackagePurpose": "APPLICATION",
+                "releaseDate": "$(pkg.ReleaseDate)",
+                "builtDate": "$(pkg.BuiltDate)",
+                "validUntilDate": "$(pkg.ValidUntilDate)",
                 "annotations": [
                     {
                         "annotationDate" : "$(pkg_annotation.Created)",
@@ -399,6 +407,10 @@ end
         PackageComment:   It's a pretty good piece of code.
         ExternalRef: SECURITY cpe23Type  cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*
         PackageAttributionText: Attribution 1
+        PrimaryPackagePurpose: APPLICATION
+        ReleaseDate: $(pkg.ReleaseDate)
+        BuiltDate: $(pkg.BuiltDate)
+        ValidUntilDate: $(pkg.ValidUntilDate)
         Annotator: Person: Jane Doe (nowhere@loopback.com)
         AnnotationDate: $(pkg_annotation.Created)
         AnnotationType: REVIEW

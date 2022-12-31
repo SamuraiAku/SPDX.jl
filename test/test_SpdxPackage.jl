@@ -14,6 +14,13 @@ end
     @test SPDX.compare_b(a, b)
 end
 
+@testset "SpdxPkgPurpose" begin
+    str= "LIBRARY"
+    a= SpdxPkgPurposeV2(str)
+
+    @test string(a) == str
+end
+
 @testset "SpdxPackage" begin
     a= SpdxPackageV2("SpdxRef-P1")
     a.Name= "Package1"
@@ -38,6 +45,10 @@ end
     a.Comment= "It's a pretty good piece of code."
     push!(a.ExternalReferences, SpdxPackageExternalReferenceV2("SECURITY", "cpe23Type", "cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*"))
     push!(a.Attributions, "Attribution 1")
+    a.PrimaryPurpose= SpdxPkgPurposeV2("APPLICATION")
+    a.ReleaseDate= SpdxTimeV2(now())
+    a.BuiltDate= SpdxTimeV2(now()-Dates.Day(1))
+    a.ValidUntilDate= SpdxTimeV2(now()+Dates.Day(3))
         annotation= SpdxAnnotationV2()
         annotation.Annotator= SpdxCreatorV2(" Person:  Jane Doe    (nowhere@loopback.com)")
         annotation.Created= SpdxTimeV2(now())
@@ -46,53 +57,57 @@ end
     push!(a.Annotations, annotation)
 
     # Create object from JSON
-    c_json= "{
-        \"name\": \"Package1\",
-        \"SPDXID\": \"SpdxRef-P1\",
-        \"versionInfo\": \"v1.0.0\",
-        \"packageFileName\": \"./src\",
-        \"supplier\": \"Jane Doe (somewhere@overthere.com)\",
-        \"originator\": \"SamuraiAku (loopback@here.com)\",
-        \"downloadLocation\": \"git+https://github.com/SamuraiAku/SPDX.jl.git\",
-        \"filesAnalyzed\": true,
-        \"packageVerificationCode\": {
-            \"packageVerificationCodeValue\": \"d6a770ba38583ed4bb4525bd96e50461655d2758\",
-            \"packageVerificationCodeExcludedFiles\": [\"./package.spdx\"]
+    c_json= """{
+        "name": "Package1",
+        "SPDXID": "SpdxRef-P1",
+        "versionInfo": "v1.0.0",
+        "packageFileName": "./src",
+        "supplier": "Jane Doe (somewhere@overthere.com)",
+        "originator": "SamuraiAku (loopback@here.com)",
+        "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git",
+        "filesAnalyzed": true,
+        "packageVerificationCode": {
+            "packageVerificationCodeValue": "d6a770ba38583ed4bb4525bd96e50461655d2758",
+            "packageVerificationCodeExcludedFiles": ["./package.spdx"]
         },
-        \"checksums\": [
+        "checksums": [
             {
-                \"algorithm\": \"SHA1\",
-                \"checksumValue\": \"85ed0817af83a24ad8da68c2b5094de69833983c\"
+                "algorithm": "SHA1",
+                "checksumValue": "85ed0817af83a24ad8da68c2b5094de69833983c"
             }
         ],
-        \"homepage\": \"https://github.com/SamuraiAku/SPDX.jl\",
-        \"sourceInfo\": \"Where did this code come from?\",
-        \"licenseConcluded\": \"MIT\",
-        \"licenseInfoFromFiles\": [\"MIT\", \"BSD-3 WITH Exception\"],
-        \"licenseDeclared\": \"MIT\",
-        \"licenseComments\": \"Anything to say?\",
-        \"copyrightText\": \"Copyright 2022 SamuraiAku\",
-        \"summary\": \"This is a summary of the package\",
-        \"description\": \"More details of the package.\",
-        \"comment\": \"It's a pretty good piece of code.\",
-        \"externalRefs\": [
+        "homepage": "https://github.com/SamuraiAku/SPDX.jl",
+        "sourceInfo": "Where did this code come from?",
+        "licenseConcluded": "MIT",
+        "licenseInfoFromFiles": ["MIT", "BSD-3 WITH Exception"],
+        "licenseDeclared": "MIT",
+        "licenseComments": "Anything to say?",
+        "copyrightText": "Copyright 2022 SamuraiAku",
+        "summary": "This is a summary of the package",
+        "description": "More details of the package.",
+        "comment": "It's a pretty good piece of code.",
+        "externalRefs": [
             {
-                \"referenceCategory\": \"SECURITY\",
-                \"referenceLocator\": \"cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*\",
-                \"referenceType\": \"cpe23Type\"
+                "referenceCategory": "SECURITY",
+                "referenceLocator": "cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*",
+                "referenceType": "cpe23Type"
             }
         ],
-        \"attributionTexts\": [\"Attribution 1\"],
-        \"annotations\": [
+        "attributionTexts": ["Attribution 1"],
+        "primaryPackagePurpose": "APPLICATION",
+        "releaseDate": "$(a.ReleaseDate)",
+        "builtDate": "$(a.BuiltDate)",
+        "validUntilDate": "$(a.ValidUntilDate)",
+        "annotations": [
             {
-                \"annotationDate\" : \"$(annotation.Created)\",
-                \"annotationType\" : \"REVIEW\",
-                \"annotator\" : \"Person: Jane Doe (nowhere@loopback.com)\",
-                \"comment\" : \"This is a comment\"
+                "annotationDate" : "$(annotation.Created)",
+                "annotationType" : "REVIEW",
+                "annotator" : "Person: Jane Doe (nowhere@loopback.com)",
+                "comment" : "This is a comment"
             }
         ]
 
-    }"
+    }"""
     
     c_dict= JSON.parse(c_json)
     c= SPDX.convert_from_JSON(c_dict, SPDX.SpdxPackageV2_NameTable, SpdxPackageV2)
@@ -123,6 +138,10 @@ end
     PackageComment:   It's a pretty good piece of code.
     ExternalRef: SECURITY cpe23Type  cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*
     PackageAttributionText: Attribution 1
+    PrimaryPackagePurpose: APPLICATION
+    ReleaseDate: $(a.ReleaseDate)
+    BuiltDate: $(a.BuiltDate)
+    ValidUntilDate: $(a.ValidUntilDate)
     Annotator: Person: Jane Doe (nowhere@loopback.com)
     AnnotationDate: $(annotation.Created)
     AnnotationType: REVIEW
