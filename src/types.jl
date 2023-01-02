@@ -98,7 +98,7 @@ struct SpdxChecksumV2 <: AbstractSpdxElement
     function SpdxChecksumV2(Algorithm::AbstractString, Hash::AbstractString)
         regex_findhash=  r"^\s*[[:xdigit:]]*\s*$"i  # Find hexadecimal values and nothing else besides whitespace
 
-        if Algorithm ∉ ( "SHA256", "SHA1", "SHA384", "MD2", "MD4", "SHA512", "MD6", "MD5", "SHA224" )
+        if Algorithm ∉ ( "SHA256", "SHA1", "SHA384", "MD2", "MD4", "SHA512", "MD6", "MD5", "SHA224", "SHA3-256", "SHA3-384", "SHA3-512", "BLAKE2b-256", "BLAKE2b-384", "BLAKE2b-512", "BLAKE3", "ADLER32")
             error("Checksum Algorithm is not recognized")
         end
         # TODO: verify that the value is the correct length for the specified algorithm and are all hex values
