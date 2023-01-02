@@ -201,7 +201,7 @@ end
 
     # Create object from JSON fragment
     c_json= """{
-        "spdxVersion" : "SPDX-2.2",  
+        "spdxVersion" : "SPDX-2.3",  
         "dataLicense" : "CC0-1.0",                  
         "SPDXID" : "SPDXRef-DOCUMENT",   
         "name" : "SPDX.jl",
@@ -371,7 +371,7 @@ end
 
     # Create object from TagValue parse
     d_tv= IOBuffer("
-        SPDXVersion: SPDX-2.2
+        SPDXVersion: SPDX-2.3
         DataLicense: CC0-1.0
         SPDXID: SPDXRef-DOCUMENT
         DocumentName: SPDX.jl

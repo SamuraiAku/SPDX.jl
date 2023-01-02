@@ -97,7 +97,7 @@ end
 
 function SpdxDocumentV2()
     MutableFields= init_MutableFields(SpdxDocumentV2_NameTable)
-    return SpdxDocumentV2("SPDX-2.2", SpdxSimpleLicenseExpressionV2("CC0-1.0"), "SPDXRef-DOCUMENT", MutableFields)
+    return SpdxDocumentV2("SPDX-2.3", SpdxSimpleLicenseExpressionV2("CC0-1.0"), "SPDXRef-DOCUMENT", MutableFields)
 end
 
 function SpdxDocumentV2(Version::AbstractString, DataLicense::SpdxSimpleLicenseExpressionV2, SPDXID::AbstractString)
