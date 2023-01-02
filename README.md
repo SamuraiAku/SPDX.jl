@@ -4,7 +4,7 @@ This package provides for the creation, reading and writing of SPDX files in mul
 
 Software Package Data eXchange (SPDX) is an open standard for communicating software bill of material information, including provenance, license, security, and other related information. SPDX reduces redundant work by providing common formats for organizations and communities to share important data, thereby streamlining and improving compliance, security, and dependability. The SPDX specification is recognized as the international open standard for security, license compliance, and other software supply chain artifacts as ISO/IEC 5962:2021.
 
-Supports version 2.2 of the SPDX spec.
+Supports version 2.3 of the SPDX spec.
 
 Please read the SPDX specification ([link](https://spdx.github.io/spdx-spec/))  for full details.
 
@@ -120,6 +120,10 @@ Package::SpdxPackageV2 [Clause 7]
     Comment::String [Clause 7.20]
     ExternalReferences::Vector{SpdxPackageExternalReferenceV2} [Clauses 7.21, 7.22]
     Attributions::Vector{String} [Clause 7.23]
+    PrimaryPurpose::SpdxPkgPurposeV2 [Clause 7.24]            
+    ReleaseDate::SpdxTimeV2 [Clause 7.25]
+    BuiltDate::SpdxTimeV2 [Clause 7.26]
+    ValidUntilDate::SpdxTimeV2 [Clause 7.27]
     Annotations::Vector{SpdxAnnotationV2} [Clause 12]
 ```
 
