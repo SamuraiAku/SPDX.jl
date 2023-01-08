@@ -104,7 +104,7 @@ end
         pkg.FileName= "./src"
         pkg.Supplier= "Jane Doe (somewhere@overthere.com)"
         pkg.Originator= "SamuraiAku (loopback@here.com)"
-        pkg.DownloadLocation= "git+https://github.com/SamuraiAku/SPDX.jl.git"
+        pkg.DownloadLocation= SpdxDownloadLocationV2("git+https://github.com/SamuraiAku/SPDX.jl.git")
         pkg.FilesAnalyzed= true
         pkg.VerificationCode= SpdxPkgVerificationCodeV2("d6a770ba38583ed4bb4525bd96e50461655d2758",  ["./package.spdx"])
         push!(pkg.Checksums, SpdxChecksumV2("SHA1: 85ed0817af83a24ad8da68c2b5094de69833983c"))

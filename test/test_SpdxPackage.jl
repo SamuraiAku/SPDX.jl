@@ -21,6 +21,25 @@ end
     @test string(a) == str
 end
 
+@testset "SpdxDownloadLocation" begin
+    # start with processing a bunch of example strings
+    # test that the string version matches the original
+    test_strings= [
+        "http://ftp.gnu.org/gnu/glibc/glibc-ports-2.15.tar.gz",
+        "NOASSERTION",
+        "NONE",
+        "git+https://git.myproject.org/MyProject.git",
+        "git+https://git.myproject.org/MyProject#src/Class.java",
+        "git+https://git.myproject.org/MyProject.git@v1.0",
+        "git+https://git.myproject.org/MyProject.git@master#/src/MyClass.cpp",
+        "BAD_TEST_STRING"
+    ]
+
+    for str in test_strings
+        @test str == string(SpdxDownloadLocationV2(str))
+    end
+end
+
 @testset "SpdxPackage" begin
     a= SpdxPackageV2("SpdxRef-P1")
     a.Name= "Package1"
@@ -28,7 +47,7 @@ end
     a.FileName= "./src"
     a.Supplier= "Jane Doe (somewhere@overthere.com)"
     a.Originator= "SamuraiAku (loopback@here.com)"
-    a.DownloadLocation= "git+https://github.com/SamuraiAku/SPDX.jl.git"
+    a.DownloadLocation= SpdxDownloadLocationV2("git+https://github.com/SamuraiAku/SPDX.jl.git")
     a.FilesAnalyzed= true
     a.VerificationCode= SpdxPkgVerificationCodeV2("d6a770ba38583ed4bb4525bd96e50461655d2758",  ["./package.spdx"])
     push!(a.Checksums, SpdxChecksumV2("SHA1: 85ed0817af83a24ad8da68c2b5094de69833983c"))
