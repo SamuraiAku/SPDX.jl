@@ -28,6 +28,29 @@ function _show(io::IO, obj::SPDX.SpdxPkgPurposeV2)
 end
 
 ################
+function _show(io::IO, obj::SpdxDownloadLocationV2)
+    if !isempty(obj.nolocationReason)
+        if isempty(obj.HostProtocol) && isempty(obj.HostPath) && isempty(obj.VCS_Protocol) && isempty(obj.VCS_Tag) && isempty(obj.VCS_SubPath)
+            print(io, obj.nolocationReason)
+            return
+        end
+    end
+
+    # Case where constructor couldn't parse the input string properly. 
+    # The whole raw string is stuffed into obj.HostPath
+    if isempty(obj.HostProtocol) && !isempty(obj.HostPath) && isempty(obj.VCS_Protocol) && isempty(obj.VCS_Tag) && isempty(obj.VCS_SubPath)
+        print(io, obj.HostPath)
+        return
+    end
+
+    print(io, isempty(obj.VCS_Protocol) ? "" : "$(obj.VCS_Protocol)+",
+              obj.HostProtocol, "://",
+              obj.HostPath,
+              isempty(obj.VCS_Tag) ? "" : "@$(obj.VCS_Tag)",
+              isempty(obj.VCS_SubPath) ? "" : "#$(obj.VCS_SubPath)")
+end
+
+################
 function _show(io::IO, obj::SpdxSimpleLicenseExpressionV2)
     print(io, obj.LicenseId)
     if obj.LicenseExceptionId !== nothing && length(obj.LicenseExceptionId) > 0
