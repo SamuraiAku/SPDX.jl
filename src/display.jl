@@ -93,7 +93,13 @@ end
 
 ################
 function _show(io::IO, obj::SpdxCreatorV2)
-    print(io, obj.CreatorType * ":  " * obj.Name * "  (" * obj.Email * ")")
+    print(io, obj.CreatorType,
+              isempty(obj.CreatorType) ? "" : ":  ",  # Empty creator means Name is NOASSERTION
+              obj.Name,
+              isempty(obj.CreatorType) ? "" :  "  (",
+              obj.Email,
+              isempty(obj.CreatorType) ? "" : ")"
+        )
 end
 
 ################
