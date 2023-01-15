@@ -102,8 +102,8 @@ end
         pkg.Name= "Package1"
         pkg.Version= "v1.0.0"
         pkg.FileName= "./src"
-        pkg.Supplier= "Jane Doe (somewhere@overthere.com)"
-        pkg.Originator= "SamuraiAku (loopback@here.com)"
+        pkg.Supplier= SpdxCreatorV2("Person: Jane Doe (somewhere@overthere.com)")
+        pkg.Originator= SpdxCreatorV2("NOASSERTION")
         pkg.DownloadLocation= SpdxDownloadLocationV2("git+https://github.com/SamuraiAku/SPDX.jl.git")
         pkg.FilesAnalyzed= true
         pkg.VerificationCode= SpdxPkgVerificationCodeV2("d6a770ba38583ed4bb4525bd96e50461655d2758",  ["./package.spdx"])
@@ -231,8 +231,8 @@ end
                 "SPDXID": "SpdxRef-P1",
                 "versionInfo": "v1.0.0",
                 "packageFileName": "./src",
-                "supplier": "Jane Doe (somewhere@overthere.com)",
-                "originator": "SamuraiAku (loopback@here.com)",
+                "supplier": "Person: Jane Doe (somewhere@overthere.com)",
+                "originator": "NOASSERTION",
                 "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git",
                 "filesAnalyzed": true,
                 "packageVerificationCode": {
@@ -388,8 +388,8 @@ end
         SPDXID:  SpdxRef-P1
         PackageVersion:  v1.0.0
         PackageFileName:  ./src
-        PackageSupplier:  Jane Doe (somewhere@overthere.com)
-        PackageOriginator:  SamuraiAku (loopback@here.com)
+        PackageSupplier:  Person: Jane Doe (somewhere@overthere.com)
+        PackageOriginator:  NOASSERTION
         PackageDownloadLocation:  git+https://github.com/SamuraiAku/SPDX.jl.git
         FilesAnalyzed:  true
         PackageVerificationCode: d6a770ba38583ed4bb4525bd96e50461655d2758 (excludes: ./package.spdx)
