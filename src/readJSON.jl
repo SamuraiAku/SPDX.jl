@@ -1,7 +1,12 @@
 # SPDX-License-Identifier: MIT
 
 # Default
-convert_from_JSON(element, unused, constructor::Union{Type, Function})= constructor(element)
+function convert_from_JSON(element, unused, constructor::Union{Type, Function})
+    if element isa String
+        element= strip(element) # Remove leading or trailing whitespace
+    end
+    return constructor(element)
+end
 
 function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Union{Type, Function})
     constructoridx= map(isequal(false), NameTable.Mutable)

@@ -200,9 +200,10 @@ end
 
 
     # Create object from JSON fragment
+    # Deliberately add some leading and trailing whitespace to test the code.
     c_json= """{
-        "spdxVersion" : "SPDX-2.3",  
-        "dataLicense" : "CC0-1.0",                  
+        "spdxVersion" : "SPDX-2.3   ",  
+        "dataLicense" : "   CC0-1.0",                  
         "SPDXID" : "SPDXRef-DOCUMENT",   
         "name" : "SPDX.jl",
         "documentDescribes" : ["SpdxRef-P1"],
@@ -212,7 +213,7 @@ end
                 "externalDocumentId" : "DocumentRef-spdx-tool-1.2",
                 "checksum" : {
                     "algorithm" : "SHA1",
-                    "checksumValue" : "d6a770ba38583ed4bb4525bd96e50461655d2759"
+                    "checksumValue" : "  d6a770ba38583ed4bb4525bd96e50461655d2759 "
                 },
                 "spdxDocument" : "http://spdx.org/spdxdocs/spdx-tools-v1.2-3F2504E0-4F89-41D3-9A0C-0305E82C3301"
             }
@@ -232,7 +233,7 @@ end
                 "versionInfo": "v1.0.0",
                 "packageFileName": "./src",
                 "supplier": "Person: Jane Doe (somewhere@overthere.com)",
-                "originator": "NOASSERTION",
+                "originator": " NOASSERTION ",
                 "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git",
                 "filesAnalyzed": true,
                 "packageVerificationCode": {
@@ -300,7 +301,7 @@ end
                 "attributionTexts" : ["Attribution 1", "Attribution 2"],
                 "annotations" : [ {
                     "annotationDate" : "$(file_annotation.Created)",
-                    "annotationType" : "REVIEW",
+                    "annotationType" : "  REVIEW  ",
                     "annotator" : "Person: Jack Frost  (somewhere@overthere.com)",
                     "comment" : "This is a comment"
                   } ]
@@ -330,7 +331,7 @@ end
                 "attributionTexts" : ["Attribution 1", "Attribution 2"],
                 "annotations" : [ {
                   "annotationDate" : "$(snip_annotation.Created)",
-                  "annotationType" : "REVIEW",
+                  "annotationType" : "REVIEW  ",
                   "annotator" : "Person: John Doe (everywhere@loopback.com)",
                   "comment" : "This is a comment"
                 } ]
@@ -357,8 +358,8 @@ end
         "annotations": [
             {
                 "annotationDate" : "$(doc_annotation.Created)",
-                "annotationType" : "REVIEW",
-                "annotator" : "Person:  Harry Doe    (somewhere@loopback.com)",
+                "annotationType" : "  REVIEW",
+                "annotator" : "  Person:  Harry Doe    (somewhere@loopback.com)    ",
                 "comment" : "This is a pretty good test document"
             }
         ]
