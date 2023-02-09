@@ -226,10 +226,10 @@ end
 
 #######################
 function read_from_TagValue(TVfile::IO)
-    regex_TagValue= r"^\s*(?<Tag>[^#:]*):\s*(?<Value>.*)$" # Match fails if all whitespace or comment line
-    regex_checkmultilinestart= r"<text>"i
-    regex_checkmultilinestop= r"</text>"i
-    regex_multiline= r"^\s*(?<Tag>[^#:]*):\s*(?i:<text>)(?<Value>.*)(?i:</text>).*$"s 
+    regex_TagValue= r"^\s*(?<Tag>[^#:]*):\s*(?<Value>.*[[:^blank:]]{1})\s*$" # Match fails if all whitespace or comment line
+    regex_checkmultilinestart= r"^<text>"i
+    regex_checkmultilinestop= r"</text>\s*$"i
+    regex_multiline= r"^\s*(?<Tag>[^#:]*):\s*(?i:<text>)(?<Value>.*)(?i:</text>)\s*$"s 
 
     TagValues= Vector{RegexMatch}()
     NextSection= nothing
@@ -237,11 +237,15 @@ function read_from_TagValue(TVfile::IO)
         fileline= readline(TVfile)
         match_tv= match(regex_TagValue, fileline)
         if match_tv isa RegexMatch
-            if occursin(regex_checkmultilinestart, fileline)
+            if occursin(regex_checkmultilinestart, match_tv["Value"])
                 while !occursin(regex_checkmultilinestop, fileline)
                     fileline= fileline * "\n" * readline(TVfile)
                 end
                 match_tv= match(regex_multiline, fileline)
+                if isnothing(match_tv)
+                    println("WARNING (read_from_TagValue): Unable to parse, skipping this Tag\n\t", fileline)
+                    continue
+                end
             end
             if match_tv["Tag"] in ("SPDXVersion", "PackageName", "FileName", "SnippetSPDXID", "LicenseID", "Relationship", "Annotator")
                 NextSection= match_tv

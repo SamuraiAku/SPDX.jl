@@ -371,6 +371,7 @@ end
     @test SPDX.compare_b(a, c)
 
     # Create object from TagValue parse
+    # Deliberately add some leading and trailing whitespace to test the code.
     d_tv= IOBuffer("
         SPDXVersion: SPDX-2.3
         DataLicense: CC0-1.0
@@ -386,7 +387,7 @@ end
 
         # Package
         PackageName:  Package1
-        SPDXID:  SpdxRef-P1
+        SPDXID:  SpdxRef-P1     
         PackageVersion:  v1.0.0
         PackageFileName:  ./src
         PackageSupplier:  Person: Jane Doe (somewhere@overthere.com)
@@ -477,7 +478,7 @@ end
         # Annotations
         Annotator: Person: Harry Doe (somewhere@loopback.com)
         AnnotationDate: $(doc_annotation.Created)
-        AnnotationType: REVIEW
+        AnnotationType: REVIEW    
         AnnotationComment: <text>This is a pretty good test document</text>
         SPDXREF: SPDXRef-DOCUMENT
     ")

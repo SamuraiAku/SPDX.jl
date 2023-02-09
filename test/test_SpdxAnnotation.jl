@@ -17,10 +17,11 @@
     @test SPDX.compare_b(a, c)
 
     # Create object from TagValue parse
+    # Deliberately add some leading and trailing whitespace to test the code.
     d_tv= IOBuffer("Annotator: Person:   Jane Doe ( nowhere@loopback.com)  
     AnnotationDate: $(a.Created)
     AnnotationComment: <text>This is a comment</text>
-    AnnotationType:  REVIEW")
+    AnnotationType:  REVIEW   ")
     d= SPDX.parse_TagValue(d_tv, SPDX.SpdxAnnotationV2_NameTable, SpdxAnnotationV2)
     @test SPDX.compare_b(a, d)
 end
