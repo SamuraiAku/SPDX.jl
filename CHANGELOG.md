@@ -10,3 +10,4 @@ New features
 
 Bug fixes
 ----------------
+* Strip leading and trailing whitespace when reading JSON and TagValue Files (#15)

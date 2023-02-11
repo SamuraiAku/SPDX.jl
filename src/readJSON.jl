@@ -58,7 +58,7 @@ end
 
 
 ############
-constructobj_json(constructor::Union{Type, Function}, params::Tuple)= constructor(params...)
+constructobj_json(constructor::Union{Type, Function}, params::Tuple)= constructor(map(x-> if x isa String return strip(x) else return x end, params)...)
 
 ############
 function check_unknown_JSON_field(obj, name::AbstractString)

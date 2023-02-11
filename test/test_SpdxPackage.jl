@@ -76,9 +76,10 @@ end
     push!(a.Annotations, annotation)
 
     # Create object from JSON
+    # Deliberately add some leading and trailing whitespace to test the code.
     c_json= """{
         "name": "Package1",
-        "SPDXID": "SpdxRef-P1",
+        "SPDXID": "  SpdxRef-P1    ",
         "versionInfo": "v1.0.0",
         "packageFileName": "./src",
         "supplier": "Person: Jane Doe (somewhere@overthere.com)",
