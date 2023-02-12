@@ -21,6 +21,7 @@ for (spdxdep, uuid) in SpdxPackageInfo.dependencies
         continue
     end
     spdxDoc.Packages[pkgidx].Version= string(version)
+    spdxDoc.Packages[pkgidx].DownloadLocation= SpdxDownloadLocationV2(spdxDoc.Packages[pkgidx].DownloadLocation; VCS_Tag= "v"*string(version))
 end
 
 updatenamespace!(spdxDoc)

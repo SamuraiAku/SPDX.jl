@@ -28,7 +28,7 @@
             "name": "DataStructures.jl",
             "SPDXID": "SPDXRef-DataStructures",
             "versionInfo": "0.18.13",
-            "downloadLocation": "git+https://github.com/JuliaCollections/DataStructures.jl.git@0.18.13",
+            "downloadLocation": "git+https://github.com/JuliaCollections/DataStructures.jl.git@v0.18.13",
             "filesAnalyzed": false,
             "homepage": "https://github.com/JuliaCollections/DataStructures.jl",
             "licenseConcluded": "MIT",

@@ -147,11 +147,27 @@ function SpdxDownloadLocationV2(location::AbstractString)
         println("(SpdxDownloadLocationV2) WARNING: Host and VCS protocol cannot be parsed. Please review and correct manually\n\t", parsed_location["Protocol"])
     end
 
-    return SpdxDownloadLocationV2(VCS_Protocol, HostProtocol, HostPath, VCS_Tag, VCS_SubPath, "")
-
-        
+    return SpdxDownloadLocationV2(VCS_Protocol, HostProtocol, HostPath, VCS_Tag, VCS_SubPath, "")   
 end
 
+function SpdxDownloadLocationV2(DL::SpdxDownloadLocationV2;  
+                                VCS_Protocol::AbstractString= "",
+                                HostProtocol::AbstractString= "",
+                                HostPath::AbstractString= "",
+                                VCS_Tag::AbstractString= "",
+                                VCS_SubPath::AbstractString= "",
+                                nolocationReason::AbstractString= "")
+                                
+    # This function returns an object that copies all fields from DL, except for those the user
+    # modifies in kwargs
+    return SpdxDownloadLocationV2(  isempty(VCS_Protocol) ? DL.VCS_Protocol : VCS_Protocol,
+                                    isempty(HostProtocol) ? DL.HostProtocol : HostProtocol,
+                                    isempty(HostPath) ? DL.HostPath : HostPath,
+                                    isempty(VCS_Tag) ? DL.VCS_Tag : VCS_Tag,
+                                    isempty(VCS_SubPath) ? DL.VCS_SubPath : VCS_SubPath,
+                                    isempty(nolocationReason) ? DL.nolocationReason : nolocationReason
+                                )
+end
 
 #############################################
 const SpdxPackageV2_NameTable= Table(  
