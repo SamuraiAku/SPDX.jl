@@ -3,19 +3,19 @@
     "dataLicense": "CC0-1.0",
     "SPDXID": "SPDXRef-DOCUMENT",
     "name": "SPDX-spdx",
-    "documentNamespace": "https://github.com/SamuraiAku/SPDX.jl-bacccd20-d299-4ee6-bd1e-3a0ff2a7309c",
+    "documentNamespace": "https://github.com/SamuraiAku/SPDX.jl-15129f26-8e25-4db9-bcbc-ebfb0de11123",
     "creationInfo": {
         "creators": [
             "Person:  Simon Avery  ()"
         ],
-        "created": "2022-05-24T19:17:24Z"
+        "created": "2023-02-12T22:05:57Z"
     },
     "packages": [
         {
             "name": "SPDX.jl",
             "SPDXID": "SPDXRef-SPDX",
-            "versionInfo": "0.1.4",
-            "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git@v0.1.4",
+            "versionInfo": "0.2.0",
+            "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git@v0.2.0",
             "filesAnalyzed": false,
             "homepage": "https://github.com/SamuraiAku/SPDX.jl",
             "licenseConcluded": "MIT",
