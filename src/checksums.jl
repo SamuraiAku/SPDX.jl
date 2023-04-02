@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 
-export checksum
+export spdxchecksum
 
-function checksum(algorithm::AbstractString, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}= String[], excluded_dirlist::Vector{<:AbstractString}= String[], excluded_patterns::Vector{Regex}=Regex[])
+function spdxchecksum(algorithm::AbstractString, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}= String[], excluded_dirlist::Vector{<:AbstractString}= String[], excluded_patterns::Vector{Regex}=Regex[])
     # Check to see if algorithm is in the list of support algorithms, unsupported algorithms, or not recognized
     # TODO: substitute "_" for "-" and other things to account for user typos
     supported_algorithms= Set(["SHA1", "SHA224", "SHA256", "SHA384", "SHA512", "SHA3-256", "SHA3-384", "SHA3-512"])
