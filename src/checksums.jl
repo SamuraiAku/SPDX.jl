@@ -47,22 +47,26 @@ end
 
 # I want flist and dirlist to match the whole path. How to best make that work??
 function _getpackagefiles(chnl, root::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
-    content = readdir(root)
+    # On first call of this function put an absolute path on root and exclusion lists
+    isabspath(root) || (root= abspath(root))
+    all(isabspath.(excluded_flist)) || (excluded_flist= normpath.(joinpath.(root, excluded_flist)))
+    all(isabspath.(excluded_dirlist)) || (excluded_dirlist= normpath.(joinpath.(root, excluded_dirlist)))
+
+    content = readdir(root, join= true)
     content === nothing && return
     # TODO: Optional code for parsing .gitignore files. Will I need Glob.jl for that?
     #       Would need to search content to find the .gitignore so that it's contents can be applied to excluded_patterns before processing
     #       Would need to make a copy of the excluded_patterns so that additions are not passed back up to the caller.
-    for name in content
-        path = joinpath(root, name)
+    for path in content
         if isdir(path)
-            if reduce(|, occursin.(excluded_dirlist, path), init=false)
+            if any(excluded_dirlist .== path)
                 continue # Skip over exluded directories
             else
                 _getpackagefiles(chnl, path, excluded_flist, excluded_dirlist, excluded_patterns) # Descend into the directory and get the files there
             end
-        elseif reduce(|, occursin.(excluded_flist, path), init=false)
+        elseif any(excluded_flist .== path)
             continue # Skip over excluded files
-        elseif reduce(|, occursin.(excluded_patterns, path))
+        elseif any(occursin.(excluded_patterns, path))
             continue # Skip files that match one of the excluded patterns
         else
             push!(chnl, path) # Put the file path in the channel
