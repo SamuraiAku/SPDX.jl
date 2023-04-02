@@ -47,7 +47,6 @@ function getpackagefiles(rootdir::AbstractString, excluded_flist::Vector{<:Abstr
     return Channel{String}(chnl -> _getpackagefiles(chnl, rootdir, excluded_flist, excluded_dirlist, excluded_patterns))
 end
 
-# I want flist and dirlist to match the whole path. How to best make that work??
 function _getpackagefiles(chnl, root::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
     # On first call of this function put an absolute path on root and exclusion lists
     isabspath(root) || (root= abspath(root))
