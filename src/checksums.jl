@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
+export checksum
+
 function checksum(algorithm::AbstractString, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}= String[], excluded_dirlist::Vector{<:AbstractString}= String[], excluded_patterns::Vector{Regex}=Regex[])
     # Check to see if algorithm is in the list of support algorithms, unsupported algorithms, or not recognized
     # TODO: substitute "_" for "-" and other things to account for user typos
