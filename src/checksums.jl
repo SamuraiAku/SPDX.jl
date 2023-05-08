@@ -21,13 +21,13 @@ function spdxchecksum(algorithm::AbstractString, rootdir::AbstractString, exclud
                                (algorithm == "SHA3-384") ? (sha3_384, SHA3_384_CTX) :
                                                            (sha3_512, SHA3_512_CTX)
 
-    package_hash::Vector{UInt8}= package_sha(HashFunction, HashContext, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
+    package_hash::Vector{UInt8}= spdxchecksum_sha(HashFunction, HashContext, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
 
     return package_hash
 end
 
-function package_sha(HashFunction::Function, HashContext::DataType, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
-    flist_hash::Vector{Vector{UInt8}}= [file_hash(file, HashFunction) for file in getpackagefiles(rootdir, excluded_dirlist, excluded_flist, excluded_patterns)]
+function spdxchecksum_sha(HashFunction::Function, HashContext::DataType, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
+    flist_hash::Vector{Vector{UInt8}}= [file_hash(file, HashFunction) for file in getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns)]
     flist_hash= sort(flist_hash)
 
     ctx= HashContext()
@@ -66,6 +66,7 @@ function _getpackagefiles(chnl, root::AbstractString, excluded_flist::Vector{<:A
                 _getpackagefiles(chnl, path, excluded_flist, excluded_dirlist, excluded_patterns) # Descend into the directory and get the files there
             end
         elseif any(excluded_flist .== path)
+            println("exclude $path")
             continue # Skip over excluded files
         elseif any(occursin.(excluded_patterns, path))
             continue # Skip files that match one of the excluded patterns
