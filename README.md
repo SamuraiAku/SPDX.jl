@@ -58,6 +58,11 @@ updatenamespace!(myDoc) # Updates only the UUID portion of the namespace
 
 setcreationtime!(myDoc) # Sets document creation time to the local time, taking the local timezone into account
 
+# Compute a verification code or checksum of a directory [Clauses 7.9, 7.10]
+# Supported checksum algorithms are:
+#   ["SHA1", "SHA224", "SHA256", "SHA384", "SHA512", "SHA3-256", "SHA3-384", "SHA3-512"]
+spdxchecksum("SHA1", "/path/to/dir", ["IgnoreThisFile.spdx.json"], [".git"]) # Compute a checksum that ignores a specific file and a .git directory at the root level.  A common usage pattern.
+
 ```
 
 ## SPDX Document Structure 
