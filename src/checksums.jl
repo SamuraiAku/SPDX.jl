@@ -66,7 +66,6 @@ function _getpackagefiles(chnl, root::AbstractString, excluded_flist::Vector{<:A
                 _getpackagefiles(chnl, path, excluded_flist, excluded_dirlist, excluded_patterns) # Descend into the directory and get the files there
             end
         elseif any(excluded_flist .== path)
-            println("exclude $path")
             continue # Skip over excluded files
         elseif any(occursin.(excluded_patterns, path))
             continue # Skip files that match one of the excluded patterns
