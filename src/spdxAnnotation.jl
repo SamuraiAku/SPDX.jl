@@ -13,7 +13,7 @@ const SpdxAnnotationV2_NameTable= Table(
    TagValueName= [ "Annotator",       "AnnotationDate",   "AnnotationType",     "AnnotationComment"],
 )
 
-Base.@kwdef mutable struct SpdxAnnotationV2 <: AbstractSpdx
+Base.@kwdef mutable struct SpdxAnnotationV2 <: AbstractSpdxData2
     Annotator::Union{Missing, SpdxCreatorV2}= missing
     Created::Union{Missing, SpdxTimeV2}= missing
     Type::Union{Missing, String}= missing

@@ -1,5 +1,16 @@
 # SPDX-License-Identifier: MIT
 
+##### Temporary code until everything is moved to mutable structs
+################  Default Accessors for AbstractSpdxData2
+Base.getproperty(obj::AbstractSpdxData2, sym::Symbol)= getfield(obj, sym)
+Base.setproperty!(obj::AbstractSpdxData2, sym::Symbol, newval)= setfield!(obj, sym, newval)
+Base.propertynames(obj::AbstractSpdxData2)= fieldnames(typeof(obj))
+#############################################
+
+
+
+
+
 ################  Default Accessors for AbstractSpdxData
 function Base.getproperty(obj::AbstractSpdxData, sym::Symbol)
     MutableFields= getfield(obj, :MutableFields)

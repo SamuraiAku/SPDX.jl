@@ -3,6 +3,7 @@
 abstract type AbstractSpdx end
 abstract type AbstractSpdxElement <: AbstractSpdx end
 abstract type AbstractSpdxData <: AbstractSpdx end
+abstract type AbstractSpdxData2 <: AbstractSpdxData end  # temporary until everything is moved to mutable struct
 
 export AbstractSpdx, AbstractSpdxData, AbstractSpdxElement
 export SpdxCreatorV2, SpdxTimeV2, SpdxChecksumV2
