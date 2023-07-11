@@ -6,7 +6,7 @@ export SpdxAnnotationV2
 const SpdxAnnotationV2_NameTable= Table(
          Symbol= [ :Annotator,       :Created,           :Type,                :Comment],
         Mutable= [  true,             true,               true,                 true], 
-    Constructor= [  SpdxCreatorV2,    SpdxTimeV2,         string,               string],
+    Constructor= [  :SpdxCreatorV2,   :SpdxTimeV2,        :string,              :string],
       NameTable= [  nothing,          nothing,            nothing,              nothing], 
       Multiline= [  false,            false,              true,                 true],
        JSONname= [ "annotator",       "annotationDate",   "annotationType",     "comment"],

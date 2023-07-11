@@ -26,7 +26,8 @@ function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, F
             continue
         end
 
-        obj= convert_from_TagValue(TVdata.TagValues, NameTable.NameTable[sectionidx], NameTable.Constructor[sectionidx])
+        objconstructor= eval(NameTable.Constructor[sectionidx]::Union{Symbol, Expr})
+        obj= convert_from_TagValue(TVdata.TagValues, NameTable.NameTable[sectionidx], objconstructor)
         if obj isa Tuple
             push!(deferredData, obj)
         else
@@ -52,7 +53,7 @@ function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, 
     Annotation_SPDXREF::Union{Nothing, AbstractString}= nothing
 
     # Process all the TagValue pairs
-    for tagidx in 1:length(tags)
+    for tagidx in eachindex(tags)
         paramidx= findfirst(isequal(tags[tagidx]), TagValueNames)
         value= constructvalue(tagidx, TagValues, paramidx, NameTable)
         if isnothing(value)
@@ -90,7 +91,10 @@ function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, 
 end
 
 #######################
-constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Integer, NameTable::Table)= NameTable.Constructor[paramidx](TagValues[tagidx]["Value"])
+function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Integer, NameTable::Table)
+    constructor= eval(NameTable.Constructor[paramidx]::Union{Symbol, Expr})
+    return constructor(TagValues[tagidx]["Value"])
+end
 
 function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Nothing, NameTable::Table)
     # Check if :CreationInfo exists in this NameTable (i.e. we're constructing Document level parameters)

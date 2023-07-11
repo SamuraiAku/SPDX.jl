@@ -6,7 +6,7 @@ export SpdxRelationshipV2
 const SpdxRelationshipV2_NameTable= Table(
          Symbol= [ :SPDXID,          :RelationshipType,    :RelatedSPDXID,         :Comment],
         Mutable= [  false,            false,                false,                  true], 
-    Constructor= [  string,           string,               string,                 string],
+    Constructor= [  :string,          :string,              :string,                :string],
       NameTable= [  nothing,          nothing,              nothing,                nothing],
       Multiline= [  false,            false,                false,                  true],
        JSONname= [  "spdxElementId",  "relationshipType",   "relatedSpdxElement",   "comment"],

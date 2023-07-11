@@ -6,7 +6,7 @@ export SpdxLicenseCrossReferenceV2, SpdxLicenseInfoV2, SpdxSimpleLicenseExpressi
 const SpdxLicenseCrossReferenceV2_NameTable= Table(
         Symbol= [ :URL,       :isValid,    :isLive,   :isWayBackLink,   :Match,    :Timestamp,   :Order],
        Mutable= [  true,       true,        true,      true,             true,      true,         true],
-   Constructor= [  string,     Bool,        Bool,      Bool,             string,    string,       string],
+   Constructor= [  :string,    :Bool,       :Bool,     :Bool,            :string,   :string,      :string],
      NameTable= [  nothing,    nothing,     nothing,   nothing,          nothing,   nothing,      nothing],
      Multiline= [  false,      false,       false,     false,            false,     false,        false],
       JSONname= [  "url",      "isValid",   "isLive",  "isWayBackLink",  "match",   "timestamp",  "order"],
@@ -34,7 +34,7 @@ end
 const SpdxLicenseInfoV2_NameTable= Table(
         Symbol= [ :LicenseID,    :ExtractedText,   :Name,           :URL,                       :CrossReference,                          :Comment],
        Mutable= [  false,         true,             true,            true,                       true,                                     true],
-   Constructor= [  string,        string,           string,          string,                     SpdxLicenseCrossReferenceV2,              string],
+   Constructor= [  :string,       :string,          :string,         :string,                    :SpdxLicenseCrossReferenceV2,             :string],
      NameTable= [  nothing,       nothing,          nothing,         nothing,                    SpdxLicenseCrossReferenceV2_NameTable,    nothing],
      Multiline= [  false,         true,             false,           false,                      false,                                    false],
       JSONname= [  "licenseId",   "extractedText",  "name",          "seeAlsos",                 "crossRefs",                              "comment"],

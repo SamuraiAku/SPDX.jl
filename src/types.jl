@@ -74,7 +74,7 @@ end
 const SpdxChecksumV2_NameTable= Table(
          Symbol= [ :Algorithm,   :Hash           ],
         Mutable= [  false,        false          ],
-    Constructor= [  string,       string         ],
+    Constructor= [  :string,      :string        ],
       NameTable= [  nothing,      nothing        ],
       Multiline= [  false,        false          ],
        JSONname= [ "algorithm",   "checksumValue"],

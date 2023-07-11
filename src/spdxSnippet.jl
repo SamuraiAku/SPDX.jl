@@ -6,7 +6,7 @@ export SpdxSnippetPointerV2, SpdxSnippetRangeV2, SpdxSnippetV2
 const SpdxSnippetPointerV2_NameTable= Table(
          Symbol= [ :Reference,    :Offset,               :LineNumber,  ],
         Mutable= [  true,          true,                  true,        ],
-    Constructor= [  string,        UInt,                  UInt,        ],
+    Constructor= [  :string,       :UInt,                 :UInt,       ],
       NameTable= [  nothing,       nothing,               nothing,     ],
       Multiline= [  false,         false,                 false,       ],
        JSONname= [  "reference",   "offset",              "lineNumber",],
@@ -38,7 +38,7 @@ end
 const SpdxSnippetRangeV2_NameTable= Table(
          Symbol= [ :Start,                           :End,                            ],
         Mutable= [  false,                            false,                          ],
-    Constructor= [  SpdxSnippetPointerV2,             SpdxSnippetPointerV2            ],
+    Constructor= [  :SpdxSnippetPointerV2,            :SpdxSnippetPointerV2           ],
       NameTable= [  SpdxSnippetPointerV2_NameTable,   SpdxSnippetPointerV2_NameTable  ],
       Multiline= [  false,                            false,                          ],
        JSONname= [  "startPointer",                   "endPointer",                   ],
@@ -89,13 +89,13 @@ end
 
 #############################################
 const SpdxSnippetV2_NameTable= Table(
-         Symbol= [  :SPDXID,           :FileSPDXID,                :SnippetRange,                  :LicenseConcluded,              :LicenseInfo,                                                                     :LicenseComments,          :Copyright,               :SnippetComments,  :Name,          :Attributions,              :Annotations,                ],
-        Mutable= [   false,             false,                      true,                           true,                           true,                                                                             true,                      true,                     true,              true,           true,                       true,                       ],
-    Constructor= [   string,            string,                     SpdxSnippetRangeV2,             SpdxLicenseExpressionV2,        SpdxLicenseExpressionV2,                                                          string,                    string,                   string,            string,         string,                     SpdxAnnotationV2,           ],
-      NameTable= [   nothing,           nothing,                    SpdxSnippetRangeV2_NameTable,   nothing,                        nothing,                                                                          nothing,                   nothing,                  nothing,           nothing,        nothing,                    SpdxAnnotationV2_NameTable, ],
-      Multiline= [   false,             false,                      false,                          false,                          false,                                                                            false,                     true,                     true,              false,          false,                      false,                      ],
-       JSONname= [   "SPDXID",          "snippetFromFile",          "ranges",                       "licenseConcluded",             "licenseInfoInSnippets",                                                          "licenseComments",         "copyrightText",          "comment",         "name",         "attributionTexts",         "annotations",              ],
-   TagValueName= [   "SnippetSPDXID",   "SnippetFromFileSPDXID",    nothing,                        "SnippetLicenseConcluded",      "LicenseInfoInSnippet",                                                           "SnippetLicenseComments",  "SnippetCopyrightText",   "SnippetComment",  "SnippetName",  "SnippetAttributionText",   "Annotator",                ],
+         Symbol= [  :SPDXID,           :FileSPDXID,                :SnippetRange,                  :LicenseConcluded,              :LicenseInfo,                 :LicenseComments,          :Copyright,               :SnippetComments,  :Name,          :Attributions,              :Annotations,                ],
+        Mutable= [   false,             false,                      true,                           true,                           true,                         true,                      true,                     true,              true,           true,                       true,                       ],
+    Constructor= [   :string,           :string,                    :SpdxSnippetRangeV2,            :SpdxLicenseExpressionV2,       :SpdxLicenseExpressionV2,     :string,                   :string,                  :string,           :string,        :string,                    :SpdxAnnotationV2,          ],
+      NameTable= [   nothing,           nothing,                    SpdxSnippetRangeV2_NameTable,   nothing,                        nothing,                      nothing,                   nothing,                  nothing,           nothing,        nothing,                    SpdxAnnotationV2_NameTable, ],
+      Multiline= [   false,             false,                      false,                          false,                          false,                        false,                     true,                     true,              false,          false,                      false,                      ],
+       JSONname= [   "SPDXID",          "snippetFromFile",          "ranges",                       "licenseConcluded",             "licenseInfoInSnippets",      "licenseComments",         "copyrightText",          "comment",         "name",         "attributionTexts",         "annotations",              ],
+   TagValueName= [   "SnippetSPDXID",   "SnippetFromFileSPDXID",    nothing,                        "SnippetLicenseConcluded",      "LicenseInfoInSnippet",       "SnippetLicenseComments",  "SnippetCopyrightText",   "SnippetComment",  "SnippetName",  "SnippetAttributionText",   "Annotator",                ],
 )
 
 Base.@kwdef mutable struct SpdxSnippetV2 <: AbstractSpdxData
