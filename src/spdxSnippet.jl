@@ -45,9 +45,9 @@ const SpdxSnippetRangeV2_NameTable= Table(
    TagValueName= [  nothing,                          nothing,                        ],
 )
 
-Base.@kwdef mutable struct SpdxSnippetRangeV2 <: AbstractSpdxData2
-    const Start::SpdxSnippetPointerV2
-    const End::SpdxSnippetPointerV2
+struct SpdxSnippetRangeV2 <: AbstractSpdxData2
+    Start::SpdxSnippetPointerV2
+    End::SpdxSnippetPointerV2
 end
 
 function SpdxSnippetRangeV2(SPDXID::AbstractString)
