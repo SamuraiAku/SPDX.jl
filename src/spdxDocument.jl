@@ -5,7 +5,6 @@ export SpdxCreationInfoV2, SpdxNamespaceV2, SpdxDocumentExternalReferenceV2, Spd
 #############################################
 const SpdxCreationInfoV2_NameTable= Table(
          Symbol= [ :LicenseListVersion,   :Creator,                 :Created,     :CreatorComment],
-        Default= [  missing,               Vector{SpdxCreatorV2}(),  missing,      missing],
         Mutable= [  true,                  true,                     true,         true], 
     Constructor= [  string,                SpdxCreatorV2,            SpdxTimeV2,   string],
       NameTable= [  nothing,               nothing,                  nothing,      nothing],    
@@ -14,15 +13,12 @@ const SpdxCreationInfoV2_NameTable= Table(
    TagValueName= [ "LicenseListVersion",   "Creator",                "Created",    "CreatorComment"],
 )
 
-struct SpdxCreationInfoV2 <: AbstractSpdxData
-    MutableFields::OrderedDict{Symbol, Any}
+Base.@kwdef mutable struct SpdxCreationInfoV2 <: AbstractSpdxData2
+    LicenseListVersion::Union{Missing, String}= missing
+    Creator::Vector{SpdxCreatorV2}= SpdxCreatorV2[]
+    Created::Union{Missing, SpdxTimeV2}= missing
+    CreatorComment::Union{Missing, String}= missing
 end
-
-function SpdxCreationInfoV2()
-    MutableFields= init_MutableFields(SpdxCreationInfoV2_NameTable)
-    return SpdxCreationInfoV2(MutableFields)
-end
-
 
 ######################################
 struct SpdxNamespaceV2 <: AbstractSpdx
@@ -79,7 +75,6 @@ end
 #############################################
 const SpdxDocumentV2_NameTable= Table(
          Symbol= [ :Version,       :DataLicense,                    :SPDXID,    :Name,           :Namespace,           :ExternalDocReferences,                      :CreationInfo,                   :DocumentComment,   :Packages,                 :Files,                  :Snippets,                 :LicenseInfo,                  :Relationships,                :Annotations],
-        Default= [  nothing,        nothing,                         nothing,    missing,         missing,              Vector{SpdxDocumentExternalReferenceV2}(),   SpdxCreationInfoV2(),            missing,            Vector{SpdxPackageV2}(),   Vector{SpdxFileV2}(),    Vector{SpdxSnippetV2}(),   Vector{SpdxLicenseInfoV2}(),   Vector{SpdxRelationshipV2}(),  Vector{SpdxAnnotationV2}()],
         Mutable= [  false,          false,                           false,      true,            true,                 true,                                        true,                            true,               true,                      true,                    true,                      true,                          true,                          true],
     Constructor= [  string,         SpdxSimpleLicenseExpressionV2,   string,     string,          SpdxNamespaceV2,      SpdxDocumentExternalReferenceV2,             SpdxCreationInfoV2,              string,             SpdxPackageV2,             SpdxFileV2,              SpdxSnippetV2,             SpdxLicenseInfoV2,             SpdxRelationshipV2,            SpdxAnnotationV2],
       NameTable= [  nothing,        nothing,                         nothing,    nothing,         nothing,              SpdxDocumentExternalReferenceV2_NameTable,   SpdxCreationInfoV2_NameTable,    nothing,            SpdxPackageV2_NameTable,   SpdxFileV2_NameTable,    SpdxSnippetV2_NameTable,   SpdxLicenseInfoV2_NameTable,   SpdxRelationshipV2_NameTable,  SpdxAnnotationV2_NameTable],
@@ -88,19 +83,23 @@ const SpdxDocumentV2_NameTable= Table(
    TagValueName= [  "SPDXVersion",  "DataLicense",                   "SPDXID",   "DocumentName",  "DocumentNamespace",  "ExternalDocumentRef",                       nothing,                         "DocumentComment",  "PackageName",             "FileName",              "SnippetSPDXID",           "LicenseID",                   "Relationship",                "Annotator"] 
 )
 
-struct SpdxDocumentV2 <: AbstractSpdxData
-    Version::String
-    DataLicense::SpdxSimpleLicenseExpressionV2
-    SPDXID::String
-    MutableFields::OrderedDict{Symbol, Any}
-end
-
-function SpdxDocumentV2()
-    MutableFields= init_MutableFields(SpdxDocumentV2_NameTable)
-    return SpdxDocumentV2("SPDX-2.3", SpdxSimpleLicenseExpressionV2("CC0-1.0"), "SPDXRef-DOCUMENT", MutableFields)
+Base.@kwdef mutable struct SpdxDocumentV2 <: AbstractSpdxData2
+    const Version::String= "SPDX-2.3"
+    const DataLicense::SpdxSimpleLicenseExpressionV2= SpdxSimpleLicenseExpressionV2("CC0-1.0")
+    const SPDXID::String= "SPDXRef-DOCUMENT"
+    Name::Union{Missing, String}= missing
+    Namespace::Union{Missing, SpdxNamespaceV2}= missing
+    ExternalDocReferences::Vector{SpdxDocumentExternalReferenceV2}= SpdxDocumentExternalReferenceV2[]
+    CreationInfo::SpdxCreationInfoV2= SpdxCreationInfoV2()
+    DocumentComment::Union{Missing, String}= missing
+    Packages::Vector{SpdxPackageV2}= SpdxPackageV2[]
+    Files::Vector{SpdxFileV2}= SpdxFileV2[]
+    Snippets::Vector{SpdxSnippetV2}= SpdxSnippetV2[]
+    LicenseInfo::Vector{SpdxLicenseInfoV2}= SpdxLicenseInfoV2[]
+    Relationships::Vector{SpdxRelationshipV2}= SpdxRelationshipV2[]
+    Annotations::Vector{SpdxAnnotationV2}= SpdxAnnotationV2[]
 end
 
 function SpdxDocumentV2(Version::AbstractString, DataLicense::SpdxSimpleLicenseExpressionV2, SPDXID::AbstractString)
-    MutableFields= init_MutableFields(SpdxDocumentV2_NameTable)
-    return SpdxDocumentV2(Version, DataLicense, SPDXID, MutableFields)
+    return SpdxDocumentV2(Version= Version, DataLicense= DataLicense, SPDXID= SPDXID)
 end
