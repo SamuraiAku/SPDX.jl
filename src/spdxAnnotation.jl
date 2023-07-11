@@ -5,7 +5,6 @@ export SpdxAnnotationV2
 #############################################
 const SpdxAnnotationV2_NameTable= Table(
          Symbol= [ :Annotator,       :Created,           :Type,                :Comment],
-        Default= [  missing,          missing,            missing,              missing],
         Mutable= [  true,             true,               true,                 true], 
     Constructor= [  SpdxCreatorV2,    SpdxTimeV2,         string,               string],
       NameTable= [  nothing,          nothing,            nothing,              nothing], 
@@ -14,11 +13,9 @@ const SpdxAnnotationV2_NameTable= Table(
    TagValueName= [ "Annotator",       "AnnotationDate",   "AnnotationType",     "AnnotationComment"],
 )
 
-struct SpdxAnnotationV2 <: AbstractSpdxData
-    MutableFields::OrderedDict{Symbol, Any}
-end
-
-function SpdxAnnotationV2()
-    MutableFields= init_MutableFields(SpdxAnnotationV2_NameTable)
-    return SpdxAnnotationV2(MutableFields)
+Base.@kwdef mutable struct SpdxAnnotationV2 <: AbstractSpdxData
+    Annotator::Union{Missing, SpdxCreatorV2}= missing
+    Created::Union{Missing, SpdxTimeV2}= missing
+    Type::Union{Missing, String}= missing
+    Comment::Union{Missing, String}= missing
 end

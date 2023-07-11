@@ -6,7 +6,6 @@ export SpdxRelationshipV2
 const SpdxRelationshipV2_NameTable= Table(
          Symbol= [ :SPDXID,          :RelationshipType,    :RelatedSPDXID,         :Comment],
         Mutable= [  false,            false,                false,                  true], 
-        Default= [  missing,          missing,              missing,                missing],
     Constructor= [  string,           string,               string,                 string],
       NameTable= [  nothing,          nothing,              nothing,                nothing],
       Multiline= [  false,            false,                false,                  true],
@@ -14,16 +13,15 @@ const SpdxRelationshipV2_NameTable= Table(
    TagValueName= [  "Relationship",   nothing,              nothing,                "RelationshipComment"]
 )
 
-struct SpdxRelationshipV2 <: AbstractSpdxData
-    SPDXID::String
-    RelationshipType::String
-    RelatedSPDXID::String
-    MutableFields::OrderedDict{Symbol, Any}
+Base.@kwdef mutable struct SpdxRelationshipV2 <: AbstractSpdxData
+    const SPDXID::String
+    const RelationshipType::String
+    const RelatedSPDXID::String
+    Comment::Union{Missing, String}= missing
 end
 
 function SpdxRelationshipV2(SPDXID::AbstractString, RelationshipType::AbstractString, RelatedSPDXID::AbstractString)
-    MutableFields= init_MutableFields(SpdxRelationshipV2_NameTable)
-    return SpdxRelationshipV2(SPDXID, RelationshipType, RelatedSPDXID, MutableFields)
+    return SpdxRelationshipV2(SPDXID= SPDXID, RelationshipType= RelationshipType, RelatedSPDXID= RelatedSPDXID)
 end
 
 function SpdxRelationshipV2(RelationshipString::AbstractString)

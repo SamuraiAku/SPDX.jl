@@ -5,7 +5,6 @@ export SpdxLicenseCrossReferenceV2, SpdxLicenseInfoV2, SpdxSimpleLicenseExpressi
 ######################################
 const SpdxLicenseCrossReferenceV2_NameTable= Table(
         Symbol= [ :URL,       :isValid,    :isLive,   :isWayBackLink,   :Match,    :Timestamp,   :Order],
-       Default= [  missing,    missing,     missing,   missing,          missing,   missing,      missing],
        Mutable= [  true,       true,        true,      true,             true,      true,         true],
    Constructor= [  string,     Bool,        Bool,      Bool,             string,    string,       string],
      NameTable= [  nothing,    nothing,     nothing,   nothing,          nothing,   nothing,      nothing],
@@ -14,13 +13,14 @@ const SpdxLicenseCrossReferenceV2_NameTable= Table(
   TagValueName= [  nothing,    nothing,     nothing,   nothing,          nothing,   nothing,      nothing],
 )
 
-struct SpdxLicenseCrossReferenceV2  <: AbstractSpdxData
-    MutableFields::OrderedDict{Symbol, Any}
-end
-
-function SpdxLicenseCrossReferenceV2()
-    MutableFields= init_MutableFields(SpdxLicenseCrossReferenceV2_NameTable)
-    return SpdxLicenseCrossReferenceV2(MutableFields)
+Base.@kwdef mutable struct SpdxLicenseCrossReferenceV2  <: AbstractSpdxData
+    URL::Union{Missing,String}= missing
+    isValid::Union{Missing,Bool}= missing
+    isLive::Union{Missing,Bool}= missing
+    isWayBackLink::Union{Missing,Bool}= missing
+    Match::Union{Missing,String}= missing
+    Timestamp::Union{Missing,String}= missing
+    Order::Union{Missing,String}= missing
 end
 
 function SpdxLicenseCrossReferenceV2(URL::AbstractString)
@@ -33,7 +33,6 @@ end
 ######################################
 const SpdxLicenseInfoV2_NameTable= Table(
         Symbol= [ :LicenseID,    :ExtractedText,   :Name,           :URL,                       :CrossReference,                          :Comment],
-       Default= [  nothing,       missing,          missing,         Vector{String}(),           Vector{SpdxLicenseCrossReferenceV2}(),    missing],
        Mutable= [  false,         true,             true,            true,                       true,                                     true],
    Constructor= [  string,        string,           string,          string,                     SpdxLicenseCrossReferenceV2,              string],
      NameTable= [  nothing,       nothing,          nothing,         nothing,                    SpdxLicenseCrossReferenceV2_NameTable,    nothing],
@@ -42,14 +41,17 @@ const SpdxLicenseInfoV2_NameTable= Table(
   TagValueName= [  "LicenseID",   "ExtractedText",  "LicenseName",   "LicenseCrossReference",    nothing,                                  "LicenseComment"],
 )
 
-struct SpdxLicenseInfoV2 <: AbstractSpdxData
-    LicenseID::String
-    MutableFields::OrderedDict{Symbol, Any}
+Base.@kwdef mutable struct SpdxLicenseInfoV2 <: AbstractSpdxData
+    const LicenseID::String
+    ExtractedText::Union{Missing,String}= missing
+    Name::Union{Missing,String}= missing
+    URL::Vector{String}= String[]
+    CrossReference::Vector{SpdxLicenseCrossReferenceV2}= SpdxLicenseCrossReferenceV2[]
+    Comment::Union{Missing,String}= missing
 end
 
 function SpdxLicenseInfoV2(LicenseID::AbstractString)
-    MutableFields= init_MutableFields(SpdxLicenseInfoV2_NameTable)
-    return SpdxLicenseInfoV2(LicenseID, MutableFields)
+    return SpdxLicenseInfoV2(LicenseID= LicenseID)
 end
 
 ######################################

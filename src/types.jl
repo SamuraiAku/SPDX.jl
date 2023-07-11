@@ -7,13 +7,6 @@ abstract type AbstractSpdxData <: AbstractSpdx end
 export AbstractSpdx, AbstractSpdxData, AbstractSpdxElement
 export SpdxCreatorV2, SpdxTimeV2, SpdxChecksumV2
 
-######################################
-function init_MutableFields(NameTable::Table)
-    MutableIndicies= findall(NameTable.Mutable)
-    MutableFields= OrderedDict{Symbol, Any}(NameTable.Symbol[MutableIndicies] .=> deepcopy(NameTable.Default[MutableIndicies]))
-    return MutableFields
-end
-
 
 ######################################
 struct SpdxCreatorV2 <: AbstractSpdx

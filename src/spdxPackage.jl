@@ -5,7 +5,6 @@ export SpdxPackageExternalReferenceV2, SpdxPkgVerificationCodeV2, SpdxPackageV2,
 ######################################
 const SpdxPackageExternalReferenceV2_NameTable= Table(
          Symbol= [ :Category,             :RefType,            :Locator,             :Comment],
-        Default= [  nothing,               nothing,             nothing,              missing],
         Mutable= [  false,                 false,               false,                true],
     Constructor= [  string,                string,              string,               string], 
       NameTable= [  nothing,               nothing,             nothing,              nothing],
@@ -14,16 +13,15 @@ const SpdxPackageExternalReferenceV2_NameTable= Table(
    TagValueName= [  "ExternalRef",         nothing,              nothing,             "ExternalRefComment"]
 )
 
-struct SpdxPackageExternalReferenceV2 <: AbstractSpdxData
-    Category::String
-    RefType::String
-    Locator::String
-    MutableFields::OrderedDict{Symbol, Any}
+Base.@kwdef mutable struct SpdxPackageExternalReferenceV2 <: AbstractSpdxData
+    const Category::String
+    const RefType::String
+    const Locator::String
+    Comment::Union{Missing, String}= missing
 end
 
 function SpdxPackageExternalReferenceV2(Category::AbstractString, RefType::AbstractString, Locator::AbstractString)
-    MutableFields= init_MutableFields(SpdxPackageExternalReferenceV2_NameTable)
-    return SpdxPackageExternalReferenceV2(Category, RefType, Locator, MutableFields)
+    return SpdxPackageExternalReferenceV2(Category= Category, RefType= RefType, Locator= Locator)
 end
 
 function SpdxPackageExternalReferenceV2(TVstring::AbstractString)
@@ -172,7 +170,6 @@ end
 #############################################
 const SpdxPackageV2_NameTable= Table(  
          Symbol= [ :Name,              :SPDXID,   :Version,          :FileName,          :Supplier,          :Originator,          :DownloadLocation,          :FilesAnalyzed,   :VerificationCode,                      :Checksums,                 :HomePage,          :SourceInfo,          :LicenseConcluded,                :LicenseInfoFromFiles,                                                            :LicenseDeclared,                  :LicenseComments,          :Copyright,              :Summary,          :DetailedDescription,   :Comment,          :ExternalReferences,                        :Attributions,               :PrimaryPurpose,            :ReleaseDate,     :BuiltDate,     :ValidUntilDate,    :Annotations],
-        Default= [  missing,            nothing,   missing,           missing,            missing,            missing,              missing,                    true,             missing,                                Vector{SpdxChecksumV2}(),   missing,            missing,              missing,                          Vector{Union{SpdxSimpleLicenseExpressionV2, SpdxComplexLicenseExpressionV2}}(),   missing,                           missing,                   missing,                 missing,           missing,                missing,           Vector{SpdxPackageExternalReferenceV2}(),   Vector{String}(),            missing,                    missing,          missing,        missing,            Vector{SpdxAnnotationV2}()],
         Mutable= [  true,               false,     true,              true,               true,               true,                 true,                       true,             true,                                   true,                       true,               true,                 true,                             true,                                                                             true,                              true,                      true,                    true,              true,                   true,              true,                                       true,                        true,                       true,             true,           true,               true],
     Constructor= [  string,             string,    string,            string,             SpdxCreatorV2,      SpdxCreatorV2,        SpdxDownloadLocationV2,     Bool,             SpdxPkgVerificationCodeV2,              SpdxChecksumV2,             string,             string,               SpdxLicenseExpressionV2,          SpdxLicenseExpressionV2,                                                          SpdxLicenseExpressionV2,           string,                    string,                  string,            string,                 string,            SpdxPackageExternalReferenceV2,             string,                      SpdxPkgPurposeV2,           SpdxTimeV2,       SpdxTimeV2,     SpdxTimeV2,         SpdxAnnotationV2],
       NameTable= [  nothing,            nothing,   nothing,           nothing,            nothing,            nothing,              nothing,                    nothing,          SpdxPkgVerificationCodeV2_NameTable,    SpdxChecksumV2_NameTable,   nothing,            nothing,              nothing,                          nothing,                                                                          nothing,                           nothing,                   nothing,                 nothing,           nothing,                nothing,           SpdxPackageExternalReferenceV2_NameTable,   nothing,                     nothing,                    nothing,          nothing,        nothing,            SpdxAnnotationV2_NameTable],
@@ -182,12 +179,36 @@ const SpdxPackageV2_NameTable= Table(
 )
 
 
-struct SpdxPackageV2 <: AbstractSpdxData
-    SPDXID::String
-    MutableFields::OrderedDict{Symbol, Any}
+Base.@kwdef mutable struct SpdxPackageV2 <: AbstractSpdxData
+    Name::Union{Missing, String}= missing
+    const SPDXID::String
+    Version::Union{Missing, String}= missing
+    FileName::Union{Missing, String}= missing
+    Supplier::Union{Missing, SpdxCreatorV2}= missing
+    Originator::Union{Missing, SpdxCreatorV2}= missing
+    DownloadLocation::Union{Missing, SpdxDownloadLocationV2}= missing
+    FilesAnalyzed::Bool= true
+    VerificationCode::Union{Missing, SpdxPkgVerificationCodeV2}= missing
+    Checksums::Vector{SpdxChecksumV2}= SpdxChecksumV2[]
+    HomePage::Union{Missing, String}= missing
+    SourceInfo::Union{Missing, String}= missing
+    LicenseConcluded::Union{Missing, SpdxSimpleLicenseExpressionV2, SpdxComplexLicenseExpressionV2}= missing
+    LicenseInfoFromFiles::Vector{Union{SpdxSimpleLicenseExpressionV2, SpdxComplexLicenseExpressionV2}}= Vector{Union{SpdxSimpleLicenseExpressionV2, SpdxComplexLicenseExpressionV2}}()
+    LicenseDeclared::Union{Missing, SpdxSimpleLicenseExpressionV2, SpdxComplexLicenseExpressionV2}= missing
+    LicenseComments::Union{Missing, String}= missing
+    Copyright::Union{Missing, String}= missing
+    Summary::Union{Missing, String}= missing
+    DetailedDescription::Union{Missing, String}= missing
+    Comment::Union{Missing, String}= missing
+    ExternalReferences::Vector{SpdxPackageExternalReferenceV2}= SpdxPackageExternalReferenceV2[]
+    Attributions::Vector{String}= String[]
+    PrimaryPurpose::Union{Missing, SpdxPkgPurposeV2}= missing
+    ReleaseDate::Union{Missing, SpdxTimeV2}= missing
+    BuiltDate::Union{Missing, SpdxTimeV2}= missing
+    ValidUntilDate::Union{Missing, SpdxTimeV2}= missing
+    Annotations::Vector{SpdxAnnotationV2}= SpdxAnnotationV2[]
 end
 
 function SpdxPackageV2(SPDXID::AbstractString)
-    MutableFields= init_MutableFields(SpdxPackageV2_NameTable)
-    return SpdxPackageV2(SPDXID, MutableFields)
+    return SpdxPackageV2(SPDXID= SPDXID)
 end
