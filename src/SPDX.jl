@@ -32,9 +32,6 @@ include("api.jl")
 function precompile_spdx(spdxtype::Type, NameTable::Union{Table, Nothing}, constructparams::Tuple, jsondatatype::DataType)
     a= string(spdxtype(constructparams...))
     if spdxtype <: AbstractSpdxData
-        precompile(getproperty,   (spdxtype, Symbol))
-        precompile(setproperty!,  (spdxtype, Symbol, Any))
-        precompile(propertynames, (spdxtype,))
         precompile(convert_to_TagValue!, (IOBuffer, spdxtype, typeof(NameTable), String))
         precompile(convert_from_TagValue, (Vector{RegexMatch}, typeof(NameTable), Type{spdxtype}))
     end

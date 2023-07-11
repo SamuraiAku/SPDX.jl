@@ -5,19 +5,8 @@ Base.show(io::IO, x::AbstractSpdx)= _show(io, x)
 
 ########### Default
 function _show(io::IO, obj::AbstractSpdx)
-    ImmutableFields= filter(sym -> sym != :MutableFields, fieldnames(typeof(obj)))
-    for name in ImmutableFields
+    for name in fieldnames(typeof(obj))
         println(io, string(name) * ":\t\t" * string(getproperty(obj, name)))
-    end
-    if hasfield(typeof(obj), :MutableFields)
-        MutableFields= obj.MutableFields
-        for key in keys(skipmissing(MutableFields))
-            if isa(MutableFields[key], Vector) && isempty(MutableFields[key])
-                continue
-            else
-                println(io, String(key) * ":\t\t" * string(MutableFields[key]))
-            end
-        end
     end
 end
 
