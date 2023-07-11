@@ -13,7 +13,7 @@ const SpdxLicenseCrossReferenceV2_NameTable= Table(
   TagValueName= [  nothing,    nothing,     nothing,   nothing,          nothing,   nothing,      nothing],
 )
 
-Base.@kwdef mutable struct SpdxLicenseCrossReferenceV2  <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxLicenseCrossReferenceV2  <: AbstractSpdxData
     URL::Union{Missing,String}= missing
     isValid::Union{Missing,Bool}= missing
     isLive::Union{Missing,Bool}= missing
@@ -41,7 +41,7 @@ const SpdxLicenseInfoV2_NameTable= Table(
   TagValueName= [  "LicenseID",   "ExtractedText",  "LicenseName",   "LicenseCrossReference",    nothing,                                  "LicenseComment"],
 )
 
-Base.@kwdef mutable struct SpdxLicenseInfoV2 <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxLicenseInfoV2 <: AbstractSpdxData
     const LicenseID::String
     ExtractedText::Union{Missing,String}= missing
     Name::Union{Missing,String}= missing

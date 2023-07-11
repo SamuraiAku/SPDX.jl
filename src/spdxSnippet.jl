@@ -13,7 +13,7 @@ const SpdxSnippetPointerV2_NameTable= Table(
    TagValueName= [  nothing,       "SnippetByteRange",    "SnippetLineRange",],
 )
 
-Base.@kwdef mutable struct SpdxSnippetPointerV2 <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxSnippetPointerV2 <: AbstractSpdxData
     Reference::Union{Missing,String}= missing
     Offset::Union{Missing,UInt}= missing
     LineNumber::Union{Missing,UInt}= missing
@@ -45,7 +45,7 @@ const SpdxSnippetRangeV2_NameTable= Table(
    TagValueName= [  nothing,                          nothing,                        ],
 )
 
-struct SpdxSnippetRangeV2 <: AbstractSpdxData2
+struct SpdxSnippetRangeV2 <: AbstractSpdxData
     Start::SpdxSnippetPointerV2
     End::SpdxSnippetPointerV2
 end
@@ -98,7 +98,7 @@ const SpdxSnippetV2_NameTable= Table(
    TagValueName= [   "SnippetSPDXID",   "SnippetFromFileSPDXID",    nothing,                        "SnippetLicenseConcluded",      "LicenseInfoInSnippet",                                                           "SnippetLicenseComments",  "SnippetCopyrightText",   "SnippetComment",  "SnippetName",  "SnippetAttributionText",   "Annotator",                ],
 )
 
-Base.@kwdef mutable struct SpdxSnippetV2 <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxSnippetV2 <: AbstractSpdxData
     const SPDXID::String
     const FileSPDXID::String
     SnippetRange::Vector{SpdxSnippetRangeV2}= SpdxSnippetRangeV2[]

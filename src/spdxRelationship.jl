@@ -13,7 +13,7 @@ const SpdxRelationshipV2_NameTable= Table(
    TagValueName= [  "Relationship",   nothing,              nothing,                "RelationshipComment"]
 )
 
-Base.@kwdef mutable struct SpdxRelationshipV2 <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxRelationshipV2 <: AbstractSpdxData
     const SPDXID::String
     const RelationshipType::String
     const RelatedSPDXID::String

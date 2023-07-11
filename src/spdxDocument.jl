@@ -13,7 +13,7 @@ const SpdxCreationInfoV2_NameTable= Table(
    TagValueName= [ "LicenseListVersion",   "Creator",                "Created",    "CreatorComment"],
 )
 
-Base.@kwdef mutable struct SpdxCreationInfoV2 <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxCreationInfoV2 <: AbstractSpdxData
     LicenseListVersion::Union{Missing, String}= missing
     Creator::Vector{SpdxCreatorV2}= SpdxCreatorV2[]
     Created::Union{Missing, SpdxTimeV2}= missing
@@ -83,7 +83,7 @@ const SpdxDocumentV2_NameTable= Table(
    TagValueName= [  "SPDXVersion",  "DataLicense",                   "SPDXID",   "DocumentName",  "DocumentNamespace",  "ExternalDocumentRef",                       nothing,                         "DocumentComment",  "PackageName",             "FileName",              "SnippetSPDXID",           "LicenseID",                   "Relationship",                "Annotator"] 
 )
 
-Base.@kwdef mutable struct SpdxDocumentV2 <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxDocumentV2 <: AbstractSpdxData
     const Version::String= "SPDX-2.3"
     const DataLicense::SpdxSimpleLicenseExpressionV2= SpdxSimpleLicenseExpressionV2("CC0-1.0")
     const SPDXID::String= "SPDXRef-DOCUMENT"

@@ -13,7 +13,7 @@ const SpdxPackageExternalReferenceV2_NameTable= Table(
    TagValueName= [  "ExternalRef",         nothing,              nothing,             "ExternalRefComment"]
 )
 
-Base.@kwdef mutable struct SpdxPackageExternalReferenceV2 <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxPackageExternalReferenceV2 <: AbstractSpdxData
     const Category::String
     const RefType::String
     const Locator::String
@@ -179,7 +179,7 @@ const SpdxPackageV2_NameTable= Table(
 )
 
 
-Base.@kwdef mutable struct SpdxPackageV2 <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxPackageV2 <: AbstractSpdxData
     Name::Union{Missing, String}= missing
     const SPDXID::String
     Version::Union{Missing, String}= missing

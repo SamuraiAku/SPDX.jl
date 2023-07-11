@@ -27,7 +27,7 @@ const SpdxFileV2_NameTable= Table(
    TagValueName= [  "FileName",  "SPDXID",   "FileType",                  "FileChecksum",               "LicenseConcluded",              "LicenseInfoInFile",                                                              "LicenseComments",   "FileCopyrightText",    "FileComment",   "FileNotice",    "FileContributor",     "FileAttributionText",   "Annotator",                 ],
 )
 
-Base.@kwdef mutable struct SpdxFileV2 <: AbstractSpdxData2
+Base.@kwdef mutable struct SpdxFileV2 <: AbstractSpdxData
     const Name::String
     const SPDXID::String
     Type::Vector{SpdxFileTypeV2}= Vector{SpdxFileTypeV2}()
