@@ -1,9 +1,17 @@
 # SPDX-License-Identifier: MIT
 
 #########################
-function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTable::Table)
+function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTable::Spdx_NameTable)
     docfieldindicies= findall(!in((:Packages, :Files, :Snippets, :Relationships, :LicenseInfo)), NameTable.Symbol)
-    docfieldsNameTable= NameTable[docfieldindicies]
+    docfieldsNameTable= Spdx_NameTable(
+            Symbol= NameTable.Symbol[docfieldindicies],
+           Mutable= NameTable.Mutable[docfieldindicies],
+       Constructor= NameTable.Constructor[docfieldindicies],
+         NameTable= NameTable.NameTable[docfieldindicies],
+         Multiline= NameTable.Multiline[docfieldindicies],
+          JSONname= NameTable.JSONname[docfieldindicies],
+      TagValueName= NameTable.TagValueName[docfieldindicies]
+    )
 
     convert_to_TagValue!(TagValueDoc, doc, docfieldsNameTable)
 
@@ -54,15 +62,15 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
     
     # Write all non pkg-file relationships
     r_notpkgfile= .!mark_pkgfilerelationships
-    r_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:Relationships), NameTable.Symbol)])
+    r_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Relationships), NameTable.Symbol)])
     for r in relationships[r_notpkgfile]
         convert_to_TagValue!(TagValueDoc, r, r_nametable)
     end
 
     # Write all the package/files/snippets in the order specified by SPDX
-    p_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:Packages), NameTable.Symbol)]::Symbol)
-    f_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:Files), NameTable.Symbol)]::Symbol)
-    s_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:Snippets), NameTable.Symbol)]::Symbol)
+    p_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Packages), NameTable.Symbol)]::Symbol)
+    f_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Files), NameTable.Symbol)]::Symbol)
+    s_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Snippets), NameTable.Symbol)]::Symbol)
     for fileset in packagefilesets
         for element in fileset
             element_nametable= typeof(element)==SpdxFileV2 ? f_nametable : typeof(element)==SpdxPackageV2 ? p_nametable : s_nametable
@@ -71,7 +79,7 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
     end
 
     # Write all License Info. Not required to be at the end, but it makes human reading of the document a little easier
-    l_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:LicenseInfo), NameTable.Symbol)]::Symbol)
+    l_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:LicenseInfo), NameTable.Symbol)]::Symbol)
     for lic::SpdxLicenseInfoV2 in doc.LicenseInfo
         convert_to_TagValue!(TagValueDoc, lic, l_nametable)
     end
@@ -80,14 +88,14 @@ end
 
 
 #########################
-function convert_to_TagValue!(TagValueDoc::IO, doc::AbstractSpdx, NameTable::Table, SPDXREF::AbstractString= "")
+function convert_to_TagValue!(TagValueDoc::IO, doc::AbstractSpdx, NameTable::Spdx_NameTable, SPDXREF::AbstractString= "")
     if hasproperty(doc, :SPDXID)
         SPDXID= doc.SPDXID
     else
         SPDXID= ""
     end
 
-    for idx in range(1,length= length(NameTable))
+    for idx in eachindex(NameTable.Symbol)
         fieldval= getproperty(doc, NameTable.Symbol[idx])
         (ismissing(fieldval) || (isa(fieldval, Vector) && isempty(fieldval))) && continue  # goto next symbol if this one has no data
         isnothing(fieldval) && error("Field " * string(NameTable.Symbol[idx]) * "== nothing")  # This should not happen, but check just in case
@@ -120,17 +128,17 @@ function convert_to_TagValue!(TagValueDoc::IO, doc::AbstractSpdx, NameTable::Tab
 end
 
 # TODO: Work on a generic function for these types of structures
-function convert_to_TagValue!(TagValueDoc::IO, PkgRef::SpdxPackageExternalReferenceV2, NameTable::Table, unused::AbstractString)
+function convert_to_TagValue!(TagValueDoc::IO, PkgRef::SpdxPackageExternalReferenceV2, NameTable::Spdx_NameTable, unused::AbstractString)
     write_TagValue!(TagValueDoc, PkgRef.Category * " " * PkgRef.RefType * " " * PkgRef.Locator, NameTable.TagValueName[1], NameTable.Multiline[1])
     ismissing(PkgRef.Comment) || write_TagValue!(TagValueDoc, PkgRef.Comment, NameTable.TagValueName[4], NameTable.Multiline[4])
 end
 
-function convert_to_TagValue!(TagValueDoc::IO, relationship::SpdxRelationshipV2, NameTable::Table, unused::AbstractString)
+function convert_to_TagValue!(TagValueDoc::IO, relationship::SpdxRelationshipV2, NameTable::Spdx_NameTable, unused::AbstractString)
     write_TagValue!(TagValueDoc, relationship.SPDXID * "  " * relationship.RelationshipType * "  " * relationship.RelatedSPDXID, NameTable.TagValueName[1], NameTable.Multiline[1])
     ismissing(relationship.Comment) || write_TagValue!(TagValueDoc, relationship.Comment, NameTable.TagValueName[4], NameTable.Multiline[4])
 end
 
-function convert_to_TagValue!(TagValueDoc::IO, snippet::SpdxSnippetRangeV2, NameTable::Table, unused::AbstractString)
+function convert_to_TagValue!(TagValueDoc::IO, snippet::SpdxSnippetRangeV2, NameTable::Spdx_NameTable, unused::AbstractString)
     tvstrings= _tvSnippetRange(snippet, NameTable)
     for tagvalue in tvstrings
         write_TagValue!(TagValueDoc, tagvalue[2], tagvalue[1], false)

@@ -3,7 +3,6 @@ module SPDX
 
 using JSON
 using DataStructures
-using TypedTables
 using Dates
 using UUIDs
 using TimeZones

@@ -9,6 +9,17 @@ export SpdxCreatorV2, SpdxTimeV2, SpdxChecksumV2
 
 
 ######################################
+Base.@kwdef struct Spdx_NameTable
+    Symbol::Vector{Symbol}
+    Mutable::Vector{Bool}
+    Constructor::Vector{Union{Symbol, Expr}}
+    NameTable::Vector{Symbol}
+    Multiline::Vector{Bool}
+    JSONname::Vector{Union{String, Nothing}}
+    TagValueName::Vector{Union{String, Nothing}}
+end
+
+######################################
 struct SpdxCreatorV2 <: AbstractSpdx
     CreatorType::String
     Name::String
@@ -71,13 +82,14 @@ function SpdxTimeV2(Time::AbstractString)
 end
 
 ######################################
-const SpdxChecksumV2_NameTable= Table(
+const SpdxChecksumV2_NameTable= Spdx_NameTable(
          Symbol= [ :Algorithm,   :Hash           ],
         Mutable= [  false,        false          ],
     Constructor= [  :string,      :string        ],
       NameTable= [  :nothing,     :nothing        ],
       Multiline= [  false,        false          ],
        JSONname= [ "algorithm",   "checksumValue"],
+   TagValueName= [  nothing,      nothing]
 )
 
 struct SpdxChecksumV2 <: AbstractSpdxElement

@@ -3,7 +3,7 @@
 export SpdxSnippetPointerV2, SpdxSnippetRangeV2, SpdxSnippetV2
 
 #############################################
-const SpdxSnippetPointerV2_NameTable= Table(
+const SpdxSnippetPointerV2_NameTable= Spdx_NameTable(
          Symbol= [ :Reference,    :Offset,               :LineNumber,  ],
         Mutable= [  true,          true,                  true,        ],
     Constructor= [  :string,       :UInt,                 :UInt,       ],
@@ -35,7 +35,7 @@ function SpdxSnippetPointerV2(Reference::AbstractString, Tag::AbstractString, Va
 end
 
 #############################################
-const SpdxSnippetRangeV2_NameTable= Table(
+const SpdxSnippetRangeV2_NameTable= Spdx_NameTable(
          Symbol= [ :Start,                           :End,                            ],
         Mutable= [  false,                            false,                          ],
     Constructor= [  :SpdxSnippetPointerV2,            :SpdxSnippetPointerV2           ],
@@ -70,7 +70,7 @@ function SpdxSnippetRangeV2(SPDXID::AbstractString, Tag::AbstractString, Range::
 end
 
 # Special formatting function for TagValue
-function _tvSnippetRange(obj::SpdxSnippetRangeV2, NameTable::Table)
+function _tvSnippetRange(obj::SpdxSnippetRangeV2, NameTable::NamedTuple)
     hasbyteoffset= !ismissing(obj.Start.Offset) || !ismissing(obj.End.Offset)
     haslinenumber= !ismissing(obj.Start.LineNumber) || !ismissing(obj.End.LineNumber)
     ranges= Vector{Tuple}()
@@ -88,7 +88,7 @@ end
 
 
 #############################################
-const SpdxSnippetV2_NameTable= Table(
+const SpdxSnippetV2_NameTable= Spdx_NameTable(
          Symbol= [  :SPDXID,           :FileSPDXID,                :SnippetRange,                  :LicenseConcluded,              :LicenseInfo,                 :LicenseComments,          :Copyright,               :SnippetComments,  :Name,          :Attributions,              :Annotations,                ],
         Mutable= [   false,             false,                      true,                           true,                           true,                         true,                      true,                     true,              true,           true,                       true,                       ],
     Constructor= [   :string,           :string,                    :SpdxSnippetRangeV2,            :SpdxLicenseExpressionV2,       :SpdxLicenseExpressionV2,     :string,                   :string,                  :string,           :string,        :string,                    :SpdxAnnotationV2,          ],

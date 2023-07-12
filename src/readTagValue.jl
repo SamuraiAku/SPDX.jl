@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 
-function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, Function})
+function parse_TagValue(TVfile::IO, NameTable::Spdx_NameTable, constructor::Union{Type, Function})
     TVdata= read_from_TagValue(TVfile) # TagValues will be empty, only NextSection will be filled
 
     if TVdata.NextSection["Tag"] != NameTable.TagValueName[1]
@@ -45,7 +45,7 @@ function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, F
 end
 
 #######################
-function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, constructor::Union{Type, Function})
+function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Spdx_NameTable, constructor::Union{Type, Function})
     TagValueNames= NameTable.TagValueName
     tags::Vector{SubString}= getindex.(getproperty.(TagValues, :captures), 1)
     constructoridx= findall(.!NameTable.Mutable::Vector{Bool} .& (NameTable.TagValueName .!== nothing))
@@ -92,12 +92,12 @@ function convert_from_TagValue(TagValues::Vector{RegexMatch}, NameTable::Table, 
 end
 
 #######################
-function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Integer, NameTable::Table)
+function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Integer, NameTable::Spdx_NameTable)
     constructor= eval(NameTable.Constructor[paramidx]::Union{Symbol, Expr})
     return constructor(TagValues[tagidx]["Value"])
 end
 
-function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Nothing, NameTable::Table)
+function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx::Nothing, NameTable::Spdx_NameTable)
     # Check if :CreationInfo exists in this NameTable (i.e. we're constructing Document level parameters)
     # Check if :ExternalReferences exists in this NameTable (i.e. we're construcing Package level parameters)
     # Check if :SnippetRange exists in this NameTable (i.e. we're constructing Snippet level parameters)
@@ -119,12 +119,12 @@ end
 
 
 #######################
-function set_from_TagValue!(obj::AbstractSpdx, value, valueidx::Integer, Tag, NameTable::Table)
+function set_from_TagValue!(obj::AbstractSpdx, value, valueidx::Integer, Tag, NameTable::Spdx_NameTable)
     objsymbol= NameTable.Symbol[valueidx]
     set_obj_param!(obj, value, objsymbol)
 end
 
-function set_from_TagValue!(obj::SpdxDocumentV2, value, valueidx::Nothing, Tag::AbstractString, NameTable::Table)
+function set_from_TagValue!(obj::SpdxDocumentV2, value, valueidx::Nothing, Tag::AbstractString, NameTable::Spdx_NameTable)
     # Special case where we need to set CreationInfo sub-object
     creationidx= findfirst(isequal(:CreationInfo), NameTable.Symbol)
     creationNameTable= eval(NameTable.NameTable[creationidx]::Symbol)
@@ -132,7 +132,7 @@ function set_from_TagValue!(obj::SpdxDocumentV2, value, valueidx::Nothing, Tag::
     set_from_TagValue!(obj.CreationInfo, value, paramidx, Tag, creationNameTable)
 end
 
-function set_from_TagValue!(obj::SpdxPackageV2, value, valueidx::Nothing, Tag::AbstractString, NameTable::Table)
+function set_from_TagValue!(obj::SpdxPackageV2, value, valueidx::Nothing, Tag::AbstractString, NameTable::Spdx_NameTable)
     # Special case where we need to set the comment field on an external reference sub-object
     refcommentidx= findfirst(isequal(:ExternalReferences), NameTable.Symbol)
     refNameTable= eval(NameTable.NameTable[refcommentidx]::Symbol)
@@ -141,7 +141,7 @@ function set_from_TagValue!(obj::SpdxPackageV2, value, valueidx::Nothing, Tag::A
     set_from_TagValue!(obj.ExternalReferences[end], value, paramidx, Tag, refNameTable)
 end
 
-function set_from_TagValue!(obj::SpdxSnippetV2, value::SpdxSnippetRangeV2, valueidx::Nothing, Tag::AbstractString, NameTable::Table)
+function set_from_TagValue!(obj::SpdxSnippetV2, value::SpdxSnippetRangeV2, valueidx::Nothing, Tag::AbstractString, NameTable::Spdx_NameTable)
     set_obj_param!(obj, value, :SnippetRange)
 end
 

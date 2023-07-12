@@ -17,7 +17,7 @@ struct SpdxFileTypeV2 <: AbstractSpdx
 end
 
 #############################################
-const SpdxFileV2_NameTable= Table(
+const SpdxFileV2_NameTable= Spdx_NameTable(
          Symbol= [ :Name,       :SPDXID,    :Type,                  :Checksum,                    :LicenseConcluded,               :LicensesInFile,             :LicenseComments,    :Copyright,             :FileComments,   :Notice,         :Contributors,         :Attributions,           :Annotations                  ],
         Mutable= [  false,       false,      true,                   true,                         true,                            true,                        true,                true,                   true,            true,            true,                  true,                    true,                        ],
     Constructor= [  :string,     :string,    :SpdxFileTypeV2,        :SpdxChecksumV2,              :SpdxLicenseExpressionV2,        :SpdxLicenseExpressionV2,    :string,             :string,                :string,         :string,         :string,               :string,                 :SpdxAnnotationV2,           ],

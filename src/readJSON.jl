@@ -8,7 +8,7 @@ function convert_from_JSON(element, unused, constructor::Union{Type, Function})
     return constructor(element)
 end
 
-function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Union{Type, Function})
+function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Spdx_NameTable, constructor::Union{Type, Function})
     constructoridx= map(isequal(false), NameTable.Mutable)
     constructornames= NameTable.JSONname[constructoridx]
     constructorparameters= Vector{Any}(missing, length(constructornames))
