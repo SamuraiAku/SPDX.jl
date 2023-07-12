@@ -263,16 +263,3 @@ function read_from_TagValue(TVfile::IO)
 
     return (TagValues= TagValues, NextSection= NextSection)
 end
-
-
-#######################
-function Bool(x::AbstractString)
-    _x= lowercase(x)
-    if _x == "true"
-        return true
-    elseif _x == "false"
-        return false
-    else
-        error("InexactError: Bool($x)")
-    end
-end
