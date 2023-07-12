@@ -23,7 +23,7 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
 
     # Organize the packages/files/snippets into vectors in packagefilesets
     packagefilesets= [Vector() for x in 1:(length(packages)+1)]
-    for idx in 1:length(packages)
+    for idx in eachindex(packages)
         push!(packagefilesets[idx+1], packages[idx])
         # packagefilesets[1] is for files that are not contained in any packages
     end

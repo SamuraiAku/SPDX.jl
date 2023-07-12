@@ -40,7 +40,7 @@ function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, doc:
     hasFilesidx= Vector{Int}()
 
     relationships::Vector{SpdxRelationshipV2}= doc.Relationships
-    for idx in 1:length(relationships)
+    for idx in eachindex(relationships)
         if relationships[idx].RelationshipType == "DESCRIBES" && relationships[idx].SPDXID == "SPDXRef-DOCUMENT" 
             push!(docDescribes, relationships[idx].RelatedSPDXID)
             push!(describedidx, idx)
@@ -59,7 +59,7 @@ function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, doc:
         jsonDoc["documentDescribes"]= docDescribes
     end
 
-    for idx in 1:length(hasFiles)
+    for idx in eachindex(hasFiles)
         if !isempty(hasFiles[idx])
             jsonDoc["packages"][idx]["hasFiles"]= hasFiles[idx]
         end
