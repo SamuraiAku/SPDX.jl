@@ -12,12 +12,13 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
     constructoridx= map(isequal(false), NameTable.Mutable)
     constructornames= NameTable.JSONname[constructoridx]
     constructorparameters= Vector{Any}(missing, length(constructornames))
-    paramtables::Vector{Union{Nothing,Table}}= NameTable.NameTable[constructoridx]
+    paramtables::Vector{Symbol}= NameTable.NameTable[constructoridx]
     paramconstructors::Vector{Union{Symbol,Expr}}= NameTable.Constructor[constructoridx]
     for idx in eachindex(constructornames)
         if haskey(JSONfile, constructornames[idx])
             parameterconstructor= eval(paramconstructors[idx])
-            constructorparameters[idx]=  convert_from_JSON(JSONfile[constructornames[idx]], paramtables[idx], parameterconstructor)
+            parameternametable= eval(paramtables[idx])
+            constructorparameters[idx]=  convert_from_JSON(JSONfile[constructornames[idx]], parameternametable, parameterconstructor)
         end
     end
     obj= constructobj_json(constructor, Tuple(constructorparameters))
@@ -28,14 +29,15 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
             if isnothing(idx)
                 check_unknown_JSON_field(obj, name,)
             elseif NameTable.Mutable[idx] == true
-                parameterconstructor= eval(NameTable.Constructor[idx]::Union{Symbol, Expr})
+                valueconstructor= eval(NameTable.Constructor[idx]::Union{Symbol, Expr})
+                valuenametable= eval(NameTable.NameTable[idx]::Symbol)
                 if value isa Vector
                     for element in value
-                        objval= convert_from_JSON(element, NameTable.NameTable[idx], parameterconstructor)
+                        objval= convert_from_JSON(element, valuenametable, valueconstructor)
                         push!(getproperty(obj, NameTable.Symbol[idx]),  objval)
                     end
                 else
-                    objval= convert_from_JSON(value, NameTable.NameTable[idx], parameterconstructor)
+                    objval= convert_from_JSON(value, valuenametable, valueconstructor)
                     setproperty!(obj, NameTable.Symbol[idx], objval)
                 end
             end

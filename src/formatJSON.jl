@@ -9,15 +9,16 @@ function convert_to_JSON(doc::Union{AbstractSpdxData, AbstractSpdxElement}, Name
         fieldval= getproperty(doc, NameTable.Symbol[idx])
         (ismissing(fieldval) || (isa(fieldval, Vector) && isempty(fieldval))) && continue  # goto next symbol if this one has no data
         isnothing(fieldval) && error("Field " * string(NameTable.Symbol[idx]) * "== nothing")  # This should not happen, but check just in case
-        
+        fieldnametable= eval(NameTable.NameTable[idx]::Symbol)
+
         if isa(fieldval, Vector)
             elementVector= Vector{Any}()
             for element in fieldval
-                push!(elementVector, convert_to_JSON(element, NameTable.NameTable[idx]))
+                push!(elementVector, convert_to_JSON(element, fieldnametable))
             end
             jsonDoc[NameTable.JSONname[idx]]= elementVector
         else
-            jsonDoc[NameTable.JSONname[idx]]= convert_to_JSON(fieldval, NameTable.NameTable[idx])
+            jsonDoc[NameTable.JSONname[idx]]= convert_to_JSON(fieldval, fieldnametable)
         end
     end
 

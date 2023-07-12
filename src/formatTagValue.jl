@@ -54,15 +54,15 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
     
     # Write all non pkg-file relationships
     r_notpkgfile= .!mark_pkgfilerelationships
-    r_nametable::Table= NameTable.NameTable[findfirst(isequal(:Relationships), NameTable.Symbol)]
+    r_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:Relationships), NameTable.Symbol)])
     for r in relationships[r_notpkgfile]
         convert_to_TagValue!(TagValueDoc, r, r_nametable)
     end
 
     # Write all the package/files/snippets in the order specified by SPDX
-    p_nametable::Table= NameTable.NameTable[findfirst(isequal(:Packages), NameTable.Symbol)]
-    f_nametable::Table= NameTable.NameTable[findfirst(isequal(:Files), NameTable.Symbol)]
-    s_nametable::Table= NameTable.NameTable[findfirst(isequal(:Snippets), NameTable.Symbol)]
+    p_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:Packages), NameTable.Symbol)]::Symbol)
+    f_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:Files), NameTable.Symbol)]::Symbol)
+    s_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:Snippets), NameTable.Symbol)]::Symbol)
     for fileset in packagefilesets
         for element in fileset
             element_nametable= typeof(element)==SpdxFileV2 ? f_nametable : typeof(element)==SpdxPackageV2 ? p_nametable : s_nametable
@@ -71,7 +71,7 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
     end
 
     # Write all License Info. Not required to be at the end, but it makes human reading of the document a little easier
-    l_nametable::Table= NameTable.NameTable[findfirst(isequal(:LicenseInfo), NameTable.Symbol)]
+    l_nametable::Table= eval(NameTable.NameTable[findfirst(isequal(:LicenseInfo), NameTable.Symbol)]::Symbol)
     for lic::SpdxLicenseInfoV2 in doc.LicenseInfo
         convert_to_TagValue!(TagValueDoc, lic, l_nametable)
     end
@@ -91,8 +91,9 @@ function convert_to_TagValue!(TagValueDoc::IO, doc::AbstractSpdx, NameTable::Tab
         fieldval= getproperty(doc, NameTable.Symbol[idx])
         (ismissing(fieldval) || (isa(fieldval, Vector) && isempty(fieldval))) && continue  # goto next symbol if this one has no data
         isnothing(fieldval) && error("Field " * string(NameTable.Symbol[idx]) * "== nothing")  # This should not happen, but check just in case
+        fieldnametable= eval(NameTable.NameTable[idx]::Symbol)
 
-        if isnothing(NameTable.NameTable[idx]) || (isa(fieldval, Vector) && (typeof(fieldval[1]) <: AbstractSpdxElement)) || typeof(fieldval) <: AbstractSpdxElement
+        if isnothing(fieldnametable) || (isa(fieldval, Vector) && (typeof(fieldval[1]) <: AbstractSpdxElement)) || typeof(fieldval) <: AbstractSpdxElement
             if fieldval isa Vector
                 for element in fieldval
                     write_TagValue!(TagValueDoc, element, NameTable.TagValueName[idx], NameTable.Multiline[idx])
@@ -103,10 +104,10 @@ function convert_to_TagValue!(TagValueDoc::IO, doc::AbstractSpdx, NameTable::Tab
         else
             if fieldval isa Vector
                 for element in fieldval
-                    convert_to_TagValue!(TagValueDoc, element, NameTable.NameTable[idx], SPDXID)
+                    convert_to_TagValue!(TagValueDoc, element, fieldnametable, SPDXID)
                 end
             else
-                convert_to_TagValue!(TagValueDoc, fieldval, NameTable.NameTable[idx], SPDXID)
+                convert_to_TagValue!(TagValueDoc, fieldval, fieldnametable, SPDXID)
             end
         end
     end

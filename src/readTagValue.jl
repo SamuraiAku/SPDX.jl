@@ -27,7 +27,8 @@ function parse_TagValue(TVfile::IO, NameTable::Table, constructor::Union{Type, F
         end
 
         objconstructor= eval(NameTable.Constructor[sectionidx]::Union{Symbol, Expr})
-        obj= convert_from_TagValue(TVdata.TagValues, NameTable.NameTable[sectionidx], objconstructor)
+        objnametable= eval(NameTable.NameTable[sectionidx]::Symbol)
+        obj= convert_from_TagValue(TVdata.TagValues, objnametable, objconstructor)
         if obj isa Tuple
             push!(deferredData, obj)
         else
@@ -109,7 +110,7 @@ function constructvalue(tagidx::Integer, TagValues::Vector{RegexMatch}, paramidx
         value= SpdxSnippetRangeV2("Unknown", TagValues[tagidx]["Tag"], TagValues[tagidx]["Value"])
     else
         # If the tag is not valid, then this call of constructvalue will return nothing, so no need for further checks here
-        objNameTable= NameTable.NameTable[objectcheck]
+        objNameTable= eval(NameTable.NameTable[objectcheck]::Symbol)
         objidx= findfirst(isequal(TagValues[tagidx]["Tag"]), objNameTable.TagValueName)
         value= constructvalue(tagidx, TagValues, objidx, objNameTable)
     end
@@ -126,7 +127,7 @@ end
 function set_from_TagValue!(obj::SpdxDocumentV2, value, valueidx::Nothing, Tag::AbstractString, NameTable::Table)
     # Special case where we need to set CreationInfo sub-object
     creationidx= findfirst(isequal(:CreationInfo), NameTable.Symbol)
-    creationNameTable= NameTable.NameTable[creationidx]
+    creationNameTable= eval(NameTable.NameTable[creationidx]::Symbol)
     paramidx= findfirst(isequal(Tag), creationNameTable.TagValueName)
     set_from_TagValue!(obj.CreationInfo, value, paramidx, Tag, creationNameTable)
 end
@@ -134,7 +135,7 @@ end
 function set_from_TagValue!(obj::SpdxPackageV2, value, valueidx::Nothing, Tag::AbstractString, NameTable::Table)
     # Special case where we need to set the comment field on an external reference sub-object
     refcommentidx= findfirst(isequal(:ExternalReferences), NameTable.Symbol)
-    refNameTable= NameTable.NameTable[refcommentidx]
+    refNameTable= eval(NameTable.NameTable[refcommentidx]::Symbol)
     paramidx= findfirst(isequal(Tag), refNameTable.TagValueName)
     # Assume that the  is being applied to the latest Reference
     set_from_TagValue!(obj.ExternalReferences[end], value, paramidx, Tag, refNameTable)
