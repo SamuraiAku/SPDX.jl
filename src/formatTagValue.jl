@@ -24,10 +24,10 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
     #    - File contained in the package as specified in the relationships
     #    - Snippets associated with the file
 
-    relationships::Vector{SpdxRelationshipV2}= doc.Relationships
-    packages::Vector{SpdxPackageV2}= doc.Packages
-    files::Vector{SpdxFileV2}= doc.Files
-    snippets::Vector{SpdxSnippetV2}= doc.Snippets
+    relationships= doc.Relationships
+    packages= doc.Packages
+    files= doc.Files
+    snippets= doc.Snippets
 
     # Organize the packages/files/snippets into vectors in packagefilesets
     packagefilesets= [Vector() for x in 1:(length(packages)+1)]
@@ -68,9 +68,9 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
     end
 
     # Write all the package/files/snippets in the order specified by SPDX
-    p_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Packages), NameTable.Symbol)]::Symbol)
-    f_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Files), NameTable.Symbol)]::Symbol)
-    s_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Snippets), NameTable.Symbol)]::Symbol)
+    p_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Packages), NameTable.Symbol)])
+    f_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Files), NameTable.Symbol)])
+    s_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:Snippets), NameTable.Symbol)])
     for fileset in packagefilesets
         for element in fileset
             element_nametable= typeof(element)==SpdxFileV2 ? f_nametable : typeof(element)==SpdxPackageV2 ? p_nametable : s_nametable
@@ -79,8 +79,8 @@ function convert_doc_to_TagValue!(TagValueDoc::IO, doc::SpdxDocumentV2, NameTabl
     end
 
     # Write all License Info. Not required to be at the end, but it makes human reading of the document a little easier
-    l_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:LicenseInfo), NameTable.Symbol)]::Symbol)
-    for lic::SpdxLicenseInfoV2 in doc.LicenseInfo
+    l_nametable::Spdx_NameTable= eval(NameTable.NameTable[findfirst(isequal(:LicenseInfo), NameTable.Symbol)])
+    for lic in doc.LicenseInfo
         convert_to_TagValue!(TagValueDoc, lic, l_nametable)
     end
 
