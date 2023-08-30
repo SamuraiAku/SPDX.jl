@@ -1,5 +1,8 @@
 # SPDX.jl
 
+[![GitHub Actions](https://github.com/SamuraiAku/SPDX.jl/workflows/CI/badge.svg)](https://github.com/SamuraiAku/SPDX.jl/actions/workflows/CI.yml)
+[![codecov](https://codecov.io/gh/SamuraiAku/SPDX.jl/branch/master/graph/badge.svg?token=TODO)](https://codecov.io/gh/SamuraiAku/SPDX.jl)
+
 This package provides for the creation, reading and writing of SPDX files in multiple file formats. Written in pure Julia.
 
 Software Package Data eXchange (SPDX) is an open standard for communicating software bill of material information, including provenance, license, security, and other related information. SPDX reduces redundant work by providing common formats for organizations and communities to share important data, thereby streamlining and improving compliance, security, and dependability. The SPDX specification is recognized as the international open standard for security, license compliance, and other software supply chain artifacts as ISO/IEC 5962:2021.
@@ -19,10 +22,10 @@ using SPDX
 
 # Read from JSON: file extension used to determine file type
 # Returned type is SpdxDocumentV2
-jsonDoc= readspdx("./SPDXJSONExample-v2.2.spdx.json") 
+jsonDoc= readspdx("./SPDXJSONExample-v2.2.spdx.json")
 
 # Read from TagValue
-tvDoc= readspdx("./SPDXTagExample-v2.2.spdx") 
+tvDoc= readspdx("./SPDXTagExample-v2.2.spdx")
 
 # Write SPDX document in TagValue format
 writespdx(jsonDoc, "jsonread.spdx")
@@ -65,10 +68,10 @@ spdxchecksum("SHA1", "/path/to/dir", ["IgnoreThisFile.spdx.json"], [".git"]) # C
 
 ```
 
-## SPDX Document Structure 
+## SPDX Document Structure
 
 
-The document object contains many properties.  Each property corresponds to a clause of the SPDX specification. Some properties contain a single object of particular data type while others contain a vector of that type.  This section will list each property along with its data type (Name::Type) and a reference to the relevant clause of the SPDX specification. 
+The document object contains many properties.  Each property corresponds to a clause of the SPDX specification. Some properties contain a single object of particular data type while others contain a vector of that type.  This section will list each property along with its data type (Name::Type) and a reference to the relevant clause of the SPDX specification.
 
 Please see the SPDX specification [https://spdx.github.io/spdx-spec/document-creation-information/](https://spdx.github.io/spdx-spec/document-creation-information/) for further description of the property content and purpose.
 
@@ -97,8 +100,8 @@ Please see the SPDX specification [https://spdx.github.io/spdx-spec/package-info
 
 ```julia
 # Creating a new Package
-SPDXID= "SPDXRef-idstring" # Replace "idstring" with a unique identifier for the package. 
-myPkg= SpdxPackageV2(SPDXID) 
+SPDXID= "SPDXRef-idstring" # Replace "idstring" with a unique identifier for the package.
+myPkg= SpdxPackageV2(SPDXID)
 ```
 
 ```julia
@@ -125,7 +128,7 @@ Package::SpdxPackageV2 [Clause 7]
     Comment::String [Clause 7.20]
     ExternalReferences::Vector{SpdxPackageExternalReferenceV2} [Clauses 7.21, 7.22]
     Attributions::Vector{String} [Clause 7.23]
-    PrimaryPurpose::SpdxPkgPurposeV2 [Clause 7.24]            
+    PrimaryPurpose::SpdxPkgPurposeV2 [Clause 7.24]
     ReleaseDate::SpdxTimeV2 [Clause 7.25]
     BuiltDate::SpdxTimeV2 [Clause 7.26]
     ValidUntilDate::SpdxTimeV2 [Clause 7.27]
@@ -140,9 +143,9 @@ Clauses 8.9, 8.10, 8.11, and 8.16 are deprecated and not implemented in this obj
 
 ```julia
 # Creating a new File object
-FilePath= "./src/module1/foo.c" # The path to the file of interest relative to the root of the package. 
+FilePath= "./src/module1/foo.c" # The path to the file of interest relative to the root of the package.
 SPDXID= "SPDXRef-idstring" # Replace "idstring" with a unique identifier for the file.
-pkgFile= SpdxFileV2(FilePath, SPDXID) 
+pkgFile= SpdxFileV2(FilePath, SPDXID)
 ```
 
 ```julia
