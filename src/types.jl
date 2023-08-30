@@ -7,13 +7,18 @@ abstract type AbstractSpdxData <: AbstractSpdx end
 export AbstractSpdx, AbstractSpdxData, AbstractSpdxElement
 export SpdxCreatorV2, SpdxTimeV2, SpdxChecksumV2
 
+for pred in (:(==), :(isequal))
+    @eval function Base.$pred(x::AbstractSpdx, y::AbstractSpdx)
+        return all(f -> $pred(getproperty(x, f), getproperty(y, f)), fieldnames(typeof(x)))
+    end
+end
 
 ######################################
 struct SpdxCreatorV2 <: AbstractSpdx
     CreatorType::String
     Name::String
     Email::String
-    
+
     # Inner Constructor
     function SpdxCreatorV2(CreatorType::AbstractString, Name::AbstractString, Email::AbstractString; validate= true)
         validate == false && return new(CreatorType, Name, Email)
@@ -61,7 +66,7 @@ function SpdxTimeV2(Time::DateTime)
 end
 
 function SpdxTimeV2(Time::AbstractString)
-    spdxTimeFormat= TimeZones.dateformat"yyyy-mm-ddTHH:MM:SSZ"  # The 'Z' at the end is a format code for Time Zone 
+    spdxTimeFormat= TimeZones.dateformat"yyyy-mm-ddTHH:MM:SSZ"  # The 'Z' at the end is a format code for Time Zone
     if Time[end] == 'Z'
         Time= Time[1:prevind(Time, end, 1)] * "UTC"
     else

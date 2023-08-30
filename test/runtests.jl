@@ -6,7 +6,7 @@ using JSON
 using Dates
 using TimeZones
 
-
+include("test_api.jl")
 include("test_types.jl")
 include("test_SpdxAnnotation.jl")
 include("test_SpdxLicense.jl")
