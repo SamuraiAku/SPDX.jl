@@ -3,8 +3,9 @@ on:
   push:
     branches:
       - main
-    tags: '*'
+    tags: "*"
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
 concurrency:
   # Skip intermediate builds: always.
   # Cancel intermediate builds: only if it is a pull request build.
@@ -13,13 +14,15 @@ concurrency:
 jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ github.event_name }}
+    # Run on push's or non-draft PRs
+    if: (github.event_name == 'push') || (github.event.pull_request.draft == false)
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         version:
-          - '1.6' # LTS
-          - '1'
+          - "1.6" # LTS
+          - "1"
         os:
           - ubuntu-latest
     steps:
