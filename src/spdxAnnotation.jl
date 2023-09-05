@@ -3,7 +3,7 @@
 export SpdxAnnotationV2
 
 #############################################
-const SpdxAnnotationV2_NameTable= Table(
+const SpdxAnnotationV2_NameTable= Spdx_NameTable(
          Symbol= [ :Annotator,       :Created,           :Type,                :Comment],
         Mutable= [  true,             true,               true,                 true], 
     Constructor= [  :SpdxCreatorV2,   :SpdxTimeV2,        :string,              :string],

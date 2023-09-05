@@ -3,9 +3,9 @@
 convert_to_JSON(dataElement::AbstractSpdx, unused::Nothing)= string(dataElement)
 convert_to_JSON(data, unused)= data # For Bool, Int, etc.
 
-function convert_to_JSON(doc::Union{AbstractSpdxData, AbstractSpdxElement}, NameTable::Table)
+function convert_to_JSON(doc::Union{AbstractSpdxData, AbstractSpdxElement}, NameTable::Spdx_NameTable)
     jsonDoc= OrderedDict{String, Any}()
-    for idx in range(1,length= length(NameTable))
+    for idx in eachindex(NameTable.Symbol)
         fieldval= getproperty(doc, NameTable.Symbol[idx])
         (ismissing(fieldval) || (isa(fieldval, Vector) && isempty(fieldval))) && continue  # goto next symbol if this one has no data
         isnothing(fieldval) && error("Field " * string(NameTable.Symbol[idx]) * "== nothing")  # This should not happen, but check just in case

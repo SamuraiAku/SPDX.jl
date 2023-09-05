@@ -3,7 +3,7 @@
 export SpdxLicenseCrossReferenceV2, SpdxLicenseInfoV2, SpdxSimpleLicenseExpressionV2, SpdxComplexLicenseExpressionV2, SpdxLicenseExpressionV2
 
 ######################################
-const SpdxLicenseCrossReferenceV2_NameTable= Table(
+const SpdxLicenseCrossReferenceV2_NameTable= Spdx_NameTable(
         Symbol= [ :URL,       :isValid,    :isLive,   :isWayBackLink,   :Match,    :Timestamp,   :Order],
        Mutable= [  true,       true,        true,      true,             true,      true,         true],
    Constructor= [  :string,    :Bool,       :Bool,     :Bool,            :string,   :string,      :string],
@@ -31,7 +31,7 @@ end
 
 
 ######################################
-const SpdxLicenseInfoV2_NameTable= Table(
+const SpdxLicenseInfoV2_NameTable= Spdx_NameTable(
         Symbol= [ :LicenseID,    :ExtractedText,   :Name,           :URL,                       :CrossReference,                          :Comment],
        Mutable= [  false,         true,             true,            true,                       true,                                     true],
    Constructor= [  :string,       :string,          :string,         :string,                    :SpdxLicenseCrossReferenceV2,             :string],

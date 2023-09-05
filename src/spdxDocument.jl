@@ -3,7 +3,7 @@
 export SpdxCreationInfoV2, SpdxNamespaceV2, SpdxDocumentExternalReferenceV2, SpdxDocumentV2
 
 #############################################
-const SpdxCreationInfoV2_NameTable= Table(
+const SpdxCreationInfoV2_NameTable= Spdx_NameTable(
          Symbol= [ :LicenseListVersion,   :Creator,                 :Created,     :CreatorComment],
         Mutable= [  true,                  true,                     true,         true], 
     Constructor= [  :string,               :SpdxCreatorV2,           :SpdxTimeV2,  :string],
@@ -51,13 +51,14 @@ end
 
 
 ######################################
-const SpdxDocumentExternalReferenceV2_NameTable= Table(
+const SpdxDocumentExternalReferenceV2_NameTable= Spdx_NameTable(
          Symbol= [ :SPDXID,              :Namespace,         :Checksum,   ],
         Mutable= [  false,                false,              false       ],
     Constructor= [  :string,              :SpdxNamespaceV2,   :SpdxChecksumV2],
       NameTable= [  :nothing,             :nothing,           :SpdxChecksumV2_NameTable],
       Multiline= [  false,                false,              false,      ],
        JSONname= [ "externalDocumentId",  "spdxDocument",     "checksum", ],
+   TagValueName= [  nothing,              nothing,            nothing     ]
 )
 
 struct SpdxDocumentExternalReferenceV2 <: AbstractSpdxElement
@@ -73,7 +74,7 @@ function SpdxDocumentExternalReferenceV2(TVstring::AbstractString)
 end
 
 #############################################
-const SpdxDocumentV2_NameTable= Table(
+const SpdxDocumentV2_NameTable= Spdx_NameTable(
          Symbol= [ :Version,       :DataLicense,                    :SPDXID,    :Name,           :Namespace,           :ExternalDocReferences,                      :CreationInfo,                   :DocumentComment,   :Packages,                 :Files,                  :Snippets,                 :LicenseInfo,                  :Relationships,                :Annotations],
         Mutable= [  false,          false,                           false,      true,            true,                 true,                                        true,                            true,               true,                      true,                    true,                      true,                          true,                          true],
     Constructor= [  :string,        :SpdxSimpleLicenseExpressionV2,  :string,    :string,         :SpdxNamespaceV2,     :SpdxDocumentExternalReferenceV2,            :SpdxCreationInfoV2,             :string,            :SpdxPackageV2,            :SpdxFileV2,             :SpdxSnippetV2,            :SpdxLicenseInfoV2,            :SpdxRelationshipV2,           :SpdxAnnotationV2],

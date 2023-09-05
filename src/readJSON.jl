@@ -8,12 +8,12 @@ function convert_from_JSON(element, unused, constructor::Union{Type, Function})
     return constructor(element)
 end
 
-function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constructor::Union{Type, Function})
+function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Spdx_NameTable, constructor::Union{Type, Function})
     constructoridx= map(isequal(false), NameTable.Mutable)
     constructornames= NameTable.JSONname[constructoridx]
     constructorparameters= Vector{Any}(missing, length(constructornames))
-    paramtables::Vector{Symbol}= NameTable.NameTable[constructoridx]
-    paramconstructors::Vector{Union{Symbol,Expr}}= NameTable.Constructor[constructoridx]
+    paramtables= NameTable.NameTable[constructoridx]
+    paramconstructors= NameTable.Constructor[constructoridx]
     for idx in eachindex(constructornames)
         if haskey(JSONfile, constructornames[idx])
             parameterconstructor= eval(paramconstructors[idx])
@@ -29,8 +29,8 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Table, constr
             if isnothing(idx)
                 check_unknown_JSON_field(obj, name,)
             elseif NameTable.Mutable[idx] == true
-                valueconstructor= eval(NameTable.Constructor[idx]::Union{Symbol, Expr})
-                valuenametable= eval(NameTable.NameTable[idx]::Symbol)
+                valueconstructor= eval(NameTable.Constructor[idx])
+                valuenametable= eval(NameTable.NameTable[idx])
                 if value isa Vector
                     for element in value
                         objval= convert_from_JSON(element, valuenametable, valueconstructor)
@@ -82,7 +82,7 @@ function process_additional_JSON_fields!(doc::SpdxDocumentV2, name::AbstractStri
     if name in ("documentDescribes", "hasFiles")
         # 1-element Tuple structure is (describesVector,)
         # 2-element Tuple structure is (filesVector, pkgSPDXID)
-        doc_r::Vector{SpdxRelationshipV2}= doc.Relationships
+        doc_r= doc.Relationships
         if value[1] isa Vector
             if name == "documentDescribes"
                 ID= "SPDXRef-DOCUMENT"

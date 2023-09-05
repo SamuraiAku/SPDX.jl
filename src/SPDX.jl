@@ -3,7 +3,6 @@ module SPDX
 
 using JSON
 using DataStructures
-using TypedTables
 using Dates
 using UUIDs
 using TimeZones
@@ -41,5 +40,6 @@ include("readJSON.jl")
 include("readTagValue.jl")
 include("checksums.jl")
 include("api.jl")
+include("../test/build_testDocument.jl")  # This is our precompilation
 
 end

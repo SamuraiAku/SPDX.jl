@@ -3,7 +3,7 @@
 export SpdxPackageExternalReferenceV2, SpdxPkgVerificationCodeV2, SpdxPackageV2, SpdxPkgPurposeV2, SpdxDownloadLocationV2
 
 ######################################
-const SpdxPackageExternalReferenceV2_NameTable= Table(
+const SpdxPackageExternalReferenceV2_NameTable= Spdx_NameTable(
          Symbol= [ :Category,             :RefType,            :Locator,             :Comment],
         Mutable= [  false,                 false,               false,                true],
     Constructor= [  :string,               :string,             :string,              :string], 
@@ -37,13 +37,14 @@ end
 
 
 ######################################
-const SpdxPkgVerificationCodeV2_NameTable= Table(
+const SpdxPkgVerificationCodeV2_NameTable= Spdx_NameTable(
          Symbol= [ :Hash,                           :ExcludedFiles  ],
         Mutable= [  false,                           false,         ],
     Constructor= [  :string,                         :(Vector{String}) ],
       NameTable= [  :nothing,                        :nothing        ],
       Multiline= [  false,                           false          ],
        JSONname= [  "packageVerificationCodeValue",  "packageVerificationCodeExcludedFiles"],
+   TagValueName= [  nothing,                         nothing     ]
 )
 
 struct SpdxPkgVerificationCodeV2 <: AbstractSpdxElement
@@ -168,7 +169,7 @@ function SpdxDownloadLocationV2(DL::SpdxDownloadLocationV2;
 end
 
 #############################################
-const SpdxPackageV2_NameTable= Table(  
+const SpdxPackageV2_NameTable= Spdx_NameTable(  
          Symbol= [ :Name,              :SPDXID,   :Version,          :FileName,          :Supplier,          :Originator,          :DownloadLocation,          :FilesAnalyzed,   :VerificationCode,                      :Checksums,                 :HomePage,          :SourceInfo,          :LicenseConcluded,                :LicenseInfoFromFiles,              :LicenseDeclared,                  :LicenseComments,          :Copyright,              :Summary,          :DetailedDescription,   :Comment,          :ExternalReferences,                        :Attributions,               :PrimaryPurpose,            :ReleaseDate,     :BuiltDate,     :ValidUntilDate,    :Annotations],
         Mutable= [  true,               false,     true,              true,               true,               true,                 true,                       true,             true,                                   true,                       true,               true,                 true,                             true,                               true,                              true,                      true,                    true,              true,                   true,              true,                                       true,                        true,                       true,             true,           true,               true],
     Constructor= [  :string,            :string,   :string,           :string,            :SpdxCreatorV2,     :SpdxCreatorV2,       :SpdxDownloadLocationV2,    :Bool,            :SpdxPkgVerificationCodeV2,             :SpdxChecksumV2,            :string,            :string,              :SpdxLicenseExpressionV2,         :SpdxLicenseExpressionV2,           :SpdxLicenseExpressionV2,          :string,                   :string,                 :string,           :string,                :string,           :SpdxPackageExternalReferenceV2,            :string,                     :SpdxPkgPurposeV2,          :SpdxTimeV2,      :SpdxTimeV2,    :SpdxTimeV2,        :SpdxAnnotationV2],

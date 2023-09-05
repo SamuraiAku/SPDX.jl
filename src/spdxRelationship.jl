@@ -3,7 +3,7 @@
 export SpdxRelationshipV2
 
 #############################################
-const SpdxRelationshipV2_NameTable= Table(
+const SpdxRelationshipV2_NameTable= Spdx_NameTable(
          Symbol= [ :SPDXID,          :RelationshipType,    :RelatedSPDXID,         :Comment],
         Mutable= [  false,            false,                false,                  true], 
     Constructor= [  :string,          :string,              :string,                :string],
