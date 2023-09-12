@@ -7,12 +7,6 @@ abstract type AbstractSpdxData <: AbstractSpdx end
 export AbstractSpdx, AbstractSpdxData, AbstractSpdxElement
 export SpdxCreatorV2, SpdxTimeV2, SpdxChecksumV2
 
-for pred in (:(==), :(isequal))
-    @eval function Base.$pred(x::AbstractSpdx, y::AbstractSpdx)
-        return all(f -> $pred(getproperty(x, f), getproperty(y, f)), fieldnames(typeof(x)))
-    end
-end
-
 ######################################
 Base.@kwdef struct Spdx_NameTable
     Symbol::Vector{Symbol}
