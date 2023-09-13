@@ -122,3 +122,10 @@ end
 function getcreators(doc::SpdxDocumentV2)
     return deepcopy(doc.CreationInfo.Creator)
 end
+
+#########################
+for pred in (:(==), :(isequal))
+    @eval function Base.$pred(x::AbstractSpdx, y::AbstractSpdx)
+        return all(f -> $pred(getproperty(x, f), getproperty(y, f)), fieldnames(typeof(x)))
+    end
+end

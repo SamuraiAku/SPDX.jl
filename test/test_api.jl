@@ -1,0 +1,25 @@
+@testset "Base extensions" begin
+    sbom_path = joinpath(pkgdir(SPDX), "SPDX.spdx.json")
+    mysbom= readspdx(sbom_path)
+    mysbom2= readspdx(sbom_path)
+    mysbom3= readspdx(sbom_path)
+    push!(mysbom3.Packages[2].LicenseInfoFromFiles, SpdxLicenseExpressionV2("MIT"))
+
+    @testset "`Base.==`" begin
+        # mysbom contains `missing` entries...
+        @test ismissing(mysbom.CreationInfo.LicenseListVersion)
+        # ...so a test of `==` should also be missing:
+        @test ismissing(mysbom == mysbom)
+        @test ismissing(mysbom == mysbom2)
+        @test mysbom != mysbom3
+    end
+
+    @testset "`Base.isequal`" begin
+        @test isequal(mysbom, mysbom)
+        @test isequal(mysbom, mysbom2)
+        @test !isequal(mysbom, mysbom3)
+    end
+end
+
+
+
