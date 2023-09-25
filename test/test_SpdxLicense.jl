@@ -65,6 +65,9 @@ end
     a= SpdxSimpleLicenseExpressionV2("MIT", "Exception1")
     b= SpdxSimpleLicenseExpressionV2("  MIT WITH  Exception1   ")
     @test SPDX.compare_b(a, b)
+
+    # Error Checking
+    @test_throws "Empty License String" SpdxSimpleLicenseExpressionV2("")
 end
 
 # SpdxComplexLicenseExpressionV2 has only a single constructor and nothing to compare against

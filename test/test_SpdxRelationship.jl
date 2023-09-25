@@ -18,4 +18,7 @@
     d= SPDX.parse_TagValue(d_tv, SPDX.SpdxRelationshipV2_NameTable, SpdxRelationshipV2)
     @test !SPDX.compare_b(a, d)
     @test SPDX.compare_b(a, d; skipproperties= Symbol[:Comment])
+
+    # Error checking
+    @test isnothing(SpdxRelationshipV2("Garbage "))
 end
