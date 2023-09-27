@@ -48,7 +48,7 @@ end
     a.Supplier= SpdxCreatorV2("Person: Jane Doe (somewhere@overthere.com)")
     a.Originator= SpdxCreatorV2("Person: SamuraiAku (loopback@here.com)")
     a.DownloadLocation= SpdxDownloadLocationV2("git+https://github.com/SamuraiAku/SPDX.jl.git")
-    a.FilesAnalyzed= true
+    a.FilesAnalyzed= false
     a.VerificationCode= SpdxPkgVerificationCodeV2("d6a770ba38583ed4bb4525bd96e50461655d2758",  ["./package.spdx"])
     push!(a.Checksums, SpdxChecksumV2("SHA1: 85ed0817af83a24ad8da68c2b5094de69833983c"))
     a.HomePage= "https://github.com/SamuraiAku/SPDX.jl"
@@ -85,7 +85,7 @@ end
         "supplier": "Person: Jane Doe (somewhere@overthere.com)",
         "originator": "Person: SamuraiAku (loopback@here.com)",
         "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git",
-        "filesAnalyzed": true,
+        "filesAnalyzed": false,
         "packageVerificationCode": {
             "packageVerificationCodeValue": "d6a770ba38583ed4bb4525bd96e50461655d2758",
             "packageVerificationCodeExcludedFiles": ["./package.spdx"]
@@ -142,7 +142,7 @@ end
     PackageSupplier:  Person: Jane Doe (somewhere@overthere.com)
     PackageOriginator:  Person: SamuraiAku (loopback@here.com)
     PackageDownloadLocation:  git+https://github.com/SamuraiAku/SPDX.jl.git
-    FilesAnalyzed:  true
+    FilesAnalyzed:  False
     PackageVerificationCode: d6a770ba38583ed4bb4525bd96e50461655d2758 (excludes: ./package.spdx)
     PackageChecksum:    SHA1: 85ed0817af83a24ad8da68c2b5094de69833983c
     PackageHomePage:  https://github.com/SamuraiAku/SPDX.jl

@@ -6,6 +6,10 @@ using JSON
 using Dates
 using TimeZones
 
+@testset "Bool error check" begin
+    @test_throws Exception Bool("false ")
+end
+
 include("test_api.jl")
 include("test_types.jl")
 include("test_SpdxAnnotation.jl")
