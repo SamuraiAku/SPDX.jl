@@ -68,6 +68,7 @@ end
 
     # Error Checking
     @test_throws "Empty License String" SpdxSimpleLicenseExpressionV2("")
+    @test_broken SpdxSimpleLicenseExpressionV2("MIT IS AWESOME") != SpdxSimpleLicenseExpressionV2("MIT") 
 end
 
 # SpdxComplexLicenseExpressionV2 has only a single constructor and nothing to compare against
