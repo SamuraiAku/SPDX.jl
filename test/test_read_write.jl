@@ -1,26 +1,43 @@
 @testset "`readspdx`/`writespdx`" begin
     using SPDX: readJSON, readTagValue
 
-    spdx = readspdx(joinpath(pkgdir(SPDX), "SPDX.spdx.json"))
-    @test spdx isa SpdxDocumentV2
+    spdxDoc = readspdx(joinpath(pkgdir(SPDX), "SPDX.spdx.json"))
+    @test spdxDoc isa SpdxDocumentV2
 
     @testset "JSON format roundtrips" begin
-        rt_path = mktempdir() * "out.spdx.json"
-        writespdx(spdx, rt_path)
+        rt_path = joinpath(mktempdir(), "out.spdx.json")
+        writespdx(spdxDoc, rt_path)
         rt_spdx = readspdx(rt_path)
-        @test isequal(spdx, rt_spdx)
+        @test isequal(spdxDoc, rt_spdx)
 
-        @test isequal(spdx, readJSON(rt_path))
+        @test isequal(spdxDoc, readJSON(rt_path))
         @test_throws Exception readTagValue(rt_path)
+
+        # Change the describes relationship in the SPDX document to get more code coverage
+        spdxDoc2 = readspdx(joinpath(pkgdir(SPDX), "SPDX.spdx.json"))
+        idx= findfirst(x -> isequal(x.RelationshipType, "DESCRIBES"), spdxDoc2.Relationships)
+        describesRelationShip= spdxDoc2.Relationships[idx]
+        spdxDoc2.Relationships[idx]= SpdxRelationshipV2(describesRelationShip.RelatedSPDXID, "DESCRIBED_BY", describesRelationShip.SPDXID)
+        writespdx(spdxDoc2, rt_path)
+        rt_spdx = readspdx(rt_path)
+        @test isequal(spdxDoc, rt_spdx)  # Reading documentDescribes in a JSON file produces a DESCRIBES Relationship
+
+        # Add a File and Relationship to improve code coverage. The SPDXID doesn't actually exist
+        spdxDoc2 = readspdx(joinpath(pkgdir(SPDX), "SPDX.spdx.json"))
+        push!(spdxDoc2.Files, SpdxFileV2(Name= "Child", SPDXID= "SpdxRef-Child"))
+        insert!(spdxDoc2.Relationships, lastindex(spdxDoc2.Relationships), SpdxRelationshipV2(spdxDoc2.Packages[1].SPDXID, "CONTAINS", "SpdxRef-Child"))
+        writespdx(spdxDoc2, rt_path)
+        rt_spdx = readspdx(rt_path)
+        @test isequal(spdxDoc2, rt_spdx)
     end
 
     @testset "TagValue format roundtrips" begin
         rt_path = mktempdir() * "out.spdx"
-        writespdx(spdx, rt_path)
+        writespdx(spdxDoc, rt_path)
         rt_spdx = readspdx(rt_path)
-        @test isequal(spdx, rt_spdx)
+        @test isequal(spdxDoc, rt_spdx)
 
-        @test isequal(spdx, readTagValue(rt_path))
+        @test isequal(spdxDoc, readTagValue(rt_path))
         @test_throws Exception readJSON(rt_path)
     end
 end
