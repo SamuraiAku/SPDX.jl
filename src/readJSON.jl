@@ -78,7 +78,6 @@ end
 
 
 function process_additional_JSON_fields!(doc::SpdxDocumentV2, name::AbstractString, value::Tuple)
-
     if name in ("documentDescribes", "hasFiles")
         # 1-element Tuple structure is (describesVector,)
         # 2-element Tuple structure is (filesVector, pkgSPDXID)
@@ -99,7 +98,8 @@ function process_additional_JSON_fields!(doc::SpdxDocumentV2, name::AbstractStri
                 end
             end
         else
-            println("Unable to parse \"$name\" : ", value[1])
+            println("INFO: Unable to parse \"$name\" : ", value[1])
+            println("\tExpecting data to be enclosed in an array")
         end
     else
         println("INFO: Ignoring JSON field ", name)

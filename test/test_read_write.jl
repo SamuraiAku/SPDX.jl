@@ -31,6 +31,13 @@
         @test isequal(spdxDoc2, rt_spdx)
     end
 
+    @testset "JSON format errors" begin
+        # Point of this test is to trigger certain println() when a JSON file with unrecognized fields is present
+        # for code coverage.
+        temp= readspdx(joinpath(pkgdir(SPDX), "test/SPDX_badfields.spdx.json"));
+        @test temp isa SpdxDocumentV2
+    end
+    
     @testset "TagValue format roundtrips" begin
         rt_path = mktempdir() * "out.spdx"
         writespdx(spdxDoc, rt_path)
