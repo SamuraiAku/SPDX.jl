@@ -102,6 +102,6 @@ function process_additional_JSON_fields!(doc::SpdxDocumentV2, name::AbstractStri
             println("\tExpecting data to be enclosed in an array")
         end
     else
-        println("INFO: Ignoring JSON field ", name)
+        println("INFO: process_additional_JSON_fields!(): Ignoring JSON field ", name)
     end
 end
