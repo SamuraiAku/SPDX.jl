@@ -1,4 +1,4 @@
-@testset "Base extensions" begin
+@testset "Comparison Operations" begin
     sbom_path = joinpath(pkgdir(SPDX), "SPDX.spdx.json")
     mysbom= readspdx(sbom_path)
     mysbom2= readspdx(sbom_path)
@@ -18,6 +18,10 @@
         @test isequal(mysbom, mysbom)
         @test isequal(mysbom, mysbom2)
         @test !isequal(mysbom, mysbom3)
+    end
+
+    @testset "compare" begin
+        @test !SPDX.compare_b(mysbom, mysbom3)
     end
 end
 
