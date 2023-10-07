@@ -3,9 +3,6 @@
 ###################
 function compare(x, y; skipproperties::Vector{Symbol}= Symbol[])
     if typeof(x) === typeof(y)
-        if x isa Vector
-            println("You are comparing 2 vectors. Use broadcast \"compare.(...)\" to compare their contents")
-        end
         return (bval= isequal(x,y), mismatches= Symbol[])
     else
         return (bval= false, mismatches= Symbol[])
@@ -47,8 +44,6 @@ function compare_b(x::Vector, y::Vector; skipproperties::Vector{Symbol}= Symbol[
         return false
     end
 end
-
-compare_b(x)= Base.Fix2(compare_b, x)
 
 ###################
 compare_rel(r1::SpdxRelationshipV2, r2::SpdxRelationshipV2)= compare_b(r1, r2; skipproperties=Symbol[:Comment])
