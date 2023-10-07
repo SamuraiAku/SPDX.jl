@@ -20,6 +20,8 @@
     @test SPDX.compare_b(a, d)
 
     # Test some error conditions, someday
+    weird_creator= SpdxCreatorV2("NotAperson: John Smith")
+    @test weird_creator isa SpdxCreatorV2
   end
 
 @testset "SpdxTime" begin
@@ -38,6 +40,9 @@
   d_tv= IOBuffer("Created: 2022-05-15T15:05:02Z")
   d_tags= getproperty(SPDX.read_from_TagValue(d_tv), :TagValues)
   @test d_tags[1]["Tag"] in SPDX.SpdxCreationInfoV2_NameTable.TagValueName
+
+  # Error Checking
+  @test_throws Exception SpdxTimeV2("2022-05-15T15:05:02P")
 end
 
 
@@ -57,4 +62,9 @@ end
   d_tv= IOBuffer("PackageChecksum: SHA256: 11b6d3ee554eedf79299905a98f9b9a04e498210b59f15094c916c91d150efcd")
   d_tags= getproperty(SPDX.read_from_TagValue(d_tv), :TagValues)
   @test d_tags[1]["Tag"] in SPDX.SpdxPackageV2_NameTable.TagValueName
+
+  # Error Checking
+  @test_throws "Checksum Algorithm is not recognized" SpdxChecksumV2("BADALG", "11b6d3ee554eedf79299905a98f9b9a04e498210b59f15094c916c91d150efcd")
+  @test_throws "Checksum Hash is invalid: Non-hex values detected" SpdxChecksumV2("SHA256", "11b6d3ee554eedf79299905a98f9b9a04e498210b59f15094c916c91d150eXYZ")
+  @test_throws "Unable to parse checksum string" SpdxChecksumV2("SHA256:   11b6d3ee554eedf79299905a98f9b9a04e498210  b59f15094c916c91d150efcd   ")
 end
