@@ -55,6 +55,7 @@ end
 
     # When the namespace string does not match best practices
     @test SpdxNamespaceV2("Not_a_URL") isa SpdxNamespaceV2
+    @test SpdxNamespaceV2("https://www.loopback.com") isa SpdxNamespaceV2
 end
 
 @testset "SpdxDocumentExternalReference" begin
