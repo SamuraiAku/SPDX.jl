@@ -52,6 +52,9 @@ end
     paramidx= findfirst(isequal(d_tags[1].captures[1]), SPDX.SpdxDocumentV2_NameTable.TagValueName)
     d= SPDX.constructvalue(1, d_tags, paramidx, SPDX.SpdxDocumentV2_NameTable)
     @test SPDX.compare_b(a, d)
+
+    # When the namespace string does not match best practices
+    @test SpdxNamespaceV2("Not_a_URL") isa SpdxNamespaceV2
 end
 
 @testset "SpdxDocumentExternalReference" begin
