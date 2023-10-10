@@ -7,6 +7,10 @@ function parse_TagValue(TVfile::IO, NameTable::Spdx_NameTable, constructor::Unio
         println("Parsing Error! First Tag is not ", NameTable.TagValueName[1])
         return nothing
     end
+    if !isempty(TVdata.TagValues)
+        println("Warning! The following tags were discarded before the detected start of the SPDX document")
+        println.("\t", TVdata.TagValues)
+    end
 
     NextSection= TVdata.NextSection
     TVdata= read_from_TagValue(TVfile)

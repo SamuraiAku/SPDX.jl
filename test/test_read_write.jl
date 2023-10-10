@@ -47,4 +47,11 @@
         @test isequal(spdxDoc, readTagValue(rt_path))
         @test_throws Exception readJSON(rt_path)
     end
+
+    @testset "TagValue format errors" begin
+        tv_path= joinpath(pkgdir(SPDX), "test", "SPDX_badparse.spdx")
+        @test isnothing(readspdx(tv_path))
+        tv_path= joinpath(pkgdir(SPDX), "test", "SPDX_discardedtags.spdx")
+        @test readspdx(tv_path) isa SpdxDocumentV2
+    end
 end
