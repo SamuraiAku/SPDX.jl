@@ -5,6 +5,9 @@
     b= SpdxPackageExternalReferenceV2("SECURITY  cpe23Type  cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*")
     b.Comment= "This is a comment."
     @test SPDX.compare_b(a, b)
+
+    # Error handling
+    @test isnothing(SpdxPackageExternalReferenceV2("SECURITY  cpe23Type  cpe  2.3"))
 end
 
 @testset "SpdxPkgVerificationCode" begin
@@ -12,6 +15,11 @@ end
 
     b= SpdxPkgVerificationCodeV2("d6a770ba38583ed4bb4525bd96e50461655d2758  (excludes: ./package.spdx ./otherPkg)")
     @test SPDX.compare_b(a, b)
+
+    # Error handling
+    @test SpdxPkgVerificationCodeV2("d6a770ba38583ed4bb4525bd96e50461655d2758  [excludes: ./package.spdx]") isa SpdxPkgVerificationCodeV2
+    @test SpdxPkgVerificationCodeV2("d6a770ba38583ed4bb4525bd96e50461655d2758  (includes: ./package.spdx ./otherPkg)") isa SpdxPkgVerificationCodeV2
+    @test_throws "Unable to parse Package Verification Code" SpdxPkgVerificationCodeV2("d6a770ba38583ed4bb4525bd96e50461655d2  (includes: ./package.spdx ./otherPkg)") # Hash is a few digits short
 end
 
 @testset "SpdxPkgPurpose" begin
@@ -19,6 +27,9 @@ end
     a= SpdxPkgPurposeV2(str)
 
     @test string(a) == str
+
+    # Error handling
+    @test SpdxPkgPurposeV2("NOPURPOSE") isa SpdxPkgPurposeV2
 end
 
 @testset "SpdxDownloadLocation" begin
@@ -38,6 +49,8 @@ end
     for str in test_strings
         @test str == string(SpdxDownloadLocationV2(str))
     end
+
+    @test SpdxDownloadLocationV2(SpdxDownloadLocationV2(test_strings[1]); HostProtocol= "https") != SpdxDownloadLocationV2(test_strings[1])
 end
 
 @testset "SpdxPackage" begin
