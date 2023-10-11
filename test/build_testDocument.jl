@@ -35,6 +35,7 @@ a.DocumentComment= "I don't have very much to say about it."
     pkg.DetailedDescription= "More details of the package."
     pkg.Comment= "It's a pretty good piece of code."
     push!(pkg.ExternalReferences, SpdxPackageExternalReferenceV2("SECURITY", "cpe23Type", "cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*"))
+    pkg.ExternalReferences[end].Comment= "Comment on the External Reference"
     push!(pkg.Attributions, "Attribution 1")
     pkg.PrimaryPurpose= SpdxPkgPurposeV2("APPLICATION")
     pkg.ReleaseDate= SpdxTimeV2(now())
@@ -175,7 +176,8 @@ c_json= """{
                 {
                     "referenceCategory": "SECURITY",
                     "referenceLocator": "cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*",
-                    "referenceType": "cpe23Type"
+                    "referenceType": "cpe23Type",
+                    "comment": "Comment on the External Reference"
                 }
             ],
             "attributionTexts": ["Attribution 1"],
@@ -322,6 +324,7 @@ d_tv= IOBuffer("
     PackageDescription:   More details of the package.
     PackageComment:   It's a pretty good piece of code.
     ExternalRef: SECURITY cpe23Type  cpe:2.3:a:pivotal_software:spring_framework:4.1.0:*:*:*:*:*:*:*
+    ExternalRefComment: Comment on the External Reference
     PackageAttributionText: Attribution 1
     PrimaryPackagePurpose: APPLICATION
     ReleaseDate: $(pkg.ReleaseDate)
