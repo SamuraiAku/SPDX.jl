@@ -77,6 +77,7 @@ push!(a.Files, file)
 # Add a Snippet
     snip= SpdxSnippetV2("SpdxRef-S1", "SpdxRef-F1")
     push!(snip.SnippetRange, SpdxSnippetRangeV2("SpdxRef-F1", "SnippetByteRange", "3000:4000"))
+    push!(snip.SnippetRange, SpdxSnippetRangeV2("SpdxRef-F1", "SnippetLineRange", "25:33"))
     snip.LicenseConcluded= SpdxLicenseExpressionV2("MIT")
     push!(snip.LicenseInfo, SpdxLicenseExpressionV2("MIT"))
     push!(snip.LicenseInfo, SpdxLicenseExpressionV2("GPL-2.0-only WITH Exception"))
@@ -243,6 +244,16 @@ c_json= """{
                 "offset" : 3000,
                 "reference" : "SpdxRef-F1"
               }
+            },
+            {
+              "endPointer" : {
+                "lineNumber" : 33,
+                "reference" : "SpdxRef-F1"
+              },
+              "startPointer" : {
+                "lineNumber" : 25,
+                "reference" : "SpdxRef-F1"
+              }
             } ],
             "snippetFromFile" : "SpdxRef-F1",
             "attributionTexts" : ["Attribution 1", "Attribution 2"],
@@ -367,6 +378,7 @@ d_tv= IOBuffer("
     SnippetName: MySnippet
     SnippetCopyrightText: <text>Copyright 2022 SamuraiAku</text>
     SnippetByteRange: 3000:4000
+    SnippetLineRange: 25:33
     SnippetLicenseConcluded: MIT
     LicenseInfoInSnippet: MIT
     LicenseInfoInSnippet: GPL-2.0-only WITH Exception
