@@ -70,17 +70,17 @@ function SpdxSnippetRangeV2(SPDXID::AbstractString, Tag::AbstractString, Range::
 end
 
 # Special formatting function for TagValue
-function _tvSnippetRange(obj::SpdxSnippetRangeV2, NameTable::NamedTuple)
+function _tvSnippetRange(obj::SpdxSnippetRangeV2, NameTable::Spdx_NameTable)
     hasbyteoffset= !ismissing(obj.Start.Offset) || !ismissing(obj.End.Offset)
     haslinenumber= !ismissing(obj.Start.LineNumber) || !ismissing(obj.End.LineNumber)
     ranges= Vector{Tuple}()
 
     if hasbyteoffset
-        push!(ranges, (NameTable.NameTable[1].TagValueName[2], string(obj.Start.Offset) * ":" * string(obj.End.Offset)))
+        push!(ranges, (eval(NameTable.NameTable[1]).TagValueName[2], string(obj.Start.Offset) * ":" * string(obj.End.Offset)))
     end
 
     if haslinenumber
-        push!(ranges, (NameTable.NameTable[1].TagValueName[3], string(obj.Start.LineNumber) * ":" * string(obj.End.LineNumber)))
+        push!(ranges, (eval(NameTable.NameTable[1]).TagValueName[3], string(obj.Start.LineNumber) * ":" * string(obj.End.LineNumber)))
     end
 
     return ranges
