@@ -6,8 +6,10 @@ using JSON
 using Dates
 using TimeZones
 
-@testset "Bool error check" begin
-    @test_throws Exception Bool("false ")
+@testset "Bool check" begin
+    @test Bool(" True ")
+    @test !Bool(" fALSE  ")
+    @test_throws Exception Bool("flse ")
 end
 
 include("test_api.jl")
