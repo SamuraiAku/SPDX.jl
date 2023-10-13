@@ -25,8 +25,8 @@
         idx= findfirst(x -> isequal(x.RelationshipType, "DESCRIBES"), spdxDoc2.Relationships)
         describesRelationShip= spdxDoc2.Relationships[idx]
         spdxDoc2.Relationships[idx]= SpdxRelationshipV2(describesRelationShip.RelatedSPDXID, "DESCRIBED_BY", describesRelationShip.SPDXID)
-        writespdx(spdxDoc2, rt_path)
-        rt_spdx = readspdx(rt_path)
+        writespdx(spdxDoc2, rt_path; format= "JSON")
+        rt_spdx = readspdx(rt_path; format= "JSON")
         @test isequal(spdxDoc, rt_spdx)  # Reading documentDescribes in a JSON file produces a DESCRIBES Relationship
 
         # Write and read a second SPDX file for more coverage.
@@ -57,8 +57,8 @@
 
         # Write and read a second SPDX file for more coverage.
         spdxDoc2= c  # from build_testDocument.jl
-        writespdx(spdxDoc2, rt_path)
-        rt_spdx = readspdx(rt_path)
+        writespdx(spdxDoc2, rt_path; format= "TagValue")
+        rt_spdx = readspdx(rt_path; format= "TagValue")
         @test_broken compare_b(spdxDoc2, rt_spdx)  # Relationships are in different order, so skip until we have a better compare
     end
 
