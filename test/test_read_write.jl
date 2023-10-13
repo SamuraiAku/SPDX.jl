@@ -2,11 +2,13 @@
     using SPDX: readJSON, readTagValue
 
     include("build_testDocument.jl") 
-    spdxDoc = readspdx(joinpath(pkgdir(SPDX), "SPDX.spdx.json"))
+    spdxdir= pkgdir(SPDX)
+    spdxDoc = readspdx(joinpath(spdxdir, "SPDX.spdx.json"))
     @test spdxDoc isa SpdxDocumentV2
+    tempdir= mktempdir()
 
     @testset "JSON format roundtrips" begin
-        rt_path = joinpath(mktempdir(), "out.spdx.json")
+        rt_path = joinpath(tempdir, "out.spdx.json")
         writespdx(spdxDoc, rt_path)
         rt_spdx = readspdx(rt_path)
         @test isequal(spdxDoc, rt_spdx)
@@ -15,7 +17,7 @@
         @test_throws Exception readTagValue(rt_path)
 
         # Change the describes relationship in the SPDX document to get more code coverage
-        spdxDoc2 = readspdx(joinpath(pkgdir(SPDX), "SPDX.spdx.json"))
+        spdxDoc2 = readspdx(joinpath(spdxdir, "SPDX.spdx.json"))
         idx= findfirst(x -> isequal(x.RelationshipType, "DESCRIBES"), spdxDoc2.Relationships)
         describesRelationShip= spdxDoc2.Relationships[idx]
         spdxDoc2.Relationships[idx]= SpdxRelationshipV2(describesRelationShip.RelatedSPDXID, "DESCRIBED_BY", describesRelationShip.SPDXID)
@@ -28,17 +30,20 @@
         writespdx(spdxDoc2, rt_path)
         rt_spdx = readspdx(rt_path)
         @test isequal(spdxDoc2, rt_spdx)
+        open(joinpath(tempdir, "spdx_print.txt"), "w") do io
+            print(io, spdxDoc2)
+        end
     end
 
     @testset "JSON format errors" begin
         # Point of this test is to trigger certain println() when a JSON file with unrecognized fields is present
         # for code coverage.
-        temp= readspdx(joinpath(pkgdir(SPDX), "test/SPDX_badfields.spdx.json"));
+        temp= readspdx(joinpath(spdxdir, "test/SPDX_badfields.spdx.json"));
         @test temp isa SpdxDocumentV2
     end
     
     @testset "TagValue format roundtrips" begin
-        rt_path = mktempdir() * "out.spdx"
+        rt_path = joinpath(tempdir, "out.spdx")
         writespdx(spdxDoc, rt_path)
         rt_spdx = readspdx(rt_path)
         @test isequal(spdxDoc, rt_spdx)
@@ -54,9 +59,9 @@
     end
 
     @testset "TagValue format errors" begin
-        tv_path= joinpath(pkgdir(SPDX), "test", "SPDX_badparse.spdx")
+        tv_path= joinpath(spdxdir, "test", "SPDX_badparse.spdx")
         @test isnothing(readspdx(tv_path))
-        tv_path= joinpath(pkgdir(SPDX), "test", "SPDX_discardedtags.spdx")
+        tv_path= joinpath(spdxdir, "test", "SPDX_discardedtags.spdx")
         @test readspdx(tv_path) isa SpdxDocumentV2
     end
 end
