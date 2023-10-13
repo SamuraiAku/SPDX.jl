@@ -28,7 +28,7 @@ a.DocumentComment= "I don't have very much to say about it."
     pkg.LicenseConcluded= SpdxLicenseExpressionV2("MIT")
     push!(pkg.LicenseInfoFromFiles, SpdxLicenseExpressionV2("MIT"))
     push!(pkg.LicenseInfoFromFiles, SpdxLicenseExpressionV2("BSD-3 WITH Exception"))
-    pkg.LicenseDeclared= SpdxLicenseExpressionV2("MIT")
+    pkg.LicenseDeclared= SpdxLicenseExpressionV2("MIT AND BSD-3 WITH Exception")
     pkg.LicenseComments= "Anything to say?"
     pkg.Copyright= "Copyright 2022 SamuraiAku"
     pkg.Summary= "This is a summary of the package"
@@ -167,7 +167,7 @@ c_json= """{
             "sourceInfo": "Where did this code come from?",
             "licenseConcluded": "MIT",
             "licenseInfoFromFiles": ["MIT", "BSD-3 WITH Exception"],
-            "licenseDeclared": "MIT",
+            "licenseDeclared": "MIT AND BSD-3 WITH Exception",
             "licenseComments": "Anything to say?",
             "copyrightText": "Copyright 2022 SamuraiAku",
             "summary": "This is a summary of the package",
@@ -328,7 +328,7 @@ d_tv= IOBuffer("
     PackageLicenseConcluded:  MIT
     PackageLicenseInfoFromFiles:  MIT
     PackageLicenseInfoFromFiles: BSD-3 WITH Exception
-    PackageLicenseDeclared: MIT  
+    PackageLicenseDeclared: MIT AND BSD-3 WITH Exception  
     PackageLicenseComments:  Anything to say?
     PackageCopyrightText:  Copyright 2022 SamuraiAku
     PackageSummary:  This is a summary of the package
