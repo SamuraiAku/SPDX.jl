@@ -25,5 +25,33 @@
     end
 end
 
+@testset "Helper API" begin
+    sbom_path = joinpath(pkgdir(SPDX), "SPDX.spdx.json")
+    mysbom= readspdx(sbom_path)
+    creationtime= now(localzone())
+    setcreationtime!(mysbom, creationtime)
+    @test mysbom.CreationInfo.Created == SpdxTimeV2(creationtime)
+
+    old_namespace= mysbom.Namespace
+    new_URI= "https://nowhere.loopback.com/here"
+    createnamespace!(mysbom, new_URI)
+    @test mysbom.Namespace.URI == new_URI && mysbom.Namespace.UUID != old_namespace.UUID
+
+    old_namespace= mysbom.Namespace
+    updatenamespace!(mysbom)
+    @test mysbom.Namespace.URI == old_namespace.URI && mysbom.Namespace.UUID != old_namespace.UUID
+
+    docCreators= getcreators(mysbom)
+    @test isequal(docCreators, mysbom.CreationInfo.Creator)
+
+    addcreator!(mysbom, "Person", "Jane Doe", "nowhere@loopback.com")
+    newCreator= SpdxCreatorV2("Person", "Jane Doe", "nowhere@loopback.com")
+    @test !isequal(docCreators, mysbom.CreationInfo.Creator)
+    @test mysbom.CreationInfo.Creator[end] == newCreator
+
+    deletecreator!(mysbom, newCreator)
+    @test isequal(docCreators, mysbom.CreationInfo.Creator)
+end
+
 
 
