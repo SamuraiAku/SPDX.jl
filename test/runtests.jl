@@ -12,6 +12,7 @@ end
 
 include("test_api.jl")
 include("test_types.jl")
+include("test_checksums.jl")
 include("test_SpdxAnnotation.jl")
 include("test_SpdxLicense.jl")
 include("test_SpdxRelationship.jl")
