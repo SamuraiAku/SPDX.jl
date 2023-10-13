@@ -2,6 +2,7 @@
 
 [![GitHub Actions](https://github.com/SamuraiAku/SPDX.jl/workflows/CI/badge.svg)](https://github.com/SamuraiAku/SPDX.jl/actions/workflows/CI.yml)
 [![codecov](https://codecov.io/gh/SamuraiAku/SPDX.jl/graph/badge.svg?token=ED6GEEHKIF)](https://codecov.io/gh/SamuraiAku/SPDX.jl)
+[![SPDX Downloads](https://shields.io/endpoint?url=https://pkgs.genieframework.com/api/v1/badge/SPDX)](https://pkgs.genieframework.com?packages=SDPX)
 
 This package provides for the creation, reading and writing of SPDX files in multiple file formats. Written in pure Julia.
 
