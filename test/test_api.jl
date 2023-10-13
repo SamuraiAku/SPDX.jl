@@ -40,7 +40,7 @@ end
     old_namespace= mysbom.Namespace
     updatenamespace!(mysbom)
     @test mysbom.Namespace.URI == old_namespace.URI && mysbom.Namespace.UUID != old_namespace.UUID
-    mysbom.Namesapce= missing
+    mysbom.Namespace= missing
     @test_throws "Namespace is not set" updatenamespace!(mysbom)
     mysbom.Namespace= SpdxNamespaceV2("https://nowhere.loopback.com", nothing)
     @test_throws "UUID not set in namespace" updatenamespace!(mysbom)
