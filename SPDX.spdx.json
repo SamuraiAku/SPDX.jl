@@ -3,26 +3,26 @@
     "dataLicense": "CC0-1.0",
     "SPDXID": "SPDXRef-DOCUMENT",
     "name": "SPDX.jl Developer SBOM",
-    "documentNamespace": "https://github.com/SamuraiAku/SPDX.jl/blob/main/SPDX.spdx.json-afe94e55-2535-4095-b8d9-f43222eeab71",
+    "documentNamespace": "https://github.com/SamuraiAku/SPDX.jl/blob/main/SPDX.spdx.json-6877ea34-8c11-48d9-a9cb-7938a2a43c48",
     "creationInfo": {
         "creators": [
             "Person:  Simon Avery  (savery@ieee.org)",
             "Tool:  PkgToSBOM.jl"
         ],
-        "created": "2023-09-13T18:47:39Z"
+        "created": "2023-10-13T23:25:28Z"
     },
     "comment": "Registries used for populating Package data:\nGeneral registry: https://github.com/JuliaRegistries/General.git\nOfficial general Julia package registry where people can\nregister any package they want without too much debate about\nnaming and without enforced standards on documentation or\ntesting. We nevertheless encourage documentation, testing and\nsome amount of consideration when choosing package names.\n\n\n",
     "packages": [
         {
             "name": "Preferences",
             "SPDXID": "SPDXRef-Preferences-21216c6a-2e73-6563-6e65-726566657250",
-            "versionInfo": "1.4.0",
+            "versionInfo": "1.4.1",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaPackaging/Preferences.jl.git@v1.4.0",
+            "downloadLocation": "git+https://github.com/JuliaPackaging/Preferences.jl.git@v1.4.1",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "d560e285ded90e89d90ed6730f3bb814c01065bf"
+                "packageVerificationCodeValue": "7d309b5c11bb9302e95e1db94b3934c08436ed24"
             },
             "homepage": "https://github.com/JuliaPackaging/Preferences.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
@@ -100,13 +100,13 @@
         {
             "name": "Compat",
             "SPDXID": "SPDXRef-Compat-34da2185-b29b-5c13-b0c7-acf172513d20",
-            "versionInfo": "4.9.0",
+            "versionInfo": "4.10.0",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaLang/Compat.jl.git@v4.9.0",
+            "downloadLocation": "git+https://github.com/JuliaLang/Compat.jl.git@v4.10.0",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "5ee5d1906819286d758ce6441dd51114a1620173"
+                "packageVerificationCodeValue": "333a5cfcacb8e70101d42842963253d3cf5f2da3"
             },
             "homepage": "https://github.com/JuliaLang/Compat.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
@@ -289,13 +289,13 @@
         {
             "name": "SPDX",
             "SPDXID": "SPDXRef-SPDX-47358f48-d834-4249-91f5-f6185eb3d540",
-            "versionInfo": "0.3.1",
+            "versionInfo": "0.3.2",
             "supplier": "NOASSERTION",
             "originator": "Person:  Simon Avery  (savery@ieee.org)",
-            "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git@v0.3.1",
+            "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git@v0.3.2",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "1651d3adcecdd6cb1b3a4d98f09d23a5615be6fe",
+                "packageVerificationCodeValue": "30fce70dfb4189e41c50aa81893b85df836c2c15",
                 "packageVerificationCodeExcludedFiles": [
                     "SPDX.spdx.json"
                 ]
