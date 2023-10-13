@@ -41,6 +41,12 @@ end
     d= SPDX.constructvalue(1, d_tags.TagValues, nothing, SPDX.SpdxSnippetV2_NameTable)
     d.Start.Reference= "SPDXRef-S1";  d.End.Reference= "SPDXRef-S1";  # Due to unusual structure of a SnippetRange, the Reference fields are set later
     @test SPDX.compare_b(a, d)
+
+    # Test out an unusual configuration that may not happen in the real world. Both line number and offset
+    e= SpdxSnippetRangeV2(SpdxSnippetPointerV2("SPDXRef-S2", 5, 3000), SpdxSnippetPointerV2("SPDXRef-S2", 23, 5500))
+    open(joinpath(mktempdir(), "snippetWrite.txt"), "w") do io
+      print(io, e)
+    end
 end
 
 @testset "SpdxSnippet" begin
