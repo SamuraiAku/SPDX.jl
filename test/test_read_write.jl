@@ -3,12 +3,16 @@
 
     include("build_testDocument.jl") 
     spdxdir= pkgdir(SPDX)
+    @test_throws "Specified Format YAML is not supported" spdxDoc= readspdx(joinpath(spdxdir, "SPDX.spdx.json"); format= "YAML")
+    @test_throws "File format .yml is not supported" spdxDoc= readspdx(joinpath(spdxdir, "SPDX.spdx.yml")) # File doesn't exist but it errors out because of the unsupported file extension before checking that
     spdxDoc = readspdx(joinpath(spdxdir, "SPDX.spdx.json"))
     @test spdxDoc isa SpdxDocumentV2
-    tempdir= mktempdir()
+    testdir= mktempdir()
 
     @testset "JSON format roundtrips" begin
-        rt_path = joinpath(tempdir, "out.spdx.json")
+        rt_path = joinpath(testdir, "out.spdx.json")
+        @test_throws "Specified Format YAML is not supported" writespdx(spdxDoc, rt_path; format= "YAML")
+        @test_throws "File format .yml is not supported" writespdx(spdxDoc, replace(rt_path, "json" => "yml"))
         writespdx(spdxDoc, rt_path)
         rt_spdx = readspdx(rt_path)
         @test isequal(spdxDoc, rt_spdx)
@@ -30,7 +34,7 @@
         writespdx(spdxDoc2, rt_path)
         rt_spdx = readspdx(rt_path)
         @test isequal(spdxDoc2, rt_spdx)
-        open(joinpath(tempdir, "spdx_print.txt"), "w") do io
+        open(joinpath(testdir, "spdx_print.txt"), "w") do io
             print(io, spdxDoc2)
         end
     end
@@ -43,7 +47,7 @@
     end
     
     @testset "TagValue format roundtrips" begin
-        rt_path = joinpath(tempdir, "out.spdx")
+        rt_path = joinpath(testdir, "out.spdx")
         writespdx(spdxDoc, rt_path)
         rt_spdx = readspdx(rt_path)
         @test isequal(spdxDoc, rt_spdx)
