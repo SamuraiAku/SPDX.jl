@@ -129,3 +129,10 @@ for pred in (:(==), :(isequal))
         return all(f -> $pred(getproperty(x, f), getproperty(y, f)), fieldnames(typeof(x)))
     end
 end
+
+function Base.hash(A::AbstractSpdx, h::UInt)
+    for p in propertynames(A)
+        h= hash(p, h)
+    end
+    return h
+end
