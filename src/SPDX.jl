@@ -29,6 +29,9 @@ include("readJSON.jl")
 include("readTagValue.jl")
 include("checksums.jl")
 include("api.jl")
-include("../test/build_testDocument.jl")  # This is our precompilation
+
+# Precompilation
+include("../test/build_testDocument.jl")
+h= hash(a)
 
 end
