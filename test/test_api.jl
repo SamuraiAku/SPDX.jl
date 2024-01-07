@@ -23,6 +23,11 @@
     @testset "compare" begin
         @test !SPDX.compare_b(mysbom, mysbom3)
     end
+
+    @testset "hash" begin
+        @test hash(mysbom) == hash(mysbom2)
+        @test hash(mysbom) !== hash(mysbom3)
+    end
 end
 
 @testset "Helper API" begin
