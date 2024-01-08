@@ -132,7 +132,7 @@ end
 
 function Base.hash(A::AbstractSpdx, h::UInt)
     for p in propertynames(A)
-        h= hash(p, h)
+        h= hash(getproperty(A, p), h)
     end
     return h
 end
