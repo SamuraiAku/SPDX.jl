@@ -129,3 +129,15 @@ for pred in (:(==), :(isequal))
         return all(f -> $pred(getproperty(x, f), getproperty(y, f)), fieldnames(typeof(x)))
     end
 end
+
+function _hash(A::AbstractSpdx, h::UInt, skipproperties::Vector{Symbol}= Symbol[])
+    propset= setdiff(propertynames(A), skipproperties)
+    for p in propset
+        h= hash(getproperty(A, p), h)
+    end
+    return h
+end
+
+function Base.hash(A::AbstractSpdx, h::UInt)
+    return _hash(A, h)
+end
