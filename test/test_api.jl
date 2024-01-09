@@ -21,12 +21,19 @@
     end
 
     @testset "compare" begin
+        @test  SPDX.compare_b(mysbom, mysbom2)
         @test !SPDX.compare_b(mysbom, mysbom3)
     end
 
     @testset "hash" begin
         @test hash(mysbom) == hash(mysbom2)
         @test hash(mysbom) !== hash(mysbom3)
+
+        r1= mysbom.Relationships
+        r2= mysbom2.Relationships[end:-1:1]
+        @test !all(r1 .== r2)
+        @test issetequal(r1, r2)
+        @test allunique(r1)
     end
 end
 
