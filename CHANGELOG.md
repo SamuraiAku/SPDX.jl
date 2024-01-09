@@ -1,3 +1,18 @@
+# CHANGELOG
+
+## v0.3.2
+* Add lots of tests to improve Code Coverage
+
+## v0.3.1
+* Resolved [#30](https://github.com/SamuraiAku/SPDX.jl/issues/30) and [#32](https://github.com/SamuraiAku/SPDX.jl/issues/32), adding Continuous Integration (CI) workflow and improving the tests.
+
+## v0.3.0
+* Resolved [#16](https://github.com/SamuraiAku/SPDX.jl/issues/16), Update SPDX Data Types to use mutable structs with the const keyword in Julia 1.8. This was a substantial rewrite of the module internals that requires a newer version of Julia and justified the minor revision change
+* Resolved [#7](https://github.com/SamuraiAku/SPDX.jl/issues/7), Improve loading time
+* Resolved [#24](https://github.com/SamuraiAku/SPDX.jl/issues/24), SpdxCreatorV2 puts an empty email field on a Tool creator
+* Resolved [#33](https://github.com/SamuraiAku/SPDX.jl/issues/33), Add support for Sub-paths in a Package Download Location
+
+
 SPDX v0.2 Release Notes
 =======================
 
