@@ -35,11 +35,14 @@ function compare_b(x, y; skipproperties::Vector{Symbol}= Symbol[])
     return bval
 end
 
-function compare_b(x::Vector, y::Vector; skipproperties::Vector{Symbol}= Symbol[])
+compare_b(x::Vector, y::Vector; skipproperties::Vector{Symbol}= Symbol[])= is_spdxset_equal(x, y, skipproperties)
+
+###################
+function is_spdxset_equal(x::Vector, y::Vector, skipproperties::Vector{Symbol}= Symbol[])
     if length(x) == length(y)
-        results= compare.(x, y; skipproperties= skipproperties)
-        results_b= isempty(x) || mapreduce(z -> z.bval, &, results)
-        return results_b
+        hash_xvec= _hash.(x, zero(UInt), skipproperties= skipproperties)
+        hash_yvec= _hash.(y, zero(UInt), skipproperties= skipproperties)
+        return issetequal(hash_xvec, hash_yvec)
     else
         return false
     end

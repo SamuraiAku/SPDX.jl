@@ -130,7 +130,10 @@ for pred in (:(==), :(isequal))
     end
 end
 
-function _hash(A::AbstractSpdx, h::UInt, skipproperties::Vector{Symbol}= Symbol[])
+#########################
+_hash(A, h::UInt; skipproperties)= hash(A, h) # Ignore skipproperties if it's not AbstractSpdx
+
+function _hash(A::AbstractSpdx, h::UInt; skipproperties::Vector{Symbol}= Symbol[])
     propset= setdiff(propertynames(A), skipproperties)
     for p in propset
         h= hash(getproperty(A, p), h)

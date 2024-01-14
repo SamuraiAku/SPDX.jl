@@ -59,7 +59,7 @@
         spdxDoc2= c  # from build_testDocument.jl
         writespdx(spdxDoc2, rt_path; format= "TagValue")
         rt_spdx = readspdx(rt_path; format= "TagValue")
-        @test_broken compare_b(spdxDoc2, rt_spdx)  # Relationships are in different order, so skip until we have a better compare
+        @test SPDX.compare_b(spdxDoc2, rt_spdx)
     end
 
     @testset "TagValue format errors" begin
