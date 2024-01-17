@@ -21,13 +21,14 @@ function spdxchecksum(algorithm::AbstractString, rootdir::AbstractString, exclud
                                (algorithm == "SHA3-384") ? (sha3_384, SHA3_384_CTX) :
                                                            (sha3_512, SHA3_512_CTX)
 
-    package_hash::Vector{UInt8}= spdxchecksum_sha(HashFunction, HashContext, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
+    package_hash, ignored_files= spdxchecksum_sha(HashFunction, HashContext, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
 
-    return package_hash
+    return (package_hash, ignored_files)
 end
 
 function spdxchecksum_sha(HashFunction::Function, HashContext::DataType, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
-    flist_hash::Vector{Vector{UInt8}}= [file_hash(file, HashFunction) for file in getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns)]
+    ignored_files= String[]
+    flist_hash::Vector{Vector{UInt8}}= [file_hash(file, HashFunction) for file in getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files)]
     flist_hash= sort(flist_hash)
 
     ctx= HashContext()
@@ -35,7 +36,7 @@ function spdxchecksum_sha(HashFunction::Function, HashContext::DataType, rootdir
         SHA.update!(ctx, hash)
     end
 
-    return SHA.digest!(ctx)
+    return (SHA.digest!(ctx), ignored_files)
 end
 
 file_hash(fpath::AbstractString, HashFunction::Function)=   open(fpath) do f
@@ -43,11 +44,11 @@ file_hash(fpath::AbstractString, HashFunction::Function)=   open(fpath) do f
                                                             end
 
 ###############################
-function getpackagefiles(rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
-    return Channel{String}(chnl -> _getpackagefiles(chnl, rootdir, excluded_flist, excluded_dirlist, excluded_patterns))
+function getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files)
+    return Channel{String}(chnl -> _getpackagefiles(chnl, rootdir, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files))
 end
 
-function _getpackagefiles(chnl, root::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
+function _getpackagefiles(chnl, root::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex}, ignored_files::Vector{String})
     # On first call of this function put an absolute path on root and exclusion lists
     isabspath(root) || (root= abspath(root))
     all(isabspath.(excluded_flist)) || (excluded_flist= normpath.(joinpath.(root, excluded_flist)))
@@ -62,16 +63,36 @@ function _getpackagefiles(chnl, root::AbstractString, excluded_flist::Vector{<:A
         if isdir(path)
             if any(excluded_dirlist .== path)
                 continue # Skip over exluded directories
+            elseif islink(path)
+                push!(ignored_files, path)
+                continue # Skip over exluded directories
             else
-                _getpackagefiles(chnl, path, excluded_flist, excluded_dirlist, excluded_patterns) # Descend into the directory and get the files there
+                _getpackagefiles(chnl, path, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files) # Descend into the directory and get the files there
             end
         elseif any(excluded_flist .== path)
+            push!(ignored_files, path)
             continue # Skip over excluded files
         elseif any(occursin.(excluded_patterns, path))
             continue # Skip files that match one of the excluded patterns
+        elseif islink(path)
+            push!(ignored_files, path) # Any link that passes the previous checks is a part of the deployed code and it's exclusion from the computation needs to be noted 
+            continue
         else
             push!(chnl, path) # Put the file path in the channel
         end
     end
     return nothing
 end
+
+
+###############################
+function ComputePackageVerificationCode(rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}= String[], excluded_dirlist::Vector{<:AbstractString}= String[], excluded_patterns::Vector{Regex}=Regex[])
+    package_hash, ignored_files= spdxchecksum_sha(sha1, SHA1_CTX, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
+    return SpdxPkgVerificationCodeV2(bytes2hex(package_hash), ignored_files)
+end
+
+
+###############################
+#function ComputeFileChecksum()
+#
+#end
