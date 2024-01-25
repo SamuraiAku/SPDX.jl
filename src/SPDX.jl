@@ -8,6 +8,7 @@ using UUIDs
 using TimeZones
 using SHA
 using Base.Filesystem
+using Logging
 
 #######################
 Base.Bool(x::AbstractString)= parse(Bool, lowercase(x))
