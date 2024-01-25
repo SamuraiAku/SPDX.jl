@@ -90,6 +90,7 @@ end
 function ComputePackageVerificationCode(rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}= String[], excluded_dirlist::Vector{<:AbstractString}= String[], excluded_patterns::Vector{Regex}=Regex[])
     @logmsg Logging.LogLevel(-50) "Computing Verification Code at: $rootdir" excluded_flist= excluded_flist excluded_dirlist= excluded_dirlist excluded_patterns= excluded_patterns
     package_hash, ignored_files= spdxchecksum_sha(sha1, SHA1_CTX, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
+    ignored_files= relpath.(ignored_files, rootdir)
     verif_code= SpdxPkgVerificationCodeV2(bytes2hex(package_hash), ignored_files)
     @logmsg Logging.LogLevel(-50) string(verif_code)
     return verif_code
