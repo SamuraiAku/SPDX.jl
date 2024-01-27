@@ -40,8 +40,9 @@ function spdxchecksum_sha(HashFunction::Function, HashContext::DataType, rootdir
 end
 
 file_hash(fpath::AbstractString, HashFunction::Function)=   open(fpath) do f
-                                                                @logmsg Logging.LogLevel(-100) "File hashed: $fpath"
-                                                                return HashFunction(f)
+                                                                hash= HashFunction(f)
+                                                                @logmsg Logging.LogLevel(-100) "$(string(HashFunction))($fpath)= $(bytes2hex(hash))"
+                                                                return hash
                                                             end
 
 ###############################
