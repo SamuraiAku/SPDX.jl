@@ -24,14 +24,15 @@ function determine_checksum_algorithm(algorithm::AbstractString)
     return HashFunction
 end
 
-function spdxchecksum(HashFunction::Function, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
+function spdxverifcode(rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
     ignored_files= String[]
-    flist_hash::Vector{String}= [file_hash(file, HashFunction) for file in getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files)]
+    flist_hash::Vector{String}= [file_hash(file, sha1) for file in getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files)]
     flist_hash= sort(flist_hash)
     combined_hashes= join(flist_hash)
-    return (HashFunction(combined_hashes), ignored_files)
+    return (sha1(combined_hashes), ignored_files)
 end
 
+###############################
 file_hash(fpath::AbstractString, HashFunction::Function)=   open(fpath) do f
                                                                 hash= HashFunction(f)
                                                                 @logmsg Logging.LogLevel(-100) "$(string(HashFunction))($fpath)= $(bytes2hex(hash))"
@@ -83,7 +84,7 @@ end
 ###############################
 function ComputePackageVerificationCode(rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}= String[], excluded_dirlist::Vector{<:AbstractString}= String[], excluded_patterns::Vector{Regex}=Regex[])
     @logmsg Logging.LogLevel(-50) "Computing Verification Code at: $rootdir" excluded_flist= excluded_flist excluded_dirlist= excluded_dirlist excluded_patterns= excluded_patterns
-    package_hash, ignored_files= spdxchecksum(sha1, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
+    package_hash, ignored_files= spdxverifcode(rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
     ignored_files= relpath.(ignored_files, rootdir)
     verif_code= SpdxPkgVerificationCodeV2(bytes2hex(package_hash), ignored_files)
     @logmsg Logging.LogLevel(-50) string(verif_code)
