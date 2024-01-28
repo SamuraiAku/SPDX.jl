@@ -24,6 +24,8 @@ function determine_checksum_algorithm(algorithm::AbstractString)
     return HashFunction
 end
 
+
+###############################
 function spdxverifcode(rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
     ignored_files= String[]
     flist_hash::Vector{String}= [file_hash(file, sha1) for file in getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files)]
@@ -32,12 +34,14 @@ function spdxverifcode(rootdir::AbstractString, excluded_flist::Vector{<:Abstrac
     return (sha1(combined_hashes), ignored_files)
 end
 
+
 ###############################
 file_hash(fpath::AbstractString, HashFunction::Function)=   open(fpath) do f
                                                                 hash= HashFunction(f)
                                                                 @logmsg Logging.LogLevel(-100) "$(string(HashFunction))($fpath)= $(bytes2hex(hash))"
                                                                 return bytes2hex(hash)
                                                             end
+
 
 ###############################
 function getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files)
