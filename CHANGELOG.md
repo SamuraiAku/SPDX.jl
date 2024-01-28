@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## New Version
+* On further review on the SPDX specification, updated the algorithm for computing a package verification code
+* Replaced the function spdxchecksum() with ComputePackageVerificationCode() and ComputeFileChecksum()
+* Resolved [#40](https://github.com/SamuraiAku/SPDX.jl/issues/40): Handling of symbolic links when computing the package verification code
+* Resolved [#29](https://github.com/SamuraiAku/SPDX.jl/issues/29): Support checksum calculation on a single file
+* Resolved [#28](https://github.com/SamuraiAku/SPDX.jl/issues/28): Use the Logging standard library to record all the files processed and their checksums
+
 ## v0.3.2
 * Add lots of tests to improve Code Coverage
 
