@@ -101,5 +101,7 @@ function ComputeFileChecksum(algorithm::AbstractString, filepath::AbstractString
     @logmsg Logging.LogLevel(-50) "Computing File Checksum on $filepath"
     HashFunction, HashContext= determine_checksum_algorithm(algorithm)
     fhash= file_hash(filepath, HashFunction)
-    return SpdxChecksumV2(algorithm, bytes2hex(fhash))
+    checksum_obj= SpdxChecksumV2(algorithm, bytes2hex(fhash))
+    @logmsg Logging.LogLevel(-50) string(checksum_obj)
+    return checksum_obj
 end
