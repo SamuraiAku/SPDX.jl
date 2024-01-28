@@ -12,35 +12,30 @@ function determine_checksum_algorithm(algorithm::AbstractString)
     issubset(Set([algorithm]), unsupported_algorithms) && error("checksum(): The hash algorithm $(algorithm) is not supported by SPDX.jl")
     issubset(Set([algorithm]), supported_algorithms) || error("checksum(): algorithm $(algorithm) is not recognized")
 
-    HashFunction, HashContext= (algorithm == "SHA1")     ? (sha1,     SHA1_CTX) :
-                               (algorithm == "SHA224")   ? (sha224,   SHA224_CTX) :
-                               (algorithm == "SHA256")   ? (sha256,   SHA256_CTX) :
-                               (algorithm == "SHA384")   ? (sha384,   SHA384_CTX) :
-                               (algorithm == "SHA512")   ? (sha512,   SHA256_CTX) :
-                               (algorithm == "SHA3-256") ? (sha3_256, SHA3_256_CTX) :
-                               (algorithm == "SHA3-384") ? (sha3_384, SHA3_384_CTX) :
-                                                           (sha3_512, SHA3_512_CTX)
+    HashFunction=   (algorithm == "SHA1")     ? sha1 :
+                    (algorithm == "SHA224")   ? sha224 :
+                    (algorithm == "SHA256")   ? sha256 :
+                    (algorithm == "SHA384")   ? sha384 :
+                    (algorithm == "SHA512")   ? sha512 :
+                    (algorithm == "SHA3-256") ? sha3_256 :
+                    (algorithm == "SHA3-384") ? sha3_384 :
+                                                sha3_512
 
-    return (HashFunction, HashContext)
+    return HashFunction
 end
 
-function spdxchecksum_sha(HashFunction::Function, HashContext::DataType, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
+function spdxchecksum(HashFunction::Function, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
     ignored_files= String[]
-    flist_hash::Vector{Vector{UInt8}}= [file_hash(file, HashFunction) for file in getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files)]
+    flist_hash::Vector{String}= [file_hash(file, HashFunction) for file in getpackagefiles(rootdir, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files)]
     flist_hash= sort(flist_hash)
-
-    ctx= HashContext()
-    for hash in flist_hash
-        SHA.update!(ctx, hash)
-    end
-
-    return (SHA.digest!(ctx), ignored_files)
+    combined_hashes= join(flist_hash)
+    return (HashFunction(combined_hashes), ignored_files)
 end
 
 file_hash(fpath::AbstractString, HashFunction::Function)=   open(fpath) do f
                                                                 hash= HashFunction(f)
                                                                 @logmsg Logging.LogLevel(-100) "$(string(HashFunction))($fpath)= $(bytes2hex(hash))"
-                                                                return hash
+                                                                return bytes2hex(hash)
                                                             end
 
 ###############################
@@ -88,7 +83,7 @@ end
 ###############################
 function ComputePackageVerificationCode(rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}= String[], excluded_dirlist::Vector{<:AbstractString}= String[], excluded_patterns::Vector{Regex}=Regex[])
     @logmsg Logging.LogLevel(-50) "Computing Verification Code at: $rootdir" excluded_flist= excluded_flist excluded_dirlist= excluded_dirlist excluded_patterns= excluded_patterns
-    package_hash, ignored_files= spdxchecksum_sha(sha1, SHA1_CTX, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
+    package_hash, ignored_files= spdxchecksum(sha1, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
     ignored_files= relpath.(ignored_files, rootdir)
     verif_code= SpdxPkgVerificationCodeV2(bytes2hex(package_hash), ignored_files)
     @logmsg Logging.LogLevel(-50) string(verif_code)
@@ -99,9 +94,9 @@ end
 ###############################
 function ComputeFileChecksum(algorithm::AbstractString, filepath::AbstractString)
     @logmsg Logging.LogLevel(-50) "Computing File Checksum on $filepath"
-    HashFunction, HashContext= determine_checksum_algorithm(algorithm)
+    HashFunction= determine_checksum_algorithm(algorithm)
     fhash= file_hash(filepath, HashFunction)
-    checksum_obj= SpdxChecksumV2(algorithm, bytes2hex(fhash))
+    checksum_obj= SpdxChecksumV2(algorithm, fhash)
     @logmsg Logging.LogLevel(-50) string(checksum_obj)
     return checksum_obj
 end
