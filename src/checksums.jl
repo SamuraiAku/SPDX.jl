@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 
-export spdxchecksum
+export ComputePackageVerificationCode, ComputeFileChecksum
 
-function spdxchecksum(algorithm::AbstractString, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}= String[], excluded_dirlist::Vector{<:AbstractString}= String[], excluded_patterns::Vector{Regex}=Regex[])
+function determine_checksum_algorithm(algorithm::AbstractString)
     # Check to see if algorithm is in the list of support algorithms, unsupported algorithms, or not recognized
     # TODO: substitute "_" for "-" and other things to account for user typos
     supported_algorithms= Set(["SHA1", "SHA224", "SHA256", "SHA384", "SHA512", "SHA3-256", "SHA3-384", "SHA3-512"])
@@ -21,9 +21,7 @@ function spdxchecksum(algorithm::AbstractString, rootdir::AbstractString, exclud
                                (algorithm == "SHA3-384") ? (sha3_384, SHA3_384_CTX) :
                                                            (sha3_512, SHA3_512_CTX)
 
-    package_hash, ignored_files= spdxchecksum_sha(HashFunction, HashContext, rootdir, excluded_flist, excluded_dirlist, excluded_patterns)
-
-    return (package_hash, ignored_files)
+    return (HashFunction, HashContext)
 end
 
 function spdxchecksum_sha(HashFunction::Function, HashContext::DataType, rootdir::AbstractString, excluded_flist::Vector{<:AbstractString}, excluded_dirlist::Vector{<:AbstractString}, excluded_patterns::Vector{Regex})
@@ -99,6 +97,9 @@ end
 
 
 ###############################
-#function ComputeFileChecksum()
-#
-#end
+function ComputeFileChecksum(algorithm::AbstractString, filepath::AbstractString)
+    @logmsg Logging.LogLevel(-50) "Computing File Checksum on $filepath"
+    HashFunction, HashContext= determine_checksum_algorithm(algorithm)
+    fhash= file_hash(filepath, HashFunction)
+    return SpdxChecksumV2(algorithm, bytes2hex(fhash))
+end
