@@ -5,6 +5,7 @@ using Test
 using JSON
 using Dates
 using TimeZones
+using SHA
 
 @testset "Bool check" begin
     @test Bool(" True ")
