@@ -62,23 +62,28 @@ function _getpackagefiles(chnl, root::AbstractString, excluded_flist::Vector{<:A
     for path in content
         if isdir(path)
             if any(excluded_dirlist .== path)
-                continue # Skip over exluded directories
+                @logmsg Logging.LogLevel(-100) "Skipping Directory $path"
+                continue # Skip over excluded directories
             elseif islink(path)
                 push!(ignored_files, path)
-                continue # Skip over exluded directories
+                @logmsg Logging.LogLevel(-100) "Excluding symbolic link $path"
+                continue # Skip over excluded directories
             else
                 _getpackagefiles(chnl, path, excluded_flist, excluded_dirlist, excluded_patterns, ignored_files) # Descend into the directory and get the files there
             end
         elseif any(excluded_flist .== path)
+            @logmsg Logging.LogLevel(-100) "Excluding File $path"
             push!(ignored_files, path)
             continue # Skip over excluded files
         elseif any(occursin.(excluded_patterns, path))
+            @logmsg Logging.LogLevel(-100) "Ignoring $path which matches an excluded pattern" pattern_regexes= excluded_patterns
             continue # Skip files that match one of the excluded patterns
         elseif islink(path)
+            @logmsg Logging.LogLevel(-100) "Excluding symbolic link $path"
             push!(ignored_files, path) # Any link that passes the previous checks is a part of the deployed code and it's exclusion from the computation needs to be noted 
             continue
         else
-            push!(chnl, path) # Put the file path in the channel
+            push!(chnl, path) # Put the file path in the channel. Then block until it is taken
         end
     end
     return nothing
