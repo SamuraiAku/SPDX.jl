@@ -62,11 +62,28 @@ updatenamespace!(myDoc) # Updates only the UUID portion of the namespace
 
 setcreationtime!(myDoc) # Sets document creation time to the local time, taking the local timezone into account
 
-# Compute a verification code or checksum of a directory [Clauses 7.9, 7.10]
+# Compute a verification code of a package directory [Clause 7.9]
+# Returns object of type SpdxPkgVerificationCodeV2
+# NOTES:
+#       Files that are excluded by name are included in the ExcludedFiles property  
+#       Symbolic links are automatically excluded from the computation and included in the ExcludedFiles property, unless the links are inside an excluded directory or pattern
+#       Directories and excluded patterns (not shown in example below) are NOT included in the ExcludedFiles property. The reasoning being that these are temporary/version control locations that are not part of the released package.
+#
+# Example Call:  Compute a verification code that ignores a specific file and a .git directory at the root level.  A common usage pattern.
+verif_code= ComputePackageVerificationCode("/path/to/pkgdir", ["IgnoreThisFile.spdx.json"], [".git"]) # 
+# Example Return:
+#   e0b4c73534bc495ebf43effa633b424d52899183  (excludes: IgnoreThisFile.spdx.json link_to_file)
+# Logging:
+#   If LoggingLevel is set to -100 or lower, then a full file listing will be logged along with the hash of each file for user review. See the documention of Julia standard logging facilities for details.
+
+
+# Compute the checksum of a package tarball [Clause 7.10]
+# Returns object of type SpdxChecksumV2
 # Supported checksum algorithms are:
 #   ["SHA1", "SHA224", "SHA256", "SHA384", "SHA512", "SHA3-256", "SHA3-384", "SHA3-512"]
-spdxchecksum("SHA1", "/path/to/dir", ["IgnoreThisFile.spdx.json"], [".git"]) # Compute a checksum that ignores a specific file and a .git directory at the root level.  A common usage pattern.
-
+file_cksum= ComputeFileChecksum(("SHA256", "/path/to/package.tar.gz")
+# Example Return:
+#   SHA256: 4b1dfe7b8886825527a362ee37244a665a32f68d9e7ca53c521dfec9ae8cd41a
 ```
 
 ## SPDX Document Structure
