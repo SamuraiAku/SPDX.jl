@@ -9,16 +9,24 @@
     @test spdxDoc isa SpdxDocumentV2
     testdir= mktempdir()
 
-    @testset "JSON format roundtrips" begin
+    @testset "JSON format I/O roundtrips" begin
+        io = IOBuffer()
+        @test_throws "Specified Format YAML is not supported" writespdx(io, spdxDoc; format= "YAML")
+        @test_throws UndefKeywordError writespdx(io, spdxDoc)
+        writespdx(io, spdxDoc; format= "JSON")
+        rt_spdx = readspdx(seekstart(io); format= "JSON")
+        @test isequal(spdxDoc, rt_spdx)
+
+        @test isequal(spdxDoc, readJSON(seekstart(io)))
+        @test_throws Exception readTagValue(seekstart(io))
+    end
+
+    @testset "JSON format file roundtrips" begin
         rt_path = joinpath(testdir, "out.spdx.json")
-        @test_throws "Specified Format YAML is not supported" writespdx(spdxDoc, rt_path; format= "YAML")
         @test_throws "File format .yml is not supported" writespdx(spdxDoc, replace(rt_path, "json" => "yml"))
         writespdx(spdxDoc, rt_path)
         rt_spdx = readspdx(rt_path)
         @test isequal(spdxDoc, rt_spdx)
-
-        @test isequal(spdxDoc, readJSON(rt_path))
-        @test_throws Exception readTagValue(rt_path)
 
         # Change the describes relationship in the SPDX document to get more code coverage
         spdxDoc2 = readspdx(joinpath(spdxdir, "SPDX.spdx.json"))
@@ -45,16 +53,19 @@
         temp= readspdx(joinpath(spdxdir, "test/SPDX_badfields.spdx.json"));
         @test temp isa SpdxDocumentV2
     end
-    
-    @testset "TagValue format roundtrips" begin
-        rt_path = joinpath(testdir, "out.spdx")
-        writespdx(spdxDoc, rt_path)
-        rt_spdx = readspdx(rt_path)
+
+    @testset "TagValue format I/O roundtrips" begin
+        io = IOBuffer()
+        writespdx(io, spdxDoc; format= "TagValue")
+        rt_spdx = readspdx(seekstart(io); format= "TagValue")
         @test isequal(spdxDoc, rt_spdx)
 
-        @test isequal(spdxDoc, readTagValue(rt_path))
-        @test_throws Exception readJSON(rt_path)
+        @test isequal(spdxDoc, readTagValue(seekstart(io)))
+        @test_throws Exception readJSON(seekstart(io))
+    end
 
+    @testset "TagValue format file roundtrips" begin
+        rt_path = joinpath(testdir, "out.spdx")
         # Write and read a second SPDX file for more coverage.
         spdxDoc2= c  # from build_testDocument.jl
         writespdx(spdxDoc2, rt_path; format= "TagValue")

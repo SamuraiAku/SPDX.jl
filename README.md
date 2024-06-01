@@ -33,7 +33,6 @@ writespdx(jsonDoc, "jsonread.spdx")
 
 # Write SPDX document in JSON format
 writespdx(tvDoc, "tagvalueread.spdx.json")
-
 ```
 
 ## Creating and populating/modifying a new SPDX document

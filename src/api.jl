@@ -5,88 +5,88 @@ export addcreator!, getcreators, deletecreator!, setcreationtime!
 export readspdx, writespdx
 
 ########################
-function printJSON(doc::SpdxDocumentV2, fname::AbstractString)
-    open(fname, "w") do f
-        jsonDoc= convert_to_JSON(doc, SpdxDocumentV2_NameTable)
-        JSON.print(f, jsonDoc, 4)
-    end
-end
-
-#########################
-function printTagValue(doc::SpdxDocumentV2, fname::AbstractString)
-    TagValueDoc= IOBuffer()
-    open(fname, "w") do f
-        convert_doc_to_TagValue!(TagValueDoc, doc, SpdxDocumentV2_NameTable)
-        write(f, take!(TagValueDoc))
-    end
+function printJSON(io::IO, doc::SpdxDocumentV2)
+    jsonDoc= convert_to_JSON(doc, SpdxDocumentV2_NameTable)
+    JSON.print(io, jsonDoc, 4)
     return nothing
 end
 
 #########################
-function readJSON(fname::AbstractString)
-    JSONfile= JSON.parsefile(fname)
+function printTagValue(io::IO, doc::SpdxDocumentV2)
+    convert_doc_to_TagValue!(io, doc, SpdxDocumentV2_NameTable)
+    return nothing
+end
+
+#########################
+function readJSON(io::IO)
+    JSONfile= JSON.parse(io)
     doc= convert_from_JSON(JSONfile, SpdxDocumentV2_NameTable, SpdxDocumentV2)
     return doc
 end
 
 #########################
-function readTagValue(fname::AbstractString)
-    doc= nothing
-    open(fname) do TVfile
-        doc= parse_TagValue(TVfile, SpdxDocumentV2_NameTable, SpdxDocumentV2)
-    end
+function readTagValue(io::IO)
+    doc= parse_TagValue(io, SpdxDocumentV2_NameTable, SpdxDocumentV2)
     return doc
 end
 
 #########################
+function readspdx(io::IO; format::AbstractString)
+    doc= if format == "JSON"
+        readJSON(io)
+    elseif format == "TagValue"
+        readTagValue(io)
+    else
+        error("Specified Format ", format, " is not supported")
+    end
+
+    return doc
+end
+
 function readspdx(fname::AbstractString; format::Union{AbstractString, Nothing}=nothing)
-    if !isnothing(format)
-        if format=="JSON"
-            fext= ".json"
-        elseif format=="TagValue"
-            fext= ".spdx"
+    if isnothing(format)
+        fext= last(splitext(fname))
+        format= if fext == ".json"
+            "JSON"
+        elseif fext == ".spdx"
+            "TagValue"
         else
-            error("Specified Format ", format, " is not supported")
+            error("File format ", fext, " is not supported")
         end
-    else
-        temp= splitext(fname)
-        if !in(temp[2], (".json", ".spdx"))
-            error("File format ", temp[2], " is not supported")
-        end
-        fext= temp[2]
     end
 
-    if fext == ".json"
-        doc= readJSON(fname)
-    elseif fext == ".spdx"
-        doc= readTagValue(fname)
+    doc= open(fname) do io
+        readspdx(io; format)
     end
 
     return doc
 end
 
 #########################
-function writespdx(doc::SpdxDocumentV2, fname::AbstractString; format::Union{AbstractString, Nothing}=nothing)
-    if !isnothing(format)
-        if format=="JSON"
-            fext= ".json"
-        elseif format=="TagValue"
-            fext= ".spdx"
-        else
-            error("Specified Format ", format, " is not supported")
-        end
+function writespdx(io::IO, doc::SpdxDocumentV2; format::AbstractString)
+    if format == "JSON"
+        printJSON(io, doc)
+    elseif format == "TagValue"
+        printTagValue(io, doc)
     else
-        temp= splitext(fname)
-        if !in(temp[2], (".json", ".spdx"))
-            error("File format ", temp[2], " is not supported")
+        error("Specified Format ", format, " is not supported")
+    end
+end
+
+function writespdx(doc::SpdxDocumentV2, fname::AbstractString; format::Union{AbstractString, Nothing}=nothing)
+    if isnothing(format)
+        fext= last(splitext(fname))
+        format= if fext == ".json"
+            "JSON"
+        elseif fext == ".spdx"
+            "TagValue"
+        else
+            error("File format ", fext, " is not supported")
         end
-        fext= temp[2]
     end
 
-    if fext == ".json"
-        printJSON(doc, fname)
-    elseif fext == ".spdx"
-        printTagValue(doc, fname)
+    open(fname, "w") do io
+        writespdx(io, doc; format)
     end
 end
 
