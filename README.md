@@ -24,15 +24,19 @@ using SPDX
 # Read from JSON: file extension used to determine file type
 # Returned type is SpdxDocumentV2
 jsonDoc= readspdx("./SPDXJSONExample-v2.2.spdx.json")
+jsonDoc= readspdx(io; format= "JSON") # Read from IOBuffer()
 
 # Read from TagValue
 tvDoc= readspdx("./SPDXTagExample-v2.2.spdx")
+tvDoc= readspdx(io; format= "TagValue") # Read from IOBuffer()
 
 # Write SPDX document in TagValue format
 writespdx(jsonDoc, "jsonread.spdx")
+writespdx(io, jsonDoc; format= "TagValue")  # Write to IOBuffer()
 
 # Write SPDX document in JSON format
 writespdx(tvDoc, "tagvalueread.spdx.json")
+writespdx(io, tvDoc; format= "JSON")  # Write to IOBuffer()
 ```
 
 ## Creating and populating/modifying a new SPDX document

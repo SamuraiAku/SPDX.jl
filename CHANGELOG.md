@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.4.1
+* Merged PR [#44](https://github.com/SamuraiAku/SPDX.jl/pull/44): Add IO interface to readspdx/writespdx
+
 ## v0.4.0
 * On further review on the SPDX specification, updated the algorithm for computing a package verification code
 * Replaced the function spdxchecksum() with ComputePackageVerificationCode() and ComputeFileChecksum()
