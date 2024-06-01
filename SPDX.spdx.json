@@ -3,35 +3,35 @@
     "dataLicense": "CC0-1.0",
     "SPDXID": "SPDXRef-DOCUMENT",
     "name": "SPDX.jl Developer SBOM",
-    "documentNamespace": "https://github.com/SamuraiAku/SPDX.jl/blob/main/SPDX.spdx.json-82681419-d270-4082-9de4-8056c4784c8a",
+    "documentNamespace": "https://github.com/SamuraiAku/SPDX.jl/blob/main/SPDX.spdx.json-1f8572e1-7040-4a84-9aef-09c7ed504c5d",
     "creationInfo": {
         "creators": [
             "Person:  Simon Avery  (savery@ieee.org)",
             "Tool:  PkgToSBOM.jl"
         ],
-        "created": "2024-02-01T06:09:38Z",
-        "comment": "Target Platform: macOS aarch64 {cxxstring_abi=cxx11, julia_version=1.9.2, libgfortran_version=5.0.0}"
+        "created": "2024-06-01T22:13:34Z",
+        "comment": "Target Platform: macOS aarch64 {cxxstring_abi=cxx11, julia_version=1.10.1, libgfortran_version=5.0.0}"
     },
     "comment": "Registries used for populating Package data:\nGeneral registry: https://github.com/JuliaRegistries/General.git\nOfficial general Julia package registry where people can\nregister any package they want without too much debate about\nnaming and without enforced standards on documentation or\ntesting. We nevertheless encourage documentation, testing and\nsome amount of consideration when choosing package names.\n",
     "packages": [
         {
             "name": "Preferences",
             "SPDXID": "SPDXRef-Preferences-21216c6a-2e73-6563-6e65-726566657250",
-            "versionInfo": "1.4.1",
+            "versionInfo": "1.4.3",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaPackaging/Preferences.jl.git@v1.4.1",
+            "downloadLocation": "git+https://github.com/JuliaPackaging/Preferences.jl.git@v1.4.3",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "c28a9fd57d508003f2e9c9b8df8f8b228adf09b2"
+                "packageVerificationCodeValue": "ae41d492334f497fd074d1a966eb1662759ed5c5"
             },
             "homepage": "https://github.com/JuliaPackaging/Preferences.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -39,21 +39,21 @@
         {
             "name": "PrecompileTools",
             "SPDXID": "SPDXRef-PrecompileTools-aea7be01-6a6a-4083-8856-8a6e6704d82a",
-            "versionInfo": "1.2.0",
+            "versionInfo": "1.2.1",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaLang/PrecompileTools.jl.git@v1.2.0",
+            "downloadLocation": "git+https://github.com/JuliaLang/PrecompileTools.jl.git@v1.2.1",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "cb5d14bca5a3c86a12153aa3d41d8230a713ec0d"
+                "packageVerificationCodeValue": "c53702e9539ec14e6b3627ed7390e7e4bae7fae2"
             },
             "homepage": "https://github.com/JuliaLang/PrecompileTools.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -73,9 +73,9 @@
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -95,9 +95,9 @@
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -105,21 +105,21 @@
         {
             "name": "Compat",
             "SPDXID": "SPDXRef-Compat-34da2185-b29b-5c13-b0c7-acf172513d20",
-            "versionInfo": "4.12.0",
+            "versionInfo": "4.15.0",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaLang/Compat.jl.git@v4.12.0",
+            "downloadLocation": "git+https://github.com/JuliaLang/Compat.jl.git@v4.15.0",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "bf4ef12a49198df5a1e8f240966a45173bf0c6f1"
+                "packageVerificationCodeValue": "69369c500d135052e304a423f18b900775b8d5d7"
             },
             "homepage": "https://github.com/JuliaLang/Compat.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -139,9 +139,9 @@
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -149,21 +149,21 @@
         {
             "name": "DataStructures",
             "SPDXID": "SPDXRef-DataStructures-864edb3b-99cc-5e75-8d2d-829cb0a9cfe8",
-            "versionInfo": "0.18.16",
+            "versionInfo": "0.18.20",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaCollections/DataStructures.jl.git@v0.18.16",
+            "downloadLocation": "git+https://github.com/JuliaCollections/DataStructures.jl.git@v0.18.20",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "c325f53ce7c37dadd10baf907f59e89c380704fa"
+                "packageVerificationCodeValue": "bc1b5520ff98b8b8fd56f93035f19295aa37b427"
             },
             "homepage": "https://github.com/JuliaCollections/DataStructures.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -183,9 +183,9 @@
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -193,68 +193,43 @@
         {
             "name": "Mocking",
             "SPDXID": "SPDXRef-Mocking-78c3b35d-d492-501b-9361-3d52fe80e533",
-            "versionInfo": "0.7.7",
+            "versionInfo": "0.7.8",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaTesting/Mocking.jl.git@v0.7.7",
+            "downloadLocation": "git+https://github.com/JuliaTesting/Mocking.jl.git@v0.7.8",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "29285272ee1240ff3b348694a3bed07ff043b902"
+                "packageVerificationCodeValue": "949a457c0f8f180f1f86294b48cf10db039dfcab"
             },
             "homepage": "https://github.com/JuliaTesting/Mocking.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
-            "copyrightText": "NOASSERTION",
-            "summary": "This is a Julia package, written in the Julia language.",
-            "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
-        },
-        {
-            "name": "InlineStrings",
-            "SPDXID": "SPDXRef-InlineStrings-842dd82b-1e85-43dc-bf29-5d0ee9dffc48",
-            "versionInfo": "1.4.0",
-            "supplier": "NOASSERTION",
-            "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaStrings/InlineStrings.jl.git@v1.4.0",
-            "filesAnalyzed": true,
-            "packageVerificationCode": {
-                "packageVerificationCodeValue": "04469ef0e3ffd422a0f2cef5715ce565f78a4bd1"
-            },
-            "homepage": "https://github.com/JuliaStrings/InlineStrings.jl.git",
-            "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
-            "licenseConcluded": "NOASSERTION",
-            "licenseInfoFromFiles": [
-                "NOASSERTION"
-            ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
         },
         {
             "name": "tzjdata",
-            "SPDXID": "SPDXRef-52e48e96c4df04eeebc6ece0d9f1c3b545f0544c",
+            "SPDXID": "SPDXRef-520ce3f83be7fbb002cca87993a1b1f71fe10912",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "https://github.com/JuliaTime/TZJData.jl/releases/download/v1.0.0+2023c/tzjfile-v1-tzdata2023c.tar.gz",
+            "downloadLocation": "https://github.com/JuliaTime/TZJData.jl/releases/download/v1.2.0+2024a/tzjfile-v1-tzdata2024a.tar.gz",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "be7dcb33e6a8bb611ce5bc91540969992c896479"
+                "packageVerificationCodeValue": "d2441694faf6f336fe60fe1e27ca306fbbb1ce02"
             },
             "checksums": [
                 {
                     "algorithm": "SHA256",
-                    "checksumValue": "50cd6c70dfb582336b4223adb3fe76aca6c6a9a5982c3111001e2091fb947b66"
+                    "checksumValue": "2d0b9085f5684a4176a09b182f2bc253b2da2ad14fd1534902f5831e0394ae3c"
                 }
             ],
             "homepage": "NOASSERTION",
             "licenseConcluded": "NOASSERTION",
-            "licenseInfoFromFiles": [
-                "NOASSERTION"
-            ],
             "licenseDeclared": "NOASSERTION",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia artifact. \nAn artifact is a binary runtime or other data store not written in the Julia language that is used by a Julia package.",
@@ -263,21 +238,21 @@
         {
             "name": "TZJData",
             "SPDXID": "SPDXRef-TZJData-dc5dba14-91b3-4cab-a142-028a31da12f7",
-            "versionInfo": "1.0.0+2023c",
+            "versionInfo": "1.2.0+2024a",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaTime/TZJData.jl.git@v1.0.0+2023c",
+            "downloadLocation": "git+https://github.com/JuliaTime/TZJData.jl.git@v1.2.0+2024a",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "20c68c2f7dd222475c2e42813123af6e669587ee"
+                "packageVerificationCodeValue": "a6564b365fb5c229f3dd691aff6dc80044828b65"
             },
             "homepage": "https://github.com/JuliaTime/TZJData.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -297,9 +272,31 @@
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
+            "copyrightText": "NOASSERTION",
+            "summary": "This is a Julia package, written in the Julia language.",
+            "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
+        },
+        {
+            "name": "InlineStrings",
+            "SPDXID": "SPDXRef-InlineStrings-842dd82b-1e85-43dc-bf29-5d0ee9dffc48",
+            "versionInfo": "1.4.0",
+            "supplier": "NOASSERTION",
+            "originator": "NOASSERTION",
+            "downloadLocation": "git+https://github.com/JuliaStrings/InlineStrings.jl.git@v1.4.0",
+            "filesAnalyzed": true,
+            "packageVerificationCode": {
+                "packageVerificationCodeValue": "04469ef0e3ffd422a0f2cef5715ce565f78a4bd1"
+            },
+            "homepage": "https://github.com/JuliaStrings/InlineStrings.jl.git",
+            "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
+            "licenseConcluded": "NOASSERTION",
+            "licenseInfoFromFiles": [
+                "MIT"
+            ],
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -307,21 +304,21 @@
         {
             "name": "TimeZones",
             "SPDXID": "SPDXRef-TimeZones-f269a46b-ccf7-5d73-abea-4c690281aa53",
-            "versionInfo": "1.13.0",
+            "versionInfo": "1.17.0",
             "supplier": "NOASSERTION",
             "originator": "NOASSERTION",
-            "downloadLocation": "git+https://github.com/JuliaTime/TimeZones.jl.git@v1.13.0",
+            "downloadLocation": "git+https://github.com/JuliaTime/TimeZones.jl.git@v1.17.0",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "bdb35da84b1f7a160d41d8ec7fbced5b5dbc0166"
+                "packageVerificationCodeValue": "d103b24fe30094dfa013f7012bcb36dfb224c4ff"
             },
             "homepage": "https://github.com/JuliaTime/TimeZones.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
             "licenseInfoFromFiles": [
-                "NOASSERTION"
+                "MIT"
             ],
-            "licenseDeclared": "NOASSERTION",
+            "licenseDeclared": "MIT",
             "copyrightText": "NOASSERTION",
             "summary": "This is a Julia package, written in the Julia language.",
             "comment": "The SPDX ID field is derived from the UUID that all Julia packages are assigned by their developer to uniquely identify it."
@@ -329,13 +326,13 @@
         {
             "name": "SPDX",
             "SPDXID": "SPDXRef-SPDX-47358f48-d834-4249-91f5-f6185eb3d540",
-            "versionInfo": "0.4.0",
+            "versionInfo": "0.4.1",
             "supplier": "NOASSERTION",
             "originator": "Person:  Simon Avery  (savery@ieee.org)",
-            "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git@v0.4.0",
+            "downloadLocation": "git+https://github.com/SamuraiAku/SPDX.jl.git@v0.4.1",
             "filesAnalyzed": true,
             "packageVerificationCode": {
-                "packageVerificationCodeValue": "5fd347b9b571e1cc1c052667f6c6d6a18720452e",
+                "packageVerificationCodeValue": "f8b31ca7b596b5f0764519f1a3d18ee4f2feb58f",
                 "packageVerificationCodeExcludedFiles": [
                     "SPDX.spdx.json",
                     "test/test_package/dir_link",
@@ -346,9 +343,6 @@
             "homepage": "https://github.com/SamuraiAku/SPDX.jl.git",
             "sourceInfo": "Source Code Location is supplied by the General registry:\nhttps://github.com/JuliaRegistries/General.git",
             "licenseConcluded": "NOASSERTION",
-            "licenseInfoFromFiles": [
-                "NOASSERTION"
-            ],
             "licenseDeclared": "MIT",
             "copyrightText": "Copyright (c) 2022 Simon Avery <savery@ieee.org> and contributors",
             "summary": "This is a Julia package, written in the Julia language.",
@@ -407,17 +401,7 @@
             "relatedSpdxElement": "SPDXRef-TimeZones-f269a46b-ccf7-5d73-abea-4c690281aa53"
         },
         {
-            "spdxElementId": "SPDXRef-Parsers-69de0a69-1ddd-5017-9359-2bf0b02dc9f0",
-            "relationshipType": "DEPENDENCY_OF",
-            "relatedSpdxElement": "SPDXRef-InlineStrings-842dd82b-1e85-43dc-bf29-5d0ee9dffc48"
-        },
-        {
-            "spdxElementId": "SPDXRef-InlineStrings-842dd82b-1e85-43dc-bf29-5d0ee9dffc48",
-            "relationshipType": "DEPENDENCY_OF",
-            "relatedSpdxElement": "SPDXRef-TimeZones-f269a46b-ccf7-5d73-abea-4c690281aa53"
-        },
-        {
-            "spdxElementId": "SPDXRef-52e48e96c4df04eeebc6ece0d9f1c3b545f0544c",
+            "spdxElementId": "SPDXRef-520ce3f83be7fbb002cca87993a1b1f71fe10912",
             "relationshipType": "RUNTIME_DEPENDENCY_OF",
             "relatedSpdxElement": "SPDXRef-TZJData-dc5dba14-91b3-4cab-a142-028a31da12f7"
         },
@@ -428,6 +412,16 @@
         },
         {
             "spdxElementId": "SPDXRef-Scratch-6c6a2e73-6563-6170-7368-637461726353",
+            "relationshipType": "DEPENDENCY_OF",
+            "relatedSpdxElement": "SPDXRef-TimeZones-f269a46b-ccf7-5d73-abea-4c690281aa53"
+        },
+        {
+            "spdxElementId": "SPDXRef-Parsers-69de0a69-1ddd-5017-9359-2bf0b02dc9f0",
+            "relationshipType": "DEPENDENCY_OF",
+            "relatedSpdxElement": "SPDXRef-InlineStrings-842dd82b-1e85-43dc-bf29-5d0ee9dffc48"
+        },
+        {
+            "spdxElementId": "SPDXRef-InlineStrings-842dd82b-1e85-43dc-bf29-5d0ee9dffc48",
             "relationshipType": "DEPENDENCY_OF",
             "relatedSpdxElement": "SPDXRef-TimeZones-f269a46b-ccf7-5d73-abea-4c690281aa53"
         },
