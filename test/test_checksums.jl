@@ -5,10 +5,11 @@
 
     checksum= ComputeFileChecksum("SHA256", joinpath(pkgdir(SPDX), "Project.toml"))
     @test checksum isa SpdxChecksumV2
-    @test checksum.Hash == open(joinpath(pkgdir(SPDX), "Project.toml")) do f 
+    @test checksum.Hash == open(joinpath(pkgdir(SPDX), "Project.toml")) do f
                                 return bytes2hex(sha256(f))
                             end
-    
+
     linktest_code= ComputePackageVerificationCode(joinpath(pkgdir(SPDX), "test", "test_package"))
-    @test issetequal(linktest_code.ExcludedFiles, ["dir_link", "file_link", "src/bad_link"])
+    @show linktest_code.ExcludedFiles
+    @test issetequal(linktest_code.ExcludedFiles, ["dir_link", "file_link", normpath("src/bad_link")])
 end
