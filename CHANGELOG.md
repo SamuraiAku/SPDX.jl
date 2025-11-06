@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.4.2
+* Merged PR [#46](https://github.com/SamuraiAku/SPDX.jl/pull/46): Add compat for DataStructures 0.19
+
 ## v0.4.1
 * Merged PR [#44](https://github.com/SamuraiAku/SPDX.jl/pull/44): Add IO interface to readspdx/writespdx
 
