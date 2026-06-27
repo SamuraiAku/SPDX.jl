@@ -8,7 +8,7 @@ function convert_from_JSON(element, unused, constructor::Union{Type, Function})
     return constructor(element)
 end
 
-function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Spdx_NameTable, constructor::Union{Type, Function})
+function convert_from_JSON(JSONfile::JSON.Object{String, Any}, NameTable::Spdx_NameTable, constructor::Union{Type, Function})
     constructoridx= map(isequal(false), NameTable.Mutable)
     constructornames= NameTable.JSONname[constructoridx]
     constructorparameters= Vector{Any}(missing, length(constructornames))
@@ -46,7 +46,7 @@ function convert_from_JSON(JSONfile::Dict{String, Any}, NameTable::Spdx_NameTabl
 
     # Process other JSON fields that add additional relationships to the SPDX document
     if obj isa SpdxDocumentV2
-        haskey(JSONfile, "packages") && for pkg_json::Dict{String, Any} in JSONfile["packages"]
+        haskey(JSONfile, "packages") && for pkg_json::JSON.Object{String, Any} in JSONfile["packages"]
             if haskey(pkg_json, "hasFiles")
                 process_additional_JSON_fields!(obj, "hasFiles", (pkg_json["hasFiles"], pkg_json["SPDXID"]))
             end

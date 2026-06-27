@@ -4,7 +4,7 @@ convert_to_JSON(dataElement::AbstractSpdx, unused::Nothing)= string(dataElement)
 convert_to_JSON(data, unused)= data # For Bool, Int, etc.
 
 function convert_to_JSON(doc::Union{AbstractSpdxData, AbstractSpdxElement}, NameTable::Spdx_NameTable)
-    jsonDoc= OrderedDict{String, Any}()
+    jsonDoc= JSON.Object{String, Any}()
     for idx in eachindex(NameTable.Symbol)
         fieldval= getproperty(doc, NameTable.Symbol[idx])
         (ismissing(fieldval) || (isa(fieldval, Vector) && isempty(fieldval))) && continue  # goto next symbol if this one has no data
@@ -30,7 +30,7 @@ end
 compute_additional_JSON_fields!(jsonDoc, doc)= nothing
 
 # These fields are derived from the document contents
-function compute_additional_JSON_fields!(jsonDoc::OrderedDict{String, Any}, doc::SpdxDocumentV2)
+function compute_additional_JSON_fields!(jsonDoc::JSON.Object{String, Any}, doc::SpdxDocumentV2)
     docDescribes= Vector{String}()
     describedidx= Vector{Int}()
 

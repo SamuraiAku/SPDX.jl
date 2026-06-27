@@ -38,14 +38,14 @@ end
     a.CrossReference[1].URL= "https://julialang.org"
     a.CrossReference[2].URL= "https://nowhere.loopback.com"
 
-    # Create object from Dictionary that would have come from JSON.parsefile()
+    # Create JSON object that would have come from JSON.parsefile()
     # JSON.parse(::String) errors out with ASCII control characters such as \n
-    c_dict= Dict{String, Any}([
+    c_dict= JSON.Object{String, Any}([
         "licenseId" => "LicenseRef-ID1",
         "extractedText" => "This is a test license.\n You have permission to share the code with your friends",
         "name" => "test license",
         "seeAlsos" => Any["https://nowhere.loopback.com", "https://julialang.org"],
-        "crossRefs" => Vector([Dict{String, Any}(["url"=>"https://julialang.org"]), Dict{String, Any}(["url"=>"https://nowhere.loopback.com"])])
+        "crossRefs" => Vector([JSON.Object{String, Any}(["url"=>"https://julialang.org"]), JSON.Object{String, Any}(["url"=>"https://nowhere.loopback.com"])])
     ])
     c= SPDX.convert_from_JSON(c_dict, SPDX.SpdxLicenseInfoV2_NameTable, SpdxLicenseInfoV2)
     @test SPDX.compare_b(a, c)
