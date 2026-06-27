@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5.0
+* Resolved [#45](https://github.com/SamuraiAku/SPDX.jl/issues/45): Update JSON.jl compatibility to v1
+* Update the minimum compaitble version of Julia from v1.8 to v1.9
+
 ## v0.4.2
 * Merged PR [#46](https://github.com/SamuraiAku/SPDX.jl/pull/46): Add compat for DataStructures 0.19
 
